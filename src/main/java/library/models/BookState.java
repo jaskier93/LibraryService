@@ -1,13 +1,17 @@
 package library.models;
 
 import library.enums.BookStateEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table
 public class BookState {
@@ -35,5 +39,11 @@ public class BookState {
     @Column
     @NotNull
     private Action action;
+
+    @Column
+    @NotNull
+    private Integer status;
+
+
 
 }

@@ -32,10 +32,14 @@ public class Payment {
 
     @Column
     @NotNull
-    private boolean isActive;  //status rekordu=czy zapłacono
+    private boolean isActive;
 
     @Column
     @NotNull
     private Action action;
+
+    @Column
+    @NotNull
+    private Integer status;
 
 }

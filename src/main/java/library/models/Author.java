@@ -1,6 +1,7 @@
 package library.models;
 
 import library.models.Book;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -37,10 +38,26 @@ public class Author {
     private LocalDate dateOfDeath;
 
     @Column
-    @NotNull
-    private LocalDateTime dateOfAdding;
+  //  @NotNull
+    private LocalDate dateOfAdding;
 
     @Column
     //dodać adnotację manytomany lub manytoone
-    private Set <Book> bookSet=new HashSet<>();
+    private Set<Book> bookSet=new HashSet<>();
+
+    @Column
+    @NotNull
+    private Integer status;
+
+    @Builder //póki co bez Book book
+    public Author(@NotNull String name, String secondName, @NotNull String lastName, LocalDate dateOfBirth, LocalDate dateOfDeath,
+                   LocalDate dateOfAdding, @NotNull Integer status) {
+        this.name = name;
+        this.secondName = secondName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.dateOfDeath = dateOfDeath;
+        this.dateOfAdding = dateOfAdding;
+        this.status = status;
+    }
 }
