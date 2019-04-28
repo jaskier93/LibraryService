@@ -1,9 +1,11 @@
 package library.models;
 
+import library.converters.CategoryConverter;
 import library.enums.AgeCategory;
 import library.enums.Category;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,47 +14,40 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
-@Table
+@Table(name = "Books")
+@RequiredArgsConstructor
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
     @NotNull
     private String title;
 
-    @Column
     private LocalDate releaseDate; //data wydania książki
 
-    @Column
     @NotNull
     private LocalDate addingDate; //created date
 
-    @Column
-    @NotNull
+
+    @Convert(converter = CategoryConverter.class)
     private Category category;
 
-    @Column
-    @NotNull
+    @Enumerated(EnumType.STRING)
     private AgeCategory ageCategory;
 
-    @Column
     @NotNull
-    private BookState bookState;
-
-    @Column
-    @NotNull
+    @ManyToOne
     private Author author;
 
-    @Column
     @NotNull
     private Integer status;
 
-    @Builder //zmiana autora/dopasowanie, żeby wymagało tylko ID, podobnie z kategorią
-    public Book(@NotNull String title, LocalDate releaseDate, @NotNull LocalDate addingDate, @NotNull Category category, @NotNull AgeCategory ageCategory,
-                @NotNull  BookState bookState,  @NotNull Author author, @NotNull Integer status) {
+
+    @Builder
+    public Book(@NotNull String title, LocalDate releaseDate, @NotNull LocalDate addingDate,
+                Category category, AgeCategory ageCategory, @NotNull Author author, @NotNull Integer status) {
         this.title = title;
         this.releaseDate = releaseDate;
         this.addingDate = addingDate;

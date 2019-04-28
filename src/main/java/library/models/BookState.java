@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "book_states")
 public class BookState {
 
     @Id
@@ -22,28 +22,23 @@ public class BookState {
 
     private LocalDate dateOfLoan;
 
-    @Column
     @NotNull
     private LocalDate dateOfCreating;
 
-    @Column
     private LocalDate dateOfUpdating;
 
-    @Column
     private LocalDate dateOfReturn;
 
-    @Column
+    @ManyToOne(targetEntity = Book.class)
+    private Book book;
+
     @NotNull
+    @Enumerated(EnumType.STRING)
     private BookStateEnum bookStateEnum;
 
-    @Column
-    @NotNull
+    @ManyToOne
     private Action action;
 
-    @Column
     @NotNull
     private Integer status;
-
-
-
 }

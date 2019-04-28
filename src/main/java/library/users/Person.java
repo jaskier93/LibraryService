@@ -1,30 +1,47 @@
 package library.users;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import lombok.Data;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+@Entity
+@Table
+@Data
 public abstract class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column
     @NotNull
     private String name;
 
-    @Column
     @NotNull
     private String secondName;
 
-    @Column
     @NotNull
     private String lastName;
 
-    @Column
     @NotNull
     private boolean permissionDegree;
+
+    @NotNull
+    private LocalDate dateOfBirth;
+
+    @NotNull
+    private LocalDate created;
+
+    private String description;
+
+    @NotNull
+    private boolean isActive;
+
+    @NotNull
+    private boolean isAdmin;
+
+    public Person(@NotNull boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 }

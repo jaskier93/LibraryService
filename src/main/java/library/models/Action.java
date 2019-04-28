@@ -1,6 +1,6 @@
 package library.models;
 
-import library.users.User;
+import library.users.Person;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,22 +8,19 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
-@Table
+@Table(name = "Actions")
 public class Action {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
     @NotNull
-    private String description;
+    private String actionDescription;
 
-    @Column
-    @NotNull
+    @ManyToOne
     private Book book;
 
-    @Column
-    @NotNull
-    private User user;
+    @ManyToOne
+    private Person user;
 }

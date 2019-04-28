@@ -1,5 +1,7 @@
 package library.enums;
 
+import lombok.Getter;
+
 public enum Category {
     ADVENTURE(1),
     BIOGRAPHY(2),
@@ -14,6 +16,7 @@ public enum Category {
     SCIENCEFICTION(11),
     THRILLER(12);
 
+    @Getter
     private Integer number;
 
     Category(Integer number) {
@@ -23,4 +26,5 @@ public enum Category {
     public static Integer getNumber(Category category) {
         return category.number;
     }
+
 }

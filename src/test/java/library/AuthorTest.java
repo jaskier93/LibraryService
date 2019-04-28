@@ -4,7 +4,6 @@ import library.models.Author;
 import library.repositories.AuthorRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.Assert;
 
 import static org.junit.Assert.*;
 
@@ -23,14 +22,26 @@ public class AuthorTest {
 
     @Test
     public void authorTest() {
-        Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
+
+      //  LocalDate x= LocalDate.of(LocalDate);
+
+        Author author = new Author("Andrzej", "", "Sapkowski",
+                LocalDate.of(2015, 12, 31),
+                LocalDate.of(2015, 12, 31),
+                LocalDate.of(2015, 12, 31), 5);
         authorRepository.save(author);
 
-        Author author2 = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
+        Author author2 = new Author("Andrzej", "", "Sapkowski",
+                LocalDate.of(2015, 12, 31),
+                LocalDate.of(2015, 12, 31),
+                LocalDate.of(2015, 12, 31), 5);
         authorRepository.save(author2);
 
-        assertEquals(author.getId(), author2.getId());
+        assertNotEquals(author.getId(), author2.getId());  //test przeszedł
+        assertEquals(author.getLastName(), author2.getLastName()); //test przeszedł
+
+        authorRepository.delete(author);
+        authorRepository.delete(author2);
+
     }
 }

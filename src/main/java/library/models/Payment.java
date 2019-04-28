@@ -1,44 +1,39 @@
 package library.models;
 
-import library.users.User;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import library.users.Person;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+
+@Entity
+@Table(name = "payments")
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
     @NotNull
-    private User user;
+    @ManyToOne
+    private Person user;
 
-    @Column
     @NotNull
+    @OneToOne
     private Book book;
 
-    @Column
     @NotNull
     private Integer amount;
 
-    @Column
     @NotNull
+    @ManyToOne
     private BookState bookState;
 
-    @Column
     @NotNull
     private boolean isActive;
 
-    @Column
-    @NotNull
+    @ManyToOne
     private Action action;
 
-    @Column
     @NotNull
     private Integer status;
 

@@ -14,7 +14,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b from Book b where b.title=?1")
     List<Book> findBookByTitle(String title);
 
-    @Query("select b from Author a " +
+/*    @Query("select b from Author a " +
             "inner join Book b on a.book.id=b.id where a.lastName=:author") //sprawdzić czy działa
     List<Book> findBookByAuthor(@Param("author") String author);
 
@@ -26,4 +26,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("select b from Book order by releaseDate")
     List<Book> sortedBooksByReleaseData();
+*/
+
 }
