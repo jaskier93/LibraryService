@@ -1,10 +1,12 @@
 package library.models;
 
 import library.users.Person;
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
+@Data
 @Entity
 @Table(name = "payments")
 public class Payment {
@@ -21,8 +23,7 @@ public class Payment {
     @OneToOne
     private Book book;
 
-    @NotNull
-    private Integer amount;
+    private @NotNull Integer amount;
 
     @NotNull
     @ManyToOne
