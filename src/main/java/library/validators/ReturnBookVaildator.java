@@ -9,19 +9,31 @@ public class ReturnBookVaildator {
 
     public void returningBookVaildator(BookState bookState) {
         //warunek sprawdza, czy między datą zwrotu książki, a datą wypożyczenia minęło 30 dni
-        Long days=Duration.between(bookState.getDateOfReturn(), bookState.getDateOfLoan()).toDays();
+        Long days = Duration.between(bookState.getDateOfReturn(), bookState.getDateOfLoan()).toDays();
 
-        if ( days> 30) {
-            Payment payment=new Payment();
+        if (days > 30) {
+            Payment payment = new Payment();
 
             //konwersja longa (Duration zwraca w longu) na Integer
             // (zgodny ze zmienną amount z klasy Payment)
-            Integer days2=days.intValue();
+            Integer days2 = days.intValue();
 
             //naliczanie kary za każdy dzień przetrzymania książki
             //za każdy dzień powyżej 30 dni, naliczana jest złotówka kary
-            payment.setAmount((days2-30)*1);
+            payment.setAmount((days2 - 30) * 1);
 
         }
     }
+
+    public boolean isPaymentUnderTen(Payment payment) {
+        ;
+        if (payment.getAmount() >= 10) {
+            return false;
+        }
+        return true;
+
+    }
+
+
+
 }

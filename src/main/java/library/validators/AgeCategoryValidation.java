@@ -1,5 +1,6 @@
 package library.validators;
 
+import library.enums.AgeCategory;
 import library.models.Book;
 
 import library.users.User;
@@ -17,7 +18,7 @@ public class AgeCategoryValidation {
         //nawet jeśli Integer utnie liczbę po przecinku, chodzi tylko sprawdzenie, czy wiek>18
         Integer years = age.intValue() / 365;
 
-        if (book.getAgeCategory().equals("DOROŚLI") && years > 18) {
+        if (book.getAgeCategory() == AgeCategory.DOROŚLI && years > 18) {
             System.out.println("Jesteś dorosły, możesz wypożyczyć dowolną książkę.");
             return true;
         }

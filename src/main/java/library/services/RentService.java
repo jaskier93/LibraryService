@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 
 @Service
 public class RentService {
@@ -27,8 +27,8 @@ public class RentService {
     //warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
     private boolean isBookAbleToLoan(Book book) {
         BookState bookState2 = isBookExisting(book.getId());
-        if (bookState2.getBookStateEnum().equals("ZWRÓCONA") ||
-                (bookState2.getBookStateEnum().equals("NOWA"))) {
+        if ((bookState2.getBookStateEnum() == BookStateEnum.ZWRÓCONA) ||
+                ((bookState2.getBookStateEnum() == BookStateEnum.NOWA))) {
             System.out.println("Możesz wypożyczyć tą książkę");
         }
         System.out.println("Podana książka jest wypożczyona lub zniszczona, nie możesz jej wypożyczyć. ");
@@ -46,17 +46,17 @@ public class RentService {
 
     //wypożyczanie książki
     public void rentBook(Book book, User user) {
-BookState bookState3 =new BookState();
-bookState3.setBook(book);
-bookState3.setDateOfLoan(LocalDate.now());
-bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
-/*bookState3.setAction(?);*   czy ustawiać coś w akcji? jeśli tak, to co?*/
+        BookState bookState3 = new BookState();
+        bookState3.setBook(book);
+        bookState3.setDateOfLoan(LocalDate.now());
+        bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
+        /*bookState3.setAction(?);*   czy ustawiać coś w akcji? jeśli tak, to co?*/
 //tutaj powinno być jeszcze setUser, aby do użytkownika przypisać dane wypożyczenie
 
     }
 
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
-        BookState bookState4 =new BookState();
+        BookState bookState4 = new BookState();
         bookState4.setBook(book);
         bookState4.setDateOfReturn(LocalDate.now());
         //zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
@@ -66,7 +66,6 @@ bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
 //tutaj powinno być jeszcze setUser, aby do użytkownika przypisać dane wypożyczenie
 
     }
-
 
 
 }
