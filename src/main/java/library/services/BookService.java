@@ -1,6 +1,7 @@
 package library.services;
 
 import library.enums.BookStateEnum;
+import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
 import library.models.Payment;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 public class BookService {
 
     //kara 20zł za zniszczenie książki
-    static final Integer PENALTY_AMOUNT = 20;
+    public static final Integer PENALTY_AMOUNT = 20;
 
 
     private BookRepository bookRepository;
@@ -35,16 +36,21 @@ public class BookService {
         book.setAuthor(book.getAuthor());
         book.setCategory(book.getCategory());
         book.setReleaseDate(book.getReleaseDate());
-        book.setStatus(book.getStatus()); //czy status będzie ustawiany przez użytkownika (lub zależnie od wprowadzonych przez niego danych) czy przez nas?
+        book.setStatus(0); //wartość tymczasowa, później się ustali TODO
+
+        Action action = new Action();
+        action.setBook(book);
+        //action.setUser(); tutaj powinno dodawać się login admina
+        action.setActionDescription("Dodanie nowej książki");
 
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookState.setBook(book);
         bookState.setDateOfCreating(book.getAddingDate());
-        bookState.setAction(null);
-        bookState.setDateOfReturn(null);
-        bookState.setDateOfUpdating(null);
-        bookState.setStatus(book.getStatus()); //czy wartość Integer status z klas Book i BookState będzie odpowiadać za to samo?
+        bookState.setAction(action);
+        bookState.setDateOfReturn(LocalDate.now().plusDays(30));
+        bookState.setDateOfUpdating(LocalDate.now());
+        bookState.setStatus(0); //wartość tymczasowa, później się ustali TODO
         bookStateRepository.save(bookState);
 
         return bookRepository.save(book);
@@ -56,9 +62,14 @@ public class BookService {
     }
 
 
-    //metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
-    //ustala też umowną karę dla użytkownika za zniszczenie książki
+    /* metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
+     ustala też umowną karę dla użytkownika za zniszczenie książki*/
     public Book deleteBook(Book book, User user) {
+
+        Action action = new Action();
+        action.setUser(user);
+        action.setBook(book);
+        action.setActionDescription("Książka zniszczona");
 
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.ZNISZCZONA);
@@ -71,6 +82,13 @@ public class BookService {
         payment.setActive(true);
         payment.setBook(book);
         return bookRepository.save(book);
+
+        /*TODO
+         * Do dodania:
+         * repozytoria: akcji, płatnośći
+         * pola w bookstate-user (prawdopodobnie
+         * testy-sprawdzenie, czy dodajac /edytujac ksiazke, wypozyczenie, etc czy w odpowiednich repozytoriach tworza sie odpowiednia odniesienia do danej ksiazki, usera itd
+         * */
     }
 
 }

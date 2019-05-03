@@ -1,17 +1,19 @@
 package library.services;
 
 import library.enums.BookStateEnum;
+import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-
+@Slf4j
 @Service
 public class RentService {
 
@@ -29,9 +31,10 @@ public class RentService {
         BookState bookState2 = isBookExisting(book.getId());
         if ((bookState2.getBookStateEnum() == BookStateEnum.ZWRÓCONA) ||
                 ((bookState2.getBookStateEnum() == BookStateEnum.NOWA))) {
-            System.out.println("Możesz wypożyczyć tą książkę");
+            log.info("Możesz wypożyczyć tą książkę");
+
         }
-        System.out.println("Podana książka jest wypożczyona lub zniszczona, nie możesz jej wypożyczyć. ");
+        log.info("Podana książka jest wypożczyona lub zniszczona, nie możesz jej wypożyczyć. ");
         return false;
     }
 
@@ -39,32 +42,38 @@ public class RentService {
     private BookState isBookExisting(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
         if (bookState == null) {
-            System.out.println("Nie znalezionego książki o podanym ID");
+            log.info("Nie znalezionego książki o podanym ID");
         }
         return bookState;
     }
 
     //wypożyczanie książki
     public void rentBook(Book book, User user) {
+        Action action = new Action();
+        action.setActionDescription("Wypożyczenie");
+        action.setBook(book);
+        action.setUser(user);
+
         BookState bookState3 = new BookState();
         bookState3.setBook(book);
         bookState3.setDateOfLoan(LocalDate.now());
         bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
-        /*bookState3.setAction(?);*   czy ustawiać coś w akcji? jeśli tak, to co?*/
-//tutaj powinno być jeszcze setUser, aby do użytkownika przypisać dane wypożyczenie
-
+        bookState3.setAction(action);
     }
 
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
+        Action action = new Action();
+        action.setActionDescription("Zwrot książki");
+        action.setBook(book);
+        action.setUser(user);
+
         BookState bookState4 = new BookState();
         bookState4.setBook(book);
         bookState4.setDateOfReturn(LocalDate.now());
-        //zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
-        // jeśli nie, to naliczyć karę
+        /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
+        jeśli nie, to naliczyć karę*/
         bookState4.setBookStateEnum(BookStateEnum.ZWRÓCONA);
-        /*bookState3.setAction(?);*   czy ustawiać coś w akcji? jeśli tak, to co?*/
-//tutaj powinno być jeszcze setUser, aby do użytkownika przypisać dane wypożyczenie
-
+        bookState4.setAction(action);
     }
 
 

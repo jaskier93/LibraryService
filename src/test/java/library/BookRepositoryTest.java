@@ -4,8 +4,10 @@ import library.enums.AgeCategory;
 import library.enums.Category;
 import library.models.Author;
 import library.models.Book;
+import library.models.BookState;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
+import library.repositories.BookStateRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,9 @@ public class BookRepositoryTest {
 
     @Autowired
     private final BookRepository bookRepository = null;
+
+/*    @Autowired
+    private final BookStateRepository bookStateRepository = null;*/
 
     @Autowired
     private final AuthorRepository authorRepository = null;
@@ -52,6 +57,13 @@ public class BookRepositoryTest {
         Book book2 = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
                 Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
         bookRepository.save(book2);
+
+      /*  BookState bookState=new BookState();
+        bookState.setBook(book);
+        bookStateRepository.save(bookState);
+
+        assertNotNull(bookState);
+        assertEquals(bookState.getBook(), book);*/
 
 
         assertNotNull(book.getId());

@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
+
     @Query("select b from Book b where b.title=?1")
     List<Book> findBookByTitle(String title);
 
