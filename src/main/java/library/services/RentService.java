@@ -4,6 +4,7 @@ import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
+import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
@@ -16,14 +17,17 @@ import java.time.LocalDate;
 @Slf4j
 @Service
 public class RentService {
+    public static final Integer LOAN_PERIOD = 30;
 
     private BookRepository bookRepository;
     private BookStateRepository bookStateRepository;
+    private ActionRepository actionRepository;
 
     @Autowired
-    public RentService(BookRepository bookRepository, BookStateRepository bookStateRepository) {
+    public RentService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository) {
         this.bookRepository = bookRepository;
         this.bookStateRepository = bookStateRepository;
+        this.actionRepository = actionRepository;
     }
 
     //warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
@@ -53,12 +57,15 @@ public class RentService {
         action.setActionDescription("Wypożyczenie");
         action.setBook(book);
         action.setUser(user);
+        actionRepository.save(action);
 
         BookState bookState3 = new BookState();
         bookState3.setBook(book);
         bookState3.setDateOfLoan(LocalDate.now());
         bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
+        bookState3.setDateOfReturn(LocalDate.now().plusDays(LOAN_PERIOD));
         bookState3.setAction(action);
+        bookStateRepository.save(bookState3);
     }
 
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
@@ -66,6 +73,7 @@ public class RentService {
         action.setActionDescription("Zwrot książki");
         action.setBook(book);
         action.setUser(user);
+        actionRepository.save(action);
 
         BookState bookState4 = new BookState();
         bookState4.setBook(book);
@@ -74,6 +82,7 @@ public class RentService {
         jeśli nie, to naliczyć karę*/
         bookState4.setBookStateEnum(BookStateEnum.ZWRÓCONA);
         bookState4.setAction(action);
+        bookStateRepository.save(bookState4);
     }
 
 

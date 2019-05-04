@@ -5,9 +5,12 @@ import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
 import library.models.Payment;
+import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
+import library.repositories.PaymentRepository;
 import library.users.User;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +22,17 @@ public class BookService {
     //kara 20zł za zniszczenie książki
     public static final Integer PENALTY_AMOUNT = 20;
 
-
     private BookRepository bookRepository;
     private BookStateRepository bookStateRepository;
+    private ActionRepository actionRepository;
+    private PaymentRepository paymentRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, BookStateRepository bookStateRepository) {
+    public BookService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, PaymentRepository paymentRepository) {
         this.bookRepository = bookRepository;
         this.bookStateRepository = bookStateRepository;
+        this.actionRepository = actionRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     private Book addBook(Book book) {
@@ -42,13 +48,14 @@ public class BookService {
         action.setBook(book);
         //action.setUser(); tutaj powinno dodawać się login admina
         action.setActionDescription("Dodanie nowej książki");
+        actionRepository.save(action);
 
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookState.setBook(book);
         bookState.setDateOfCreating(book.getAddingDate());
         bookState.setAction(action);
-        bookState.setDateOfReturn(LocalDate.now().plusDays(30));
+        bookState.setDateOfReturn(null);
         bookState.setDateOfUpdating(LocalDate.now());
         bookState.setStatus(0); //wartość tymczasowa, później się ustali TODO
         bookStateRepository.save(bookState);
@@ -70,17 +77,21 @@ public class BookService {
         action.setUser(user);
         action.setBook(book);
         action.setActionDescription("Książka zniszczona");
+        actionRepository.save(action);
 
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.ZNISZCZONA);
         bookState.setDateOfReturn(LocalDate.now());
         bookState.setDateOfUpdating(LocalDate.now());
+        bookStateRepository.save(bookState);
 
         Payment payment = new Payment();
         payment.setAmount(PENALTY_AMOUNT);
         payment.setUser(user);
         payment.setActive(true);
         payment.setBook(book);
+        paymentRepository.save(payment);
+
         return bookRepository.save(book);
 
         /*TODO
