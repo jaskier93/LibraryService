@@ -55,11 +55,11 @@ public class BookRepositoryTest {
     @After
     public void after() {
         authorRepository.delete(author);
-
     }
 
     @Test
     public void bookTest() {
+
         Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
                 Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
         bookRepository.save(book);
@@ -101,10 +101,10 @@ public class BookRepositoryTest {
         bookRepository.delete(book);
         bookRepository.delete(book2);
         bookRepository.delete(bookFromBase);
-        authorRepository.delete(author);
 
-        actionRepository.delete(action);
-        bookStateRepository.delete(bookState);
+
+       // actionRepository.delete(action);
+      //  bookStateRepository.delete(bookState);
 
     }
 }
