@@ -27,7 +27,8 @@ public class Payment {
     @OneToOne
     private Book book;
 
-    private @NotNull Integer amount;
+    @NotNull
+    private Integer amount;
 
     @NotNull
     @ManyToOne

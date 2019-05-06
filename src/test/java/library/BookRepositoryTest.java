@@ -98,13 +98,11 @@ public class BookRepositoryTest {
         assertEquals(bookFromBase.getId(), book2.getId());
 
         //dodać usuwanie poprzednich rzeczy
+        bookStateRepository.delete(bookState);
+        actionRepository.delete(action);
         bookRepository.delete(book);
         bookRepository.delete(book2);
-        bookRepository.delete(bookFromBase);
 
-
-       // actionRepository.delete(action);
-      //  bookStateRepository.delete(bookState);
 
     }
 }

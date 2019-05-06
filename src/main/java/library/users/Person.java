@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table
 @Data
-public abstract class Person {
+public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
