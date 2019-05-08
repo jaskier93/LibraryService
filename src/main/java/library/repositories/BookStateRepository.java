@@ -1,10 +1,14 @@
 package library.repositories;
 
 
+import library.models.Book;
 import library.models.BookState;
+import library.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
@@ -16,6 +20,10 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "                   from BookState bs2 " +
             "                   where bs2.book.id = :bookId )")
     BookState findBookStateByBook(@Param("bookId") Integer bookId);
+
+    //działa?
+    @Query("select bs from BookState where bs.user=?1")
+    List<Book> findBooksByUser(User user);
 
 }
 

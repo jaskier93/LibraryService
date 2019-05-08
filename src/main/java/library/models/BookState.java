@@ -1,6 +1,7 @@
 package library.models;
 
 import library.enums.BookStateEnum;
+import library.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ public class BookState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @ManyToOne(targetEntity = User.class)
+    private User user;
 
     private LocalDate dateOfLoan;
 

@@ -1,12 +1,13 @@
 package library.models;
 
-import library.users.Person;
+import library.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class Payment {
 
     @NotNull
     @ManyToOne
-    private Person user;
+    private User user;
 
     @NotNull
     @OneToOne
@@ -34,11 +35,16 @@ public class Payment {
     @ManyToOne
     private BookState bookState;
 
+    //zmienna pokazująca czy zmienna jest już zapłacona (false) lub czy nadal trzeba ją opłacić=true
     @NotNull
     private boolean isActive;
 
     @ManyToOne
     private Action action;
+
+    //data nadania lub opłacenia płatności
+    @NotNull
+    private LocalDate dateOfPayment;
 
     @NotNull
     private Integer status;

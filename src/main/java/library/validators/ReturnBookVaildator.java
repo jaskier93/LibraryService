@@ -4,9 +4,11 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
+@Component
 public class ReturnBookVaildator {
 
 
@@ -27,8 +29,6 @@ public class ReturnBookVaildator {
     final Integer SOME_PENALTY_AMOUNT = 10;
 
     public void returningBookVaildator(BookState bookState) {
-
-
         //warunek sprawdza, czy między datą zwrotu książki, a datą wypożyczenia minęło 30 dni
         Long days = Duration.between(bookState.getDateOfReturn(), bookState.getDateOfLoan()).toDays();
 
@@ -52,6 +52,7 @@ public class ReturnBookVaildator {
         }
     }
 
+    //do poprawy?
     public boolean isPaymentUnderTen(Payment payment) {
         ;
         if (payment.getAmount() >= SOME_PENALTY_AMOUNT) {

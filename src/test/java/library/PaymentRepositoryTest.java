@@ -47,7 +47,6 @@ public class PaymentRepositoryTest {
     private Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
             LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
 
-
     private Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
             Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
 
@@ -60,20 +59,19 @@ public class PaymentRepositoryTest {
     @After
     public void after() {
         authorRepository.delete(author);
-        bookRepository.save(book);
+        bookRepository.delete(book);
     }
-
 
     @Test
     public void paymentTest() {
 
-        User user = TestUtils.createPerson();
+        User user = TestUtils.createUser();
         userRepository.save(user);
 
         Action action = new Action();
         action.setActionDescription("x");
         action.setBook(book);
-        action.setUser(null);
+        action.setUser(user);
         actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
@@ -115,8 +113,6 @@ public class PaymentRepositoryTest {
         bookStateRepository.delete(bookState);
         actionRepository.delete(action);
         userRepository.delete(user);
-
-
     }
 
 

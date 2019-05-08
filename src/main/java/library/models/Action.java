@@ -1,6 +1,6 @@
 package library.models;
 
-import library.users.Person;
+import library.users.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +15,10 @@ public class Action {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     *po stronie kontrolera/htmla można dodać listę podpowiedzi typu: zniszczenie, nowość, wypożyczenie, zwrot
+     * i możliwość dodadania po prostu własnego opisu
+     */
     @NotNull
     private String actionDescription;
 
@@ -22,5 +26,5 @@ public class Action {
     private Book book;
 
     @ManyToOne
-    private Person user;
+    private User user;
 }

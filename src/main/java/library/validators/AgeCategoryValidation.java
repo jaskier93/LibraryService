@@ -4,10 +4,14 @@ import library.enums.AgeCategory;
 import library.models.Book;
 
 import library.users.User;
+import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
 
+@Component
+@Data
 public class AgeCategoryValidation {
 
     public boolean ageValidation(Book book, User user) {

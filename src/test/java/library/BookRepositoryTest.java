@@ -11,6 +11,7 @@ import library.repositories.ActionRepository;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
+import library.users.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,10 +69,12 @@ public class BookRepositoryTest {
                 Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
         bookRepository.save(book2);
 
+        User user = TestUtils.createUser();
+
         Action action = new Action();
         action.setActionDescription("x");
         action.setBook(book);
-        action.setUser(null);
+        action.setUser(user);
         actionRepository.save(action);
 
         BookState bookState = new BookState();
@@ -82,6 +85,7 @@ public class BookRepositoryTest {
         bookState.setDateOfCreating(LocalDate.now());
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
+        bookState.setUser(user);
         bookState.setStatus(0);
         bookStateRepository.save(bookState);
 
