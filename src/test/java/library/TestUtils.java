@@ -13,7 +13,6 @@ public class TestUtils {
     public static User createUser() {
         User user = new User();
         user.setActive(true);
-        user.setCreated(LocalDate.now());
         user.setDateOfBirth(LocalDate.now());
         user.setAdmin(false);
         user.setDateOfRegistration(LocalDate.now());

@@ -23,7 +23,6 @@ public class User {
     @NotNull
     private String name;
 
-    @NotNull
     private String secondName;
 
     @NotNull
@@ -34,9 +33,6 @@ public class User {
 
     @NotNull
     private LocalDate dateOfRegistration;
-
-    @NotNull
-    private LocalDate created;
 
     private Integer adminDegree;
 

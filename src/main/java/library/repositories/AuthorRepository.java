@@ -11,5 +11,5 @@ import java.util.List;
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
     @Query("select a from Author a where a.lastName =?1")
-    List<Author> findAuthorByLastName(String name);
+    List<Author> findAuthorByLastName(String lastName);
 }

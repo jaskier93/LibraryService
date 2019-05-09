@@ -10,7 +10,6 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
 import library.users.User;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

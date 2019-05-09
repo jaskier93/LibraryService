@@ -20,10 +20,9 @@ public class AuthorTest {
     @Autowired
     private final AuthorRepository authorRepository = null;
 
+    //test passed!
     @Test
     public void authorTest() {
-
-      //  LocalDate x= LocalDate.of(LocalDate);
 
         Author author = new Author("Andrzej", "", "Sapkowski",
                 LocalDate.of(2015, 12, 31),
@@ -42,6 +41,5 @@ public class AuthorTest {
 
         authorRepository.delete(author);
         authorRepository.delete(author2);
-
     }
 }

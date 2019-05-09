@@ -7,10 +7,7 @@ import library.models.Action;
 import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
-import library.repositories.ActionRepository;
-import library.repositories.AuthorRepository;
-import library.repositories.BookRepository;
-import library.repositories.BookStateRepository;
+import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Before;
@@ -42,6 +39,9 @@ public class BookRepositoryTest {
     private final ActionRepository actionRepository = null;
 
     @Autowired
+    private final UserRepository userRepository = null;
+
+    @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
     private Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
@@ -61,32 +61,20 @@ public class BookRepositoryTest {
     @Test
     public void bookTest() {
 
-        Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
-                Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
+        Book book = TestUtils.createBook();
+        //TODO: metody save nie zapisują obiektów do repozytoriów-do naprawy!
         bookRepository.save(book);
 
-        Book book2 = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
-                Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
+        Book book2 = TestUtils.createBook();
         bookRepository.save(book2);
 
         User user = TestUtils.createUser();
+        userRepository.save(user);
 
-        Action action = new Action();
-        action.setActionDescription("x");
-        action.setBook(book);
-        action.setUser(user);
+        Action action = TestUtils.createAction(book, user);
         actionRepository.save(action);
 
-        BookState bookState = new BookState();
-        bookState.setBook(book);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
-        bookState.setDateOfReturn(LocalDate.now());
-        bookState.setDateOfUpdating(LocalDate.now());
-        bookState.setDateOfCreating(LocalDate.now());
-        bookState.setDateOfLoan(LocalDate.now());
-        bookState.setAction(action);
-        bookState.setUser(user);
-        bookState.setStatus(0);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
         bookStateRepository.save(bookState);
 
         assertNotNull(bookState);
@@ -106,7 +94,7 @@ public class BookRepositoryTest {
         actionRepository.delete(action);
         bookRepository.delete(book);
         bookRepository.delete(book2);
-
+        userRepository.delete(user);
 
     }
 }

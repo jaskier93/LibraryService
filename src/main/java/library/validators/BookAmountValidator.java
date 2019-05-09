@@ -6,8 +6,10 @@ import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class BookAmountValidator {
+public class BookAmountValidator extends AbstractValidator {
 
     private BookStateRepository bookStateRepository;
 
@@ -16,12 +18,16 @@ public class BookAmountValidator {
         this.bookStateRepository = bookStateRepository;
     }
 
-    //metoda sprawdzająca, czy dany użytkownik ma wypożyczone więcej niż 3 książki
-    public boolean isMoreThanThree(User user, Book book) {
+/*   // metoda sprawdzająca, czy dany użytkownik ma wypożyczone więcej niż 3 książki
+    public boolean isMoreThanThree(User user) {
+        List<Book> bookList = bookStateRepository.findBooksByUser(user);
+        return (bookList.size() > 3 && (!bookList.isEmpty()));
+    }*/
 
-        if (bookStateRepository.findBooksByUser(user).size() > 3) {
-            return true;
-        }
-        return false;
+    @Override
+    public boolean validator(User user) {
+        List<Book> bookList = bookStateRepository.findBooksByUser(user);
+        return (bookList.size() > 3 && (!bookList.isEmpty()));
     }
+
 }
