@@ -11,22 +11,11 @@ import java.time.LocalDate;
 @Component
 public class UserAgeValidation extends AbstractValidator {
 
-/*    public boolean ageValidation(Book book, User user) {
-      Long age = Duration.between(user.getDateOfBirth(), LocalDate.now()).toDays();
- */
-    /**przeliczenie wieku na lata*/
-    /*
-        Integer years = age.intValue() / 365;
-        return (book.getAgeCategory() == AgeCategory.DOROŚLI && years > 18);
-    }*/
-
+    /*metoda obliczająca wiek użytkownika, potrzebna będzie do weryfikacji, czy może wypożyczyć daną książkę dla dorosłych*/
     @Override
     public boolean validator(User user) {
-        Long age = Duration.between(user.getDateOfBirth(), LocalDate.now()).toDays();
-        Integer years = age.intValue() / 365;
-
+        long age = Duration.between(user.getDateOfBirth(), LocalDate.now()).toDays();
+        float years = age / 365.25f;
         return (years > 18);
     }
-
-
 }

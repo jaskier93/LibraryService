@@ -26,14 +26,18 @@ public class BookRepoQuerryTest {
     @Autowired
     private final AuthorRepository authorRepository = null;
 
+    //test passed
     @Test
     public void querryTest() {
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);
         Book book = TestUtils.createBook();
+        book.setTitle("Wiedźmin");
+        book.setAuthor(author);
         bookRepository.save(book);
 
-        assertEquals(1, bookRepository.findBookByTitle("Wiedźmin").size());
+        assertFalse(bookRepository.findBookByTitle("Wiedźmin").isEmpty());
+        assertEquals("Wiedźmin", book.getTitle());
 
         bookRepository.delete(book);
         authorRepository.delete(author);

@@ -21,16 +21,18 @@ public class AuthorRepoQuerryTest {
     @Autowired
     private final AuthorRepository authorRepository = null;
 
+    //test passed!
     @Test
-    private void querryTest() {
+    public void querryTest() {
         Author author = TestUtils.createAuthor();
+        author.setLastName("Sapkowski");
         authorRepository.save(author);
 
         Author author2 = authorRepository.getOne(author.getId());
-        authorRepository.save(author2);
 
         assertEquals(author.getId(), author2.getId());
-        assertEquals(true, !authorRepository.findAuthorByLastName("Sapkowski").isEmpty());
+        assertFalse(authorRepository.findAuthorsByLastName("Sapkowski").isEmpty());
+        assertTrue(authorRepository.findAuthorsByLastName("fssfdsddfs").isEmpty());
 
         authorRepository.delete(author);
     }

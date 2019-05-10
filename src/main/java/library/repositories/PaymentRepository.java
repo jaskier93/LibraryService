@@ -18,12 +18,13 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer>  {
     TODO: zamiast 10 umieścić zmienną, w razie potrzeby zmiany wartośći */
 
     @Query("select p from Payment  p where p.amount > :value")
-    List<Payment> findByAmount(@Param("value") Integer amount);
+    List<Payment> findPaymentsAboveAmount(@Param("value") Integer amount);
 
     //metoda zwraca listę płatności danego użytkownika
     @Query("select p from Payment  p where p.user = ?1")
     List<Payment> findByUser(User user);
-/*
+
+    //wyliczenie sumy płatności dla jednego użytkownika
     @Query("select sum(p.amount) from Payment p where p.user.id = : userid ")
-    Integer sumPaymentsForOneUser(@Param("userid") Integer userId);*/
+    Integer sumPaymentsForOneUser(@Param("userid") Integer userId);
 }

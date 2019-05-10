@@ -21,16 +21,11 @@ public class RentFifthBookValidator extends AbstractValidator {
         this.bookStateRepository = bookStateRepository;
     }
 
-/*    public boolean canRentFifthBook(User user) {
-        List<Book> bookList = bookStateRepository.findBooksByUser(user);
-        Long daysSinceRegistration = Duration.between(user.getDateOfRegistration(), LocalDate.now()).toDays();
-        return (bookList.size() >= 4 && (daysSinceRegistration > 365));
-    }*/
-
+/* metoda metoda sprawdzająca, czy użytkownik może wypożyczyć piątą książkę (zależne od od tego kiedy się zarejestrował)   */
     @Override
     public boolean validator(User user) {
-        List<Book> bookList = bookStateRepository.findBooksByUser(user);
+        List<Book> bookListLoanedByUser = bookStateRepository.findBooksByUser(user);
         Long daysSinceRegistration = Duration.between(user.getDateOfRegistration(), LocalDate.now()).toDays();
-        return (bookList.size() >= 4 && (daysSinceRegistration > 365));
+        return (bookListLoanedByUser.size() >= 4 && (daysSinceRegistration > 365));
     }
 }

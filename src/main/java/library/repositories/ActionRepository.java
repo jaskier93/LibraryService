@@ -26,7 +26,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
      * lub podczas przesyłania z htmla do bazy ustalić jako value=Zniszczenie (przy polu actionDescription wypełnianym przez admina)
      */
     @Query("select a from Action  a where  a.actionDescription='Zniszczenie' and a.user=:value")
-    List<Action> findActionWithDestroyedBooksByUser(@Param("value") User user);
+    List<Action> findActionsWithDestroyedBooksByUser(@Param("value") User user);
 
     //zwraca listę akcji danej książki
     @Query("select a from Action  a where  a.book=?1")

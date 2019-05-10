@@ -19,10 +19,12 @@ public class UserRepoQuerryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
+    //test passed
     @Test
     public void querryTest() {
         User user = TestUtils.createUser();
         userRepository.save(user);
+
         User user1 = userRepository.getOne(user.getId());
         userRepository.save(user1);
 

@@ -44,9 +44,7 @@ public class BookRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
-    private Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
-            LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
-
+    private Author author = TestUtils.createAuthor();
 
     @Before
     public void setUp() {
@@ -58,42 +56,44 @@ public class BookRepositoryTest {
         authorRepository.delete(author);
     }
 
+    //test passed
     @Test
     public void bookTest() {
 
         Book book = TestUtils.createBook();
-        //TODO: metody save nie zapisują obiektów do repozytoriów-do naprawy!
+        book.setAuthor(author);
         bookRepository.save(book);
-
-        Book book2 = TestUtils.createBook();
-        bookRepository.save(book2);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
+        action.setUser(user);
+        action.setBook(book);
         actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        bookState.setUser(user);
+        bookState.setBook(book);
+        bookState.setAction(action);
+        bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookStateRepository.save(bookState);
 
         assertNotNull(bookState);
         assertEquals(bookState.getBook(), book);
 
+
+        Book bookFromBase = bookRepository.getOne(book.getId());
         assertNotNull(book.getId());
-        assertNotEquals(book.getId(), book2.getId());
+        assertEquals(book.getId(), bookFromBase.getId());
+        assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());
+        assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());
+        assertEquals(bookFromBase.getId(), book.getId());
 
-        Book bookFromBase = bookRepository.getOne(book2.getId());
-
-        assertEquals(bookFromBase.getReleaseDate(), book2.getReleaseDate());
-        assertEquals(bookFromBase.getReleaseDate(), book2.getReleaseDate());
-        assertEquals(bookFromBase.getId(), book2.getId());
-
-        //dodać usuwanie poprzednich rzeczy
+        //do ustalenia jeszcze kolejność usuwania-sprawdzić w mysql czy prawidłowo się usuwają obiekty
         bookStateRepository.delete(bookState);
         actionRepository.delete(action);
         bookRepository.delete(book);
-        bookRepository.delete(book2);
         userRepository.delete(user);
 
     }
