@@ -4,6 +4,7 @@ import library.models.Author;
 import library.models.Book;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,23 @@ public class BookRepoQuerryTest {
     @Autowired
     private final BookRepository bookRepository = null;
 
-    @Autowired
-    private final AuthorRepository authorRepository = null;
+    @After
+    public void after() {
+        jdbcTemplate.update("delete from books");
+        jdbcTemplate.update("delete from author");
+    }
 
-    //test passed
+    //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void querryTest() {
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
         Book book = TestUtils.createBook();
-        book.setTitle("Wiedźmin");
-        book.setAuthor(author);
         bookRepository.save(book);
+
+        Book book1 = bookRepository.getOne(book.getId());
+        assertEquals(book.getId(), book1.getId());
 
         assertFalse(bookRepository.findBookByTitle("Wiedźmin").isEmpty());
         assertEquals("Wiedźmin", book.getTitle());
-
-        bookRepository.delete(book);
-        authorRepository.delete(author);
+        assertNotEquals("sdfssdffds", book.getTitle());
     }
 }

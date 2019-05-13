@@ -5,6 +5,7 @@ import library.models.Author;
 import library.models.Book;
 import library.repositories.*;
 import library.users.User;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+
+/**
+ * @DataJpaTest
+ * @AutoConfigureTestDatabase(replace=Replace.NONE)
+ * adnotacje do przetestowania
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ActionRepoQuerryTest {
@@ -33,16 +40,22 @@ public class ActionRepoQuerryTest {
     private final UserRepository userRepository = null;
 
     @Autowired
-    private final JdbcTemplate jdbcTemplate = null;
+    public final JdbcTemplate jdbcTemplate=null;
 
-    //test passed!
+
+    @After
+    public void after() {
+        jdbcTemplate.update("delete from actions");
+        jdbcTemplate.update("delete from books");
+        jdbcTemplate.update("delete from author");
+        jdbcTemplate.update("delete from user");
+    }
+
+    //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void actionTest() {
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
 
         Book book = TestUtils.createBook();
-        book.setAuthor(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
@@ -61,14 +74,8 @@ public class ActionRepoQuerryTest {
 
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
-       // assertNull(actionList);
         assertFalse(actionRepository.findActionByActionDescription("x").isEmpty());
         assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
-
-        actionRepository.delete(action);
-        userRepository.delete(user);
-        bookRepository.delete(book);
-        authorRepository.delete(author);
     }
 }

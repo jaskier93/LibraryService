@@ -2,6 +2,7 @@ package library;
 
 import library.models.Author;
 import library.repositories.AuthorRepository;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,12 @@ public class AuthorRepoQuerryTest {
     @Autowired
     private final AuthorRepository authorRepository = null;
 
-    //test passed!
+    @After
+    public void after() {
+        jdbcTemplate.update("delete from author");
+    }
+
+    //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void querryTest() {
         Author author = TestUtils.createAuthor();
@@ -34,6 +40,6 @@ public class AuthorRepoQuerryTest {
         assertFalse(authorRepository.findAuthorsByLastName("Sapkowski").isEmpty());
         assertTrue(authorRepository.findAuthorsByLastName("fssfdsddfs").isEmpty());
 
-        authorRepository.delete(author);
+        // authorRepository.delete(author);
     }
 }

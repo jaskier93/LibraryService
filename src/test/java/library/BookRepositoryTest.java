@@ -56,7 +56,7 @@ public class BookRepositoryTest {
         authorRepository.delete(author);
     }
 
-    //test passed
+    //TODO:test do poprawy
     @Test
     public void bookTest() {
 
@@ -90,7 +90,7 @@ public class BookRepositoryTest {
         assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());
         assertEquals(bookFromBase.getId(), book.getId());
 
-        //do ustalenia jeszcze kolejność usuwania-sprawdzić w mysql czy prawidłowo się usuwają obiekty
+
         bookStateRepository.delete(bookState);
         actionRepository.delete(action);
         bookRepository.delete(book);

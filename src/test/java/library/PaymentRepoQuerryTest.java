@@ -1,10 +1,7 @@
 package library;
 
 import library.enums.BookStateEnum;
-import library.models.Author;
-import library.models.Book;
-import library.models.BookState;
-import library.models.Payment;
+import library.models.*;
 import library.repositories.*;
 import library.users.User;
 import org.junit.Test;
@@ -33,31 +30,33 @@ public class PaymentRepoQuerryTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private AuthorRepository authorRepository = null;
+    private BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private BookStateRepository bookStateRepository=null;
+    private ActionRepository actionRepository = null;
 
 
-    //test nie przechodzi póki co, problem z zapisem płatności do repo
     @Test
     public void querryTest() {
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
-
         Book book = TestUtils.createBook();
-        book.setAuthor(author);
+        book.setAuthor(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
 
+        Action action = TestUtils.createAction(book, user);
+        actionRepository.save(action);
+
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        bookStateRepository.save(bookState);
 
         Payment payment = TestUtils.createPayment(book, user);
         payment.setBook(book);
         payment.setUser(user);
+        payment.setAction(action);
         payment.setAmount(15);
-        payment.setBookState(TestUtils.createBookState(book, TestUtils.createAction(book, user), BookStateEnum.NOWA));
+        payment.setBookState(bookState);
         paymentRepository.save(payment);
 
         Payment payment1 = paymentRepository.getOne(payment.getId());
@@ -72,7 +71,6 @@ public class PaymentRepoQuerryTest {
         paymentRepository.delete(payment);
         userRepository.delete(user);
         bookRepository.delete(book);
-        authorRepository.delete(author);
     }
 
 }

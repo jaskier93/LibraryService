@@ -2,6 +2,7 @@ package library;
 
 import library.repositories.UserRepository;
 import library.users.User;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,12 @@ public class UserRepoQuerryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
-    //test passed
+    @After
+    public void after() {
+        jdbcTemplate.update("delete from user");
+    }
+
+    //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void querryTest() {
         User user = TestUtils.createUser();
@@ -28,10 +34,9 @@ public class UserRepoQuerryTest {
         User user1 = userRepository.getOne(user.getId());
         userRepository.save(user1);
 
+        assertEquals(user.getId(), user1.getId());
         assertEquals(user.getDateOfBirth(), user1.getDateOfBirth());
-        assertEquals(false, userRepository.findUserByLastName("y").isEmpty());
+        assertFalse(userRepository.findUserByLastName("y").isEmpty());
 
-        userRepository.delete(user);
-        userRepository.delete(user1);
     }
 }

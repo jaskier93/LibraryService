@@ -44,46 +44,39 @@ public class PaymentRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
-    private Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
-            LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
-
-    private Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
-            Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
-
-    @Before
-    public void setUp() {
-        authorRepository.save(author);
-        bookRepository.save(book);
-    }
-
     @After
     public void after() {
-        authorRepository.delete(author);
-        bookRepository.delete(book);
+        //     jdbcTemplate.update("delete from actions");
+        //   jdbcTemplate.update("delete from books");
+        // jdbcTemplate.update("delete from author");
+        jdbcTemplate.update("delete from user");
+        jdbcTemplate.update("delete from payments");
+        jdbcTemplate.update("delete from book_states");
     }
 
     @Test
     public void paymentTest() {
 
-        User user = TestUtils.createUser();
+/*        User user = TestUtils.createUser();
         userRepository.save(user);
 
         Action action = new Action();
-        action.setActionDescription("x");
-        action.setBook(book);
-        action.setUser(user);
+      //  action.setActionDescription("x");
+        //action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
-        bookStateRepository.save(bookState);
+        BookState bookState = TestUtils.createBookState(TestUtils.createBook(), action, BookStateEnum.NOWA);
+        bookStateRepository.save(bookState);*/
 
         Payment payment = new Payment();
-        payment.setAmount(10);
+
+        payment = TestUtils.createPayment(TestUtils.createBook(), TestUtils.createUser());
+/*        payment.setAmount(10);
         payment.setActive(true);
         payment.setBook(book);
         payment.setUser(user);
-        payment.setStatus(0);
-        payment.setBookState(bookState);
+        payment.setStatus(0);*/
+        //  payment.setBookState(bookState);
 
   /*      Payment payment2 = new Payment();
         payment2.setAmount(20);
@@ -110,9 +103,9 @@ public class PaymentRepositoryTest {
 
         paymentRepository.delete(payment);
 
-        bookStateRepository.delete(bookState);
-        actionRepository.delete(action);
-        userRepository.delete(user);
+        //   bookStateRepository.delete(bookState);
+        //    actionRepository.delete(action);
+        //    userRepository.delete(user);
     }
 
 

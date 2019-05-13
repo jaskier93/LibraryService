@@ -20,24 +20,20 @@ public class AuthorTest {
     @Autowired
     private final AuthorRepository authorRepository = null;
 
-    //test passed!
+    //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void authorTest() {
 
-        Author author = new Author("Andrzej", "", "Sapkowski",
-                LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31), 5);
+        Author author = TestUtils.createAuthor();
         authorRepository.save(author);
 
-        Author author2 = new Author("Andrzej", "", "Sapkowski",
-                LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31), 5);
+        Author author2 = TestUtils.createAuthor();
         authorRepository.save(author2);
 
-        assertNotEquals(author.getId(), author2.getId());  //test przeszedł
-        assertEquals(author.getLastName(), author2.getLastName()); //test przeszedł
+        assertNotEquals(author.getId(), author2.getId());
+        assertEquals(author.getLastName(), author2.getLastName());
+        assertFalse(authorRepository.findAuthorsByLastName("Sapkowski").isEmpty());
+        assertTrue(authorRepository.findAuthorsByLastName("fjkhsdf").isEmpty());
 
         authorRepository.delete(author);
         authorRepository.delete(author2);
