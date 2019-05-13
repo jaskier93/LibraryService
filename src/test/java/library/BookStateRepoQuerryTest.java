@@ -65,6 +65,11 @@ public class BookStateRepoQuerryTest {
     Action action = TestUtils.createAction(TestUtils.createBook(), TestUtils.createUser());
 
     BookState bookState = TestUtils.createBookState(TestUtils.createBook(),  TestUtils.createAction(TestUtils.createBook(), TestUtils.createUser()), BookStateEnum.NOWA);*/
+
+        /**
+         *messageTemplate='{javax.validation.constraints.NotNull.message}
+         *Validation failed for classes [library.models.BookState] during persist time for groups
+         */
         bookStateRepository.save(bookState);
         BookState bookState1 = bookStateRepository.getOne(bookState.getId());
 

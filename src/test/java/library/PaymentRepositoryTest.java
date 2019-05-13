@@ -70,6 +70,10 @@ public class PaymentRepositoryTest {
 
         Payment payment = new Payment();
 
+        /**
+         * przy odpalaniu testu wyskakuje problem z nadaniem ID płatności
+         * analogicznie w PaymentRepoQuerryTest
+         */
         payment = TestUtils.createPayment(TestUtils.createBook(), TestUtils.createUser());
 /*        payment.setAmount(10);
         payment.setActive(true);

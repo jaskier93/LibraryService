@@ -75,14 +75,14 @@ public class RentService {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState4 = new BookState();
-        bookState4.setBook(book);
-        bookState4.setDateOfReturn(LocalDate.now());
+        BookState bookState = new BookState();
+        bookState.setBook(book);
+        bookState.setDateOfReturn(LocalDate.now());
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
-        bookState4.setBookStateEnum(BookStateEnum.ZWRÓCONA);
-        bookState4.setAction(action);
-        bookStateRepository.save(bookState4);
+        bookState.setBookStateEnum(BookStateEnum.ZWRÓCONA);
+        bookState.setAction(action);
+        bookStateRepository.save(bookState);
     }
 
 

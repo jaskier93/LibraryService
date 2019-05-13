@@ -62,16 +62,36 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    private Book updateBook(Book book) {
-        //:TODO
+    private Book updateBook(Book book, BookState bookState) {
+        book.setTitle(book.getTitle());
+        book.setAddingDate(LocalDate.now());
+        book.setAgeCategory(book.getAgeCategory());
+        book.setAuthor(book.getAuthor());
+        book.setCategory(book.getCategory());
+        book.setReleaseDate(book.getReleaseDate());
+        book.setStatus(0);
+
+        Action action = new Action();
+        action.setBook(book);
+        //action.setUser(); tutaj powinno dodawać się login admina
+        action.setActionDescription("Zaktualizowanie informacji o książce");
+        actionRepository.save(action);
+
+        /**
+         * TODO: Do przemyślenia: tworzyć nowy bookstate, czy tak jak tutaj aktualizować tylko datę, akcję oraz książkę
+         */
+        bookState.setBook(book);
+        bookState.setAction(action);
+        bookState.setDateOfUpdating(LocalDate.now());
+        bookStateRepository.save(bookState);
+
         return bookRepository.save(book);
     }
 
-
-    /* metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
+    /**
+     *  metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      ustala też umowną karę dla użytkownika za zniszczenie książki*/
     public Book deleteBook(Book book, User user) {
-
         Action action = new Action();
         action.setUser(user);
         action.setBook(book);
