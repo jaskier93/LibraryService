@@ -42,8 +42,7 @@ public class TestUtils {
         return author;
     }
 
-    public static Book createBook() {
-        Author author = TestUtils.createAuthor();
+    public static Book createBook(Author author) {
         Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
                 Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
         return book;

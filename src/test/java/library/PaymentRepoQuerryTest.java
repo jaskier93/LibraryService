@@ -35,11 +35,18 @@ public class PaymentRepoQuerryTest {
     @Autowired
     private ActionRepository actionRepository = null;
 
+    @Autowired
+    private AuthorRepository authorRepository = null;
+
 
     @Test
     public  void querryTest() {
-        Book book = TestUtils.createBook();
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
+
 
         User user = TestUtils.createUser();
         userRepository.save(user);

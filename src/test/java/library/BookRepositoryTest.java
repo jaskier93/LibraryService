@@ -2,6 +2,7 @@ package library;
 
 import library.enums.BookStateEnum;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;
@@ -23,6 +24,9 @@ public class BookRepositoryTest {
 
     @Autowired
     private final BookRepository bookRepository = null;
+
+    @Autowired
+    private final AuthorRepository authorRepository = null;
 
     @Autowired
     private final BookStateRepository bookStateRepository = null;
@@ -50,7 +54,11 @@ public class BookRepositoryTest {
     //test passed
     @Test
     public void bookTest() {
-        Book book = TestUtils.createBook();
+
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();

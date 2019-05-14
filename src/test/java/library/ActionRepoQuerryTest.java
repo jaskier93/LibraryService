@@ -25,19 +25,7 @@ import static org.junit.Assert.*;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ActionRepoQuerryTest {
-
-    @Autowired
-    private final BookRepository bookRepository = null;
-
-    @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
-    private final ActionRepository actionRepository = null;
-
-    @Autowired
-    private final UserRepository userRepository = null;
+public class ActionRepoQuerryTest extends RepositoriesClass{
 
     @Autowired
     public final JdbcTemplate jdbcTemplate=null;
@@ -55,27 +43,30 @@ public class ActionRepoQuerryTest {
     @Test
     public void actionTest() {
 
-        Book book = TestUtils.createBook();
-        bookRepository.save(book);
+        Author author = TestUtils.createAuthor();
+        this.getAuthorRepository().save(author);
+
+        Book book = TestUtils.createBook(author);
+        this.getBookRepository().save(book);
 
         User user = TestUtils.createUser();
-        userRepository.save(user);
+        this.getUserRepository().save(user);
 
         Action action = TestUtils.createAction(book, user);
         action.setActionDescription("x");
         action.setBook(book);
         action.setUser(user);
-        actionRepository.save(action);
+        this.getActionRepository().save(action);
 
-        Action action1 = actionRepository.getOne(action.getId());
+        Action action1 = this.getActionRepository().getOne(action.getId());
 
         assertNotNull(action);
         assertEquals(action1.getId(), action.getId());
 
-        List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
+        List<Action> actionList = this.getActionRepository().findActionsWithDestroyedBooksByUser(user);
 
-        assertFalse(actionRepository.findActionByActionDescription("x").isEmpty());
-        assertFalse(actionRepository.findActionByBook(book).isEmpty());
+        assertFalse(this.getActionRepository().findActionByActionDescription("x").isEmpty());
+        assertFalse(this.getActionRepository().findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
     }
 }

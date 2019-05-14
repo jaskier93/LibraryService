@@ -41,6 +41,9 @@ public class PaymentRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         //     jdbcTemplate.update("delete from actions");
@@ -53,8 +56,12 @@ public class PaymentRepositoryTest {
 
     @Test
     public void paymentTest() {
-        Book book = TestUtils.createBook();
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
+
 
         User user = TestUtils.createUser();
         userRepository.save(user);
