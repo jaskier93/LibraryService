@@ -1,16 +1,12 @@
 package library;
 
-import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
-import library.enums.Category;
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;
 import library.users.User;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
@@ -41,6 +36,7 @@ public class BookRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
+
     @After
     public void after() {
         jdbcTemplate.update("delete from actions");
@@ -49,6 +45,7 @@ public class BookRepositoryTest {
         jdbcTemplate.update("delete from user");
         jdbcTemplate.update("delete from book_states");
     }
+
 
     //test passed
     @Test

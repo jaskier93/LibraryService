@@ -53,11 +53,11 @@ public class PaymentRepositoryTest {
 
     @Test
     public void paymentTest() {
-        User user = TestUtils.createUser();
-        userRepository.save(user);
-
         Book book = TestUtils.createBook();
         bookRepository.save(book);
+
+        User user = TestUtils.createUser();
+        userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
         action.setBook(book);
@@ -67,14 +67,17 @@ public class PaymentRepositoryTest {
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
         bookState.setBook(book);
         bookState.setAction(action);
+        bookState.setUser(user);
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookStateRepository.save(bookState);
 
         Payment payment = TestUtils.createPayment(book, user);
         payment.setBook(book);
         payment.setUser(user);
-        payment.setBookState(bookState);
         payment.setAction(action);
+        payment.setBookState(bookState);
+        paymentRepository.save(payment);
+
         assertTrue(payment.isActive());
 
         Payment payment2 = paymentRepository.getOne(payment.getId());

@@ -20,7 +20,6 @@ public class TestUtils {
         user.setLastName("y");
         user.setSecondName("x");
         user.setName("z");
-
         return user;
     }
 
