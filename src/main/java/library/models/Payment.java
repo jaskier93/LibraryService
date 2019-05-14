@@ -1,19 +1,16 @@
 package library.models;
 
 import library.users.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "payments")
+//@RequiredArgsConstructor
 public class Payment {
 
     @Id
@@ -49,4 +46,16 @@ public class Payment {
     @NotNull
     private Integer status;
 
+ /*   @Builder
+    public Payment(@NotNull User user, @NotNull Book book, @NotNull Integer amount, @NotNull BookState bookState,
+                   @NotNull boolean isActive, Action action, @NotNull LocalDate dateOfPayment, @NotNull Integer status) {
+        this.user = user;
+        this.book = book;
+        this.amount = amount;
+        this.bookState = bookState;
+        this.isActive = isActive;
+        this.action = action;
+        this.dateOfPayment = dateOfPayment;
+        this.status = status;
+    }*/
 }

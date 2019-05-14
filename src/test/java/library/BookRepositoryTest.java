@@ -33,9 +33,6 @@ public class BookRepositoryTest {
     private final BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
     private final ActionRepository actionRepository = null;
 
     @Autowired
@@ -44,32 +41,25 @@ public class BookRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
-    private Author author = TestUtils.createAuthor();
-
-    @Before
-    public void setUp() {
-        authorRepository.save(author);
-    }
-
     @After
     public void after() {
-        authorRepository.delete(author);
+        jdbcTemplate.update("delete from actions");
+        jdbcTemplate.update("delete from books");
+        jdbcTemplate.update("delete from author");
+        jdbcTemplate.update("delete from user");
+        jdbcTemplate.update("delete from book_states");
     }
 
-    //TODO:test do poprawy
+    //test passed
     @Test
     public void bookTest() {
-
         Book book = TestUtils.createBook();
-        book.setAuthor(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
-        action.setUser(user);
-        action.setBook(book);
         actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
@@ -80,21 +70,13 @@ public class BookRepositoryTest {
         bookStateRepository.save(bookState);
 
         assertNotNull(bookState);
+        assertNotNull(book.getId());
         assertEquals(bookState.getBook(), book);
 
-
         Book bookFromBase = bookRepository.getOne(book.getId());
-        assertNotNull(book.getId());
+
+        assertFalse(book.getTitle().isEmpty());
         assertEquals(book.getId(), bookFromBase.getId());
         assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());
-        assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());
-        assertEquals(bookFromBase.getId(), book.getId());
-
-
-        bookStateRepository.delete(bookState);
-        actionRepository.delete(action);
-        bookRepository.delete(book);
-        userRepository.delete(user);
-
     }
 }

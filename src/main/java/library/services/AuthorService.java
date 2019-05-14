@@ -2,9 +2,11 @@ package library.services;
 
 import library.models.Author;
 import library.repositories.AuthorRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AuthorService {
 
@@ -20,6 +22,9 @@ public class AuthorService {
         author.setCreated(author.getCreated());
         author.setDateOfBirth(author.getDateOfBirth());
         author.setDateOfDeath(author.getDateOfDeath());
+        /**
+         * data śmierci opcjonalna, uzupełniana w przypadku oczywistym-jeśli autor umarł
+         */
         author.setName(author.getName());
         author.setStatus(author.getStatus());
         author.setSecondName(author.getSecondName());  //opcjonalne
@@ -27,13 +32,20 @@ public class AuthorService {
     }
 
     public Author updateAuthor(Author author) {
-        author.setLastName(author.getLastName());
-        author.setCreated(author.getCreated());
-        author.setDateOfBirth(author.getDateOfBirth());
-        author.setDateOfDeath(author.getDateOfDeath());
-        author.setName(author.getName());
-        author.setStatus(author.getStatus());
-        author.setSecondName(author.getSecondName());  //opcjonalne
-        return authorRepository.save(author);
+
+        if (authorRepository.findAuthorsByLastName(author.getLastName()).isEmpty()) {
+            log.info("Nie odnaleziono takie autora");
+        } else {
+            authorRepository.findAuthorsByLastName(author.getLastName());
+            author.setLastName(author.getLastName());
+            author.setCreated(author.getCreated());
+            author.setDateOfBirth(author.getDateOfBirth());
+            author.setDateOfDeath(author.getDateOfDeath());
+            author.setName(author.getName());
+            author.setStatus(author.getStatus());
+            author.setSecondName(author.getSecondName());
+            authorRepository.save(author);
+        }
+        return author;
     }
 }

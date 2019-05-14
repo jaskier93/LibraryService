@@ -39,24 +39,24 @@ public class PaymentRepoQuerryTest {
     @Test
     public void querryTest() {
         Book book = TestUtils.createBook();
-        book.setAuthor(TestUtils.createAuthor());
+     //   book.setAuthor(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
 
-        Action action = TestUtils.createAction(book, user);
+   /*     Action action = TestUtils.createAction(book, user);
         actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
-        bookStateRepository.save(bookState);
+        bookStateRepository.save(bookState);*/
 
         Payment payment = TestUtils.createPayment(book, user);
         payment.setBook(book);
         payment.setUser(user);
-        payment.setAction(action);
-        payment.setAmount(15);
-        payment.setBookState(bookState);
+     //   payment.setAction(action);
+     //   payment.setAmount(15);
+    //    payment.setBookState(bookState);
         paymentRepository.save(payment);
 
         Payment payment1 = paymentRepository.getOne(payment.getId());

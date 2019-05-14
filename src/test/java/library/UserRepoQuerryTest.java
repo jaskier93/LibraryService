@@ -20,10 +20,10 @@ public class UserRepoQuerryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
-    @After
+   /* @After
     public void after() {
         jdbcTemplate.update("delete from user");
-    }
+    }*/
 
     //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
@@ -38,5 +38,6 @@ public class UserRepoQuerryTest {
         assertEquals(user.getDateOfBirth(), user1.getDateOfBirth());
         assertFalse(userRepository.findUserByLastName("y").isEmpty());
 
+        userRepository.delete(user);
     }
 }

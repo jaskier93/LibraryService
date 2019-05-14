@@ -36,9 +36,6 @@ public class PaymentRepositoryTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
     private final UserRepository userRepository = null;
 
     @Autowired
@@ -47,70 +44,47 @@ public class PaymentRepositoryTest {
     @After
     public void after() {
         //     jdbcTemplate.update("delete from actions");
-        //   jdbcTemplate.update("delete from books");
+          jdbcTemplate.update("delete from books");
         // jdbcTemplate.update("delete from author");
         jdbcTemplate.update("delete from user");
         jdbcTemplate.update("delete from payments");
-        jdbcTemplate.update("delete from book_states");
+     //   jdbcTemplate.update("delete from book_states");
     }
 
     @Test
     public void paymentTest() {
-
-/*        User user = TestUtils.createUser();
+        User user = TestUtils.createUser();
         userRepository.save(user);
 
-        Action action = new Action();
-      //  action.setActionDescription("x");
-        //action.setUser(user);
+        Book book = TestUtils.createBook();
+        bookRepository.save(book);
+
+        Action action = TestUtils.createAction(book, user);
+        action.setBook(book);
+        action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(TestUtils.createBook(), action, BookStateEnum.NOWA);
-        bookStateRepository.save(bookState);*/
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        bookState.setBook(book);
+        bookState.setAction(action);
+        bookState.setBookStateEnum(BookStateEnum.NOWA);
+        bookStateRepository.save(bookState);
 
-        Payment payment = new Payment();
-
-        /**
-         * przy odpalaniu testu wyskakuje problem z nadaniem ID płatności
-         * analogicznie w PaymentRepoQuerryTest
-         */
-        payment = TestUtils.createPayment(TestUtils.createBook(), TestUtils.createUser());
-/*        payment.setAmount(10);
-        payment.setActive(true);
+        Payment payment = TestUtils.createPayment(book, user);
         payment.setBook(book);
         payment.setUser(user);
-        payment.setStatus(0);*/
-        //  payment.setBookState(bookState);
-
-  /*      Payment payment2 = new Payment();
-        payment2.setAmount(20);
-        payment2.setActive(false);
-        payment2.setBook(book);
-        payment2.setUser(user);
-        payment2.setStatus(5);
-        payment2.setBookState(bookState);
-        paymentRepository.save(payment2);*/
-
+        payment.setBookState(bookState);
+        payment.setAction(action);
         assertTrue(payment.isActive());
 
-        Payment payment3 = paymentRepository.getOne(payment.getId());
+        Payment payment2 = paymentRepository.getOne(payment.getId());
 
-   /*     assertEquals(payment.getAction(), payment2.getAction());
-        assertNotEquals(payment.isActive(), payment2.isActive());
-        assertNotEquals(payment.getAmount(), payment2.getAmount());
-        assertNotEquals(payment.getStatus(), payment2.getStatus());
-        paymentRepository.delete(payment2);*/
+        assertEquals(payment.getAction(), payment2.getAction());
+        assertEquals(payment.getId(), payment2.getId());
+        assertEquals(payment2.getStatus(), payment.getStatus());
+        assertEquals(payment2.getUser(), payment.getUser());
 
-        assertEquals(payment3.isActive(), payment.isActive());
-        assertEquals(payment3.getStatus(), payment.getStatus());
-        assertEquals(payment3.getUser(), payment.getUser());
-
-        paymentRepository.delete(payment);
-
-        //   bookStateRepository.delete(bookState);
-        //    actionRepository.delete(action);
-        //    userRepository.delete(user);
+        assertTrue(payment.isActive());
+        assertNotNull(payment);
     }
-
-
 }

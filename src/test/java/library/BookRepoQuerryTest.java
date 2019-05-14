@@ -1,5 +1,7 @@
 package library;
 
+import library.enums.AgeCategory;
+import library.enums.Category;
 import library.models.Author;
 import library.models.Book;
 import library.repositories.AuthorRepository;
@@ -30,7 +32,7 @@ public class BookRepoQuerryTest {
         jdbcTemplate.update("delete from author");
     }
 
-    //test passed! obiekty są prawidłowo usuwane z bazy po teście
+    //test passed!
     @Test
     public void querryTest() {
         Book book = TestUtils.createBook();
@@ -42,5 +44,13 @@ public class BookRepoQuerryTest {
         assertFalse(bookRepository.findBookByTitle("Wiedźmin").isEmpty());
         assertEquals("Wiedźmin", book.getTitle());
         assertNotEquals("sdfssdffds", book.getTitle());
+        assertEquals(book.getAgeCategory(), AgeCategory.DOROŚLI);
+        assertNotEquals(book.getAgeCategory(), AgeCategory.NAJMŁODSI);
+        assertEquals(book.getCategory(), Category.ADVENTURE);
+        assertNotEquals(book.getCategory(), Category.DICTIONARY);
+        assertFalse(bookRepository.findBookByAgeCategory(AgeCategory.DOROŚLI).isEmpty());
+        assertTrue(bookRepository.findBookByAgeCategory(AgeCategory.NAJMŁODSI).isEmpty());
+        assertFalse(bookRepository.findBookByCategory(Category.ADVENTURE).isEmpty());
+        assertTrue(bookRepository.findBookByCategory(Category.THRILLER).isEmpty());
     }
 }

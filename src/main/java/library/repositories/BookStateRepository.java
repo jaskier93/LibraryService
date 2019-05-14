@@ -21,7 +21,7 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "                   where bs2.book.id = :bookId )")
     BookState findBookStateByBook(@Param("bookId") Integer bookId);
 
-    @Query(nativeQuery = true, value = "select bs from BookState where bs.user=?1")
+    @Query("select bs.book from BookState bs where bs.user=?1")
     List<Book> findBooksByUser(User user);
 
 }

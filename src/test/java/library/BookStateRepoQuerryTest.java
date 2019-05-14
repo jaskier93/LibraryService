@@ -2,7 +2,6 @@ package library;
 
 import library.enums.BookStateEnum;
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;
@@ -28,9 +27,6 @@ public class BookStateRepoQuerryTest {
     private final BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
     private final ActionRepository actionRepository = null;
 
     @Autowired
@@ -41,17 +37,15 @@ public class BookStateRepoQuerryTest {
 
     @After
     public void after() {
-        //     jdbcTemplate.update("delete from actions");
-        //   jdbcTemplate.update("delete from books");
-        // jdbcTemplate.update("delete from author");
-        //jdbcTemplate.update("delete from user");
+        jdbcTemplate.update("delete from actions");
+        jdbcTemplate.update("delete from books");
+        jdbcTemplate.update("delete from user");
         jdbcTemplate.update("delete from book_states");
     }
 
-
+    //test passed
     @Test
     public void bsTest() {
-
         Book book = TestUtils.createBook();
         bookRepository.save(book);
 
@@ -59,25 +53,21 @@ public class BookStateRepoQuerryTest {
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
+        actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
-/*
-    Action action = TestUtils.createAction(TestUtils.createBook(), TestUtils.createUser());
-
-    BookState bookState = TestUtils.createBookState(TestUtils.createBook(),  TestUtils.createAction(TestUtils.createBook(), TestUtils.createUser()), BookStateEnum.NOWA);*/
-
-        /**
-         *messageTemplate='{javax.validation.constraints.NotNull.message}
-         *Validation failed for classes [library.models.BookState] during persist time for groups
-         */
+        bookState.setUser(user);
+        bookState.setBook(book);
+        bookState.setAction(action);
+        bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookStateRepository.save(bookState);
+
         BookState bookState1 = bookStateRepository.getOne(bookState.getId());
 
-        assertFalse(bookStateRepository.findBooksByUser(TestUtils.createUser()).isEmpty());
-        assertNotNull(bookStateRepository.findBookStateByBook(TestUtils.createBook().getId()));
+        assertFalse(bookStateRepository.findBooksByUser(user).isEmpty());
+        assertNotNull(bookStateRepository.findBookStateByBook(book.getId()));
         assertEquals(bookState.getId(), bookState1.getId());
         assertNotNull(bookState);
-
     }
 
 }

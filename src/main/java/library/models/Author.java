@@ -1,6 +1,5 @@
 package library.models;
 
-import library.models.Book;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @RequiredArgsConstructor
@@ -30,15 +26,12 @@ public class Author {
     @NotNull
     private String lastName;
 
-    //czy te daty przydadzą się?
-
     private LocalDate dateOfBirth;
 
     private LocalDate dateOfDeath;
 
     @NotNull
     private LocalDate created;
-
 
     @NotNull
     private Integer status;

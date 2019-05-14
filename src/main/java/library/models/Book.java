@@ -31,7 +31,6 @@ public class Book {
     @NotNull
     private LocalDate addingDate; //created date
 
-
     @Convert(converter = CategoryConverter.class)
     private Category category;
 
@@ -45,7 +44,6 @@ public class Book {
 
     @NotNull
     private Integer status;
-
 
     @Builder
     public Book(@NotNull String title, LocalDate releaseDate, @NotNull LocalDate addingDate,

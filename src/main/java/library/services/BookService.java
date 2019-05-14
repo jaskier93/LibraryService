@@ -73,18 +73,23 @@ public class BookService {
 
         Action action = new Action();
         action.setBook(book);
-        //action.setUser(); tutaj powinno dodawać się login admina
+        /**
+         *         action.setUser(); tutaj powinno dodawać się login admina
+         *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
+         *         dodatkowo walidacja czy ma status admina
+         *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
+         *         lub odpowiednia adnotacja (trzeba by dodać całe security)
+         */
         action.setActionDescription("Zaktualizowanie informacji o książce");
         actionRepository.save(action);
 
         /**
-         * TODO: Do przemyślenia: tworzyć nowy bookstate, czy tak jak tutaj aktualizować tylko datę, akcję oraz książkę
+         *  aktualizacja daty, akcji oraz książki zamiast tworzenia nowego BS'a
          */
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setDateOfUpdating(LocalDate.now());
         bookStateRepository.save(bookState);
-
         return bookRepository.save(book);
     }
 
