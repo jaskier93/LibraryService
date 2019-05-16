@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Service
 @Slf4j
 public class UserService {
-
     private UserRepository userRepository;
 
     @Autowired
@@ -23,6 +22,7 @@ public class UserService {
         user.setDateOfRegistration(LocalDate.now());
         user.setSecondName(user.getSecondName()); //opcjonalne
         user.setLastName(user.getLastName());
+        user.setEmail(user.getEmail());
         user.setName(user.getName());
         user.setAdminDegree(user.getAdminDegree());
         user.setActive(user.isActive());
@@ -35,11 +35,11 @@ public class UserService {
         if (userRepository.findUserByLastName(user.getLastName()).isEmpty()) {
             log.info("Nie ma takiego użytkownika");
         } else {
-
             user.setDateOfRegistration(LocalDate.now()); //opcjonalne-ewentualnie dodać datę zaktualizowania danych
             user.setSecondName(user.getSecondName()); //opcjonalne
             user.setLastName(user.getLastName());
             user.setName(user.getName());
+            user.setEmail(user.getEmail());
             user.setAdminDegree(user.getAdminDegree());
             user.setActive(user.isActive());
             user.setAdmin(user.isAdmin());

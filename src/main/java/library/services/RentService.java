@@ -32,11 +32,10 @@ public class RentService {
 
     //warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
     private boolean isBookAbleToLoan(Book book) {
-        BookState bookState2 = isBookExisting(book.getId());
-        if ((bookState2.getBookStateEnum() == BookStateEnum.ZWRÓCONA) ||
-                ((bookState2.getBookStateEnum() == BookStateEnum.NOWA))) {
+        BookState bookState = isBookExisting(book.getId());
+        if ((bookState.getBookStateEnum() == BookStateEnum.ZWRÓCONA) ||
+                ((bookState.getBookStateEnum() == BookStateEnum.NOWA))) {
             log.info("Możesz wypożyczyć tą książkę");
-
         }
         log.info("Podana książka jest wypożczyona lub zniszczona, nie możesz jej wypożyczyć. ");
         return false;
@@ -84,6 +83,4 @@ public class RentService {
         bookState.setAction(action);
         bookStateRepository.save(bookState);
     }
-
-
 }

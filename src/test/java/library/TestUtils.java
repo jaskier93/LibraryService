@@ -6,6 +6,7 @@ import library.enums.Category;
 import library.models.*;
 import library.users.User;
 
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 
 public class TestUtils {
@@ -17,6 +18,7 @@ public class TestUtils {
         user.setAdmin(false);
         user.setDateOfRegistration(LocalDate.now());
         user.setAdminDegree(0);
+        user.setEmail("example@gmail.com");
         user.setLastName("y");
         user.setSecondName("x");
         user.setName("z");

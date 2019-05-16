@@ -3,6 +3,7 @@ package library.users;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -38,6 +39,10 @@ public class User {
 
     @NotNull
     private boolean isActive;
+
+    @Email
+    @NotNull
+    private String email; //TODO: sprawdzić, czy typ Email nie pokrywa się z adnotacją @Email
 
     @NotNull
     private boolean isAdmin;

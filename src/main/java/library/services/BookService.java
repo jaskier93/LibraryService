@@ -10,11 +10,14 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
 import library.users.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
+@Slf4j
 @Service
 public class BookService {
 
@@ -60,6 +63,14 @@ public class BookService {
         bookStateRepository.save(bookState);
 
         return bookRepository.save(book);
+    }
+
+    private void loanBookInfo(Book book){
+       if(!bookStateRepository.findBookStateByBook(book.getId()).equals(null)){
+        bookStateRepository.getOne(book.getId());
+bookStateRepository.getOne(book.getId());  //znaleźć bookstate przez id BS, nie ksiazki
+    }else {
+       log.info("Nie odnaleziono informacji o książce");}
     }
 
     private Book updateBook(Book book, BookState bookState) {
@@ -117,7 +128,6 @@ public class BookService {
         paymentRepository.save(payment);
 
         return bookRepository.save(book);
-
         /*TODO
          * Do dodania:
          * repozytoria: akcji, płatnośći

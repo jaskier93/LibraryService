@@ -1,7 +1,6 @@
 package library.validators;
 
-import library.enums.AgeCategory;
-import library.models.Book;
+
 import library.users.User;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +8,12 @@ import java.time.Duration;
 import java.time.LocalDate;
 
 @Component
-public class UserAgeValidation extends AbstractValidator {
+public class IsUserAdult extends AbstractValidator {
 
-    /*metoda obliczająca wiek użytkownika, potrzebna będzie do weryfikacji, czy może wypożyczyć daną książkę dla dorosłych*/
+    /*metoda obliczająca wiek użytkownika, potrzebna będzie do weryfikacji, czy może wypożyczyć daną książkę dla dorosłych
+    * w kontrolerze gdy otrzymamy info o książce i userze, wystarczy najpierw dać warunek sprawdzający, czy
+    * Age.Category==DOROSLI, jeśli tak, wstawić ten walidator
+    * */
     @Override
     public boolean validator(User user) {
         long age = Duration.between(user.getDateOfBirth(), LocalDate.now()).toDays();
