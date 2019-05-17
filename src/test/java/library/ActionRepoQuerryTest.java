@@ -17,23 +17,29 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
-/**
- * @DataJpaTest
- * @AutoConfigureTestDatabase(replace=Replace.NONE)
- * adnotacje do przetestowania
- */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ActionRepoQuerryTest extends RepositoriesClass{
+public class ActionRepoQuerryTest {
 
     @Autowired
-    public final JdbcTemplate jdbcTemplate=null;
+    public final JdbcTemplate jdbcTemplate = null;
+
+    @Autowired
+    private final ActionRepository actionRepository = null;
+
+    @Autowired
+    private final BookRepository bookRepository = null;
+
+    @Autowired
+    private final UserRepository userRepository = null;
+
+    @Autowired
+    private final AuthorRepository authorRepository = null;
 
 
     @After
     public void after() {
-        jdbcTemplate.update("delete from actions");
+       // jdbcTemplate.update("delete a from Action  a where  a.actionDescription='xxxyyyzzz'");
         jdbcTemplate.update("delete from books");
         jdbcTemplate.update("delete from author");
         jdbcTemplate.update("delete from user");
@@ -42,31 +48,27 @@ public class ActionRepoQuerryTest extends RepositoriesClass{
     //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void actionTest() {
-
-        Author author = TestUtils.createAuthor();
-        this.getAuthorRepository().save(author);
-
-        Book book = TestUtils.createBook(author);
-        this.getBookRepository().save(book);
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        bookRepository.save(book);
 
         User user = TestUtils.createUser();
-        this.getUserRepository().save(user);
+        userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
-        action.setActionDescription("x");
+        //  action.setActionDescription("x");
         action.setBook(book);
         action.setUser(user);
-        this.getActionRepository().save(action);
+        actionRepository.save(action);
 
-        Action action1 = this.getActionRepository().getOne(action.getId());
+        Action action1 = actionRepository.getOne(action.getId());
 
         assertNotNull(action);
         assertEquals(action1.getId(), action.getId());
 
-        List<Action> actionList = this.getActionRepository().findActionsWithDestroyedBooksByUser(user);
+        List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
-        assertFalse(this.getActionRepository().findActionByActionDescription("x").isEmpty());
-        assertFalse(this.getActionRepository().findActionByBook(book).isEmpty());
+        assertFalse(actionRepository.findActionByActionDescription("xxxyyyzzz").isEmpty());
+        assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
     }
 }

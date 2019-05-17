@@ -23,7 +23,6 @@ public class AuthorTest {
     //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
     public void authorTest() {
-
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);
 
@@ -32,7 +31,7 @@ public class AuthorTest {
 
         assertNotEquals(author.getId(), author2.getId());
         assertEquals(author.getLastName(), author2.getLastName());
-        assertFalse(authorRepository.findAuthorsByLastName("Sapkowski").isEmpty());
+        assertFalse(authorRepository.findAuthorsByLastName("SapkowskiAndrzej").isEmpty());
         assertTrue(authorRepository.findAuthorsByLastName("fjkhsdf").isEmpty());
 
         authorRepository.delete(author);

@@ -19,9 +19,8 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "and bs.dateOfLoan = (select max(bs2.dateOfLoan) " +
             "                   from BookState bs2 " +
             "                   where bs2.book.id = :bookId )")
-    BookState findBookStateByBook(@Param("bookId") Integer bookId);
+    BookState findBookStateByBook(@Param("bookId") Integer bookId); //czy ta metoda napewno wybiera najnowszego bookstate'a?
 
     @Query("select bs.book from BookState bs where bs.user=?1")
     List<Book> findBooksByUser(User user);
-
 }

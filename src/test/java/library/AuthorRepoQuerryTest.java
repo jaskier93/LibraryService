@@ -24,22 +24,20 @@ public class AuthorRepoQuerryTest {
 
     @After
     public void after() {
-        jdbcTemplate.update("delete from author");
+        jdbcTemplate.update("delete a from author a where a.lastName='SapkowskiAndrzej'"); //poprawić
+        jdbcTemplate.update("delete a from author"); //działa
     }
 
-    //test passed! obiekty są prawidłowo usuwane z bazy po teście
+    //test passed!
     @Test
     public void querryTest() {
         Author author = TestUtils.createAuthor();
-        author.setLastName("Sapkowski");
         authorRepository.save(author);
 
         Author author2 = authorRepository.getOne(author.getId());
 
         assertEquals(author.getId(), author2.getId());
-        assertFalse(authorRepository.findAuthorsByLastName("Sapkowski").isEmpty());
+        assertFalse(authorRepository.findAuthorsByLastName("SapkowskiAndrzej").isEmpty());
         assertTrue(authorRepository.findAuthorsByLastName("fssfdsddfs").isEmpty());
-
-        // authorRepository.delete(author);
     }
 }

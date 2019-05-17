@@ -53,15 +53,11 @@ public class PaymentRepositoryTest {
         jdbcTemplate.update("delete from payments");
      //   jdbcTemplate.update("delete from book_states");
     }
-
+    //test passed! do poprawy sql
     @Test
     public void paymentTest() {
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
-
-        Book book = TestUtils.createBook(author);
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
-
 
         User user = TestUtils.createUser();
         userRepository.save(user);

@@ -65,15 +65,16 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    private void loanBookInfo(Book book){
-       if(!bookStateRepository.findBookStateByBook(book.getId()).equals(null)){
-        bookStateRepository.getOne(book.getId());
-bookStateRepository.getOne(book.getId());  //znaleźć bookstate przez id BS, nie ksiazki
-    }else {
-       log.info("Nie odnaleziono informacji o książce");}
+    /**
+     * metoda zwraca BSEnuma-info o statusie ksiązki, czy jest wypożyczona/zwrócona/zniszczona/nowa
+     * Czy zrobić z tej metody oddzielny walidator ?
+     */
+    private BookStateEnum isBookLoanable(Book book) {
+        return bookStateRepository.getOne(book.getId()).getBookStateEnum();
     }
 
-    private Book updateBook(Book book, BookState bookState) {
+    private Book updateBook(Book book) {
+        bookRepository.getOne(book.getId());
         book.setTitle(book.getTitle());
         book.setAddingDate(LocalDate.now());
         book.setAgeCategory(book.getAgeCategory());
@@ -97,6 +98,7 @@ bookStateRepository.getOne(book.getId());  //znaleźć bookstate przez id BS, ni
         /**
          *  aktualizacja daty, akcji oraz książki zamiast tworzenia nowego BS'a
          */
+        BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setDateOfUpdating(LocalDate.now());
@@ -105,8 +107,9 @@ bookStateRepository.getOne(book.getId());  //znaleźć bookstate przez id BS, ni
     }
 
     /**
-     *  metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
-     ustala też umowną karę dla użytkownika za zniszczenie książki*/
+     * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
+     * ustala też umowną karę dla użytkownika za zniszczenie książki
+     */
     public Book deleteBook(Book book, User user) {
         Action action = new Action();
         action.setUser(user);

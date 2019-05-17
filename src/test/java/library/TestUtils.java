@@ -19,7 +19,7 @@ public class TestUtils {
         user.setDateOfRegistration(LocalDate.now());
         user.setAdminDegree(0);
         user.setEmail("example@gmail.com");
-        user.setLastName("y");
+        user.setLastName("XXXYYYZZZ");
         user.setSecondName("x");
         user.setName("z");
         return user;
@@ -34,25 +34,25 @@ public class TestUtils {
         bookState.setDateOfCreating(LocalDate.now());
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
-        bookState.setStatus(0);
+        bookState.setStatus(1020304050);
         return bookState;
     }
 
     public static Author createAuthor() {
-        Author author = new Author("Andrzej", "", "Sapkowski", LocalDate.of(2015, 12, 31),
+        Author author = new Author("Andrzej", "", "SapkowskiAndrzej", LocalDate.of(2015, 12, 31),
                 LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
         return author;
     }
 
     public static Book createBook(Author author) {
-        Book book = new Book("Wiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
+        Book book = new Book("WiedźminWiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
                 Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
         return book;
     }
 
     public static Action createAction(Book book, User user) {
         Action action = new Action();
-        action.setActionDescription("x");
+        action.setActionDescription("xxxyyyzzz");
         action.setBook(book);
         action.setUser(null);
         return action;
@@ -60,7 +60,7 @@ public class TestUtils {
 
     public static Payment createPayment(Book book, User user) {
         Payment payment = new Payment();
-        payment.setAmount(10);
+        payment.setAmount(1020304050);
         payment.setActive(true);
         payment.setBook(book);
         payment.setDateOfPayment(LocalDate.now());

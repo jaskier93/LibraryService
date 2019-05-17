@@ -2,6 +2,7 @@ package library;
 
 import library.enums.BookStateEnum;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;
@@ -24,6 +25,9 @@ public class BookStateRepoQuerryTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
+    private final AuthorRepository authorRepository = null;
+
+    @Autowired
     private final BookStateRepository bookStateRepository = null;
 
     @Autowired
@@ -43,10 +47,10 @@ public class BookStateRepoQuerryTest {
         jdbcTemplate.update("delete from book_states");
     }
 
-    //test passed
+    //test passed, poprawić sql w afterze
     @Test
     public void bsTest() {
-        Book book = TestUtils.createBook();
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();

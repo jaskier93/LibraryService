@@ -30,16 +30,26 @@ public class RentService {
         this.actionRepository = actionRepository;
     }
 
-    //warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
-    private boolean isBookAbleToLoan(Book book) {
-        BookState bookState = isBookExisting(book.getId());
-        if ((bookState.getBookStateEnum() == BookStateEnum.ZWRÓCONA) ||
-                ((bookState.getBookStateEnum() == BookStateEnum.NOWA))) {
-            log.info("Możesz wypożyczyć tą książkę");
-        }
-        log.info("Podana książka jest wypożczyona lub zniszczona, nie możesz jej wypożyczyć. ");
-        return false;
+    /**
+     * warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
+     * czy wynieść tą metodę do oddzielnej klasy i zrobić z niej walidator (boolean)?
+     */
+   private void isBookAbleToLoan(Book book) {
+       BookState bookState = bookStateRepository.getOne(book.getId());
+       if (bookState != (null)) {
+           if (bookState.getBookStateEnum() == BookStateEnum.NOWA || bookState.getBookStateEnum() == BookStateEnum.ZWRÓCONA) {
+               log.info("Możesz wypożyczyć tę książkę");
+           } else if (bookState.getBookStateEnum() == BookStateEnum.WYPOŻYCZONA) {
+               log.info("Książka jest aktualnie wypożyczona");
+           } else {
+               log.info("Książka jest zniszczona.");
+           }
+       } else {
+           log.info("Nie odnaleziono informacji o książce");
+       }
     }
+
+
 
     //warunek sprawdzający, czy książka istnieje (jest w bibliotece)
     private BookState isBookExisting(Integer bookId) {

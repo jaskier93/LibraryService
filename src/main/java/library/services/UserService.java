@@ -19,7 +19,6 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        user.setDateOfRegistration(LocalDate.now());
         user.setSecondName(user.getSecondName()); //opcjonalne
         user.setLastName(user.getLastName());
         user.setEmail(user.getEmail());
@@ -31,10 +30,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(User user) {
-        if (userRepository.findUserByLastName(user.getLastName()).isEmpty()) {
+    public User updateUser(User user, Integer userId) {
+        if (userRepository.findUserById(userId).equals(null)) {
             log.info("Nie ma takiego użytkownika");
         } else {
+            userRepository.getOne(userId);
             user.setDateOfRegistration(LocalDate.now()); //opcjonalne-ewentualnie dodać datę zaktualizowania danych
             user.setSecondName(user.getSecondName()); //opcjonalne
             user.setLastName(user.getLastName());

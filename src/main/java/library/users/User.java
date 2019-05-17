@@ -32,8 +32,8 @@ public class User {
     @NotNull
     private LocalDate dateOfBirth;
 
-    @NotNull
-    private LocalDate dateOfRegistration;
+    @NotNull //zostawić adnotację?
+    private LocalDate dateOfRegistration=LocalDate.now();
 
     private Integer adminDegree;
 

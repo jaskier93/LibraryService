@@ -14,15 +14,9 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class UserRepoQuerryTest {
-    @Autowired
-    private final JdbcTemplate jdbcTemplate = null;
+
     @Autowired
     private final UserRepository userRepository = null;
-
-   /* @After
-    public void after() {
-        jdbcTemplate.update("delete from user");
-    }*/
 
     //test passed! obiekty są prawidłowo usuwane z bazy po teście
     @Test
@@ -31,11 +25,10 @@ public class UserRepoQuerryTest {
         userRepository.save(user);
 
         User user1 = userRepository.getOne(user.getId());
-        userRepository.save(user1);
 
         assertEquals(user.getId(), user1.getId());
         assertEquals(user.getDateOfBirth(), user1.getDateOfBirth());
-        assertFalse(userRepository.findUserByLastName("y").isEmpty());
+        assertFalse(userRepository.findUserByLastName("XXXYYYZZZ").isEmpty());
 
         userRepository.delete(user);
     }

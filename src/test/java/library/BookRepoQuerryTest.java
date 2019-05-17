@@ -24,6 +24,9 @@ public class BookRepoQuerryTest {
     private final JdbcTemplate jdbcTemplate = null;
 
     @Autowired
+    private final AuthorRepository authorRepository = null;
+
+    @Autowired
     private final BookRepository bookRepository = null;
 
     @After
@@ -32,17 +35,17 @@ public class BookRepoQuerryTest {
         jdbcTemplate.update("delete from author");
     }
 
-    //test passed!
+    //test passed! sql do poprawy
     @Test
     public void querryTest() {
-        Book book = TestUtils.createBook();
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         Book book1 = bookRepository.getOne(book.getId());
         assertEquals(book.getId(), book1.getId());
 
-        assertFalse(bookRepository.findBookByTitle("Wiedźmin").isEmpty());
-        assertEquals("Wiedźmin", book.getTitle());
+        assertFalse(bookRepository.findBookByTitle("WiedźminWiedźmin").isEmpty());
+        assertEquals("WiedźminWiedźmin", book.getTitle());
         assertNotEquals("sdfssdffds", book.getTitle());
         assertEquals(book.getAgeCategory(), AgeCategory.DOROŚLI);
         assertNotEquals(book.getAgeCategory(), AgeCategory.NAJMŁODSI);

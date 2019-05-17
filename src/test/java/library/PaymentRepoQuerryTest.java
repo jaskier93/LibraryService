@@ -4,6 +4,7 @@ import library.enums.BookStateEnum;
 import library.models.*;
 import library.repositories.*;
 import library.users.User;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,16 @@ public class PaymentRepoQuerryTest {
     @Autowired
     private AuthorRepository authorRepository = null;
 
+    @After
+    public void after(){
+        //sql
+    }
 
+    //test passed! sql do poprawy
     @Test
     public  void querryTest() {
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
-
-        Book book = TestUtils.createBook(author);
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
-
 
         User user = TestUtils.createUser();
         userRepository.save(user);
@@ -77,7 +79,7 @@ public class PaymentRepoQuerryTest {
 
         assertFalse(paymentRepository.findByUser(user).isEmpty());
         assertFalse(paymentRepository.findPaymentsAboveAmount(8).isEmpty());
-        assertTrue(paymentRepository.findPaymentsAboveAmount(18).isEmpty());
+        assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558).isEmpty());
 
         paymentRepository.delete(payment);
         userRepository.delete(user);
