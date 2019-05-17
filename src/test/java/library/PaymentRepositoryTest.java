@@ -1,13 +1,10 @@
 package library;
 
-import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
-import library.enums.Category;
 import library.models.*;
 import library.repositories.*;
 import library.users.User;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
-
-import java.time.LocalDate;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -41,19 +36,16 @@ public class PaymentRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
-    @Autowired
-    private final AuthorRepository authorRepository = null;
-
     @After
     public void after() {
-        //     jdbcTemplate.update("delete from actions");
-          jdbcTemplate.update("delete from books");
-        // jdbcTemplate.update("delete from author");
-        jdbcTemplate.update("delete from user");
-        jdbcTemplate.update("delete from payments");
-     //   jdbcTemplate.update("delete from book_states");
-    }
-    //test passed! do poprawy sql
+            jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+            jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+            jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+            jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+            jdbcTemplate.update("delete from book_states where status=1020304050");
+            jdbcTemplate.update("delete from payments where amount=1020304050");    }
+
+    //test passed!
     @Test
     public void paymentTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());

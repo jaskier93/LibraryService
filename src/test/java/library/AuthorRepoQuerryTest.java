@@ -24,8 +24,7 @@ public class AuthorRepoQuerryTest {
 
     @After
     public void after() {
-        jdbcTemplate.update("delete a from author a where a.lastName='SapkowskiAndrzej'"); //poprawić
-        jdbcTemplate.update("delete a from author"); //działa
+        jdbcTemplate.update("delete  from author where last_name='SapkowskiAndrzej'");
     }
 
     //test passed!

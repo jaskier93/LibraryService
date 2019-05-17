@@ -25,9 +25,6 @@ public class BookStateRepoQuerryTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
     private final BookStateRepository bookStateRepository = null;
 
     @Autowired
@@ -41,13 +38,14 @@ public class BookStateRepoQuerryTest {
 
     @After
     public void after() {
-        jdbcTemplate.update("delete from actions");
-        jdbcTemplate.update("delete from books");
-        jdbcTemplate.update("delete from user");
-        jdbcTemplate.update("delete from book_states");
+        jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+        jdbcTemplate.update("delete from book_states where status=1020304050");
     }
 
-    //test passed, poprawić sql w afterze
+    //test passed!
     @Test
     public void bsTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());

@@ -36,17 +36,19 @@ public class PaymentRepoQuerryTest {
     @Autowired
     private ActionRepository actionRepository = null;
 
-    @Autowired
-    private AuthorRepository authorRepository = null;
-
     @After
-    public void after(){
-        //sql
+    public void after() {
+        jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+        jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("delete from payments where amount=1020304050");
     }
 
-    //test passed! sql do poprawy
+    //test passed!
     @Test
-    public  void querryTest() {
+    public void querryTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
@@ -85,5 +87,4 @@ public class PaymentRepoQuerryTest {
         userRepository.delete(user);
         bookRepository.delete(book);
     }
-
 }

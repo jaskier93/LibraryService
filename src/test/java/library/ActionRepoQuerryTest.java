@@ -1,7 +1,6 @@
 package library;
 
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.repositories.*;
 import library.users.User;
@@ -33,19 +32,15 @@ public class ActionRepoQuerryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
-    @Autowired
-    private final AuthorRepository authorRepository = null;
-
-
     @After
     public void after() {
-       // jdbcTemplate.update("delete a from Action  a where  a.actionDescription='xxxyyyzzz'");
-        jdbcTemplate.update("delete from books");
-        jdbcTemplate.update("delete from author");
-        jdbcTemplate.update("delete from user");
+        jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
     }
 
-    //test passed! obiekty są prawidłowo usuwane z bazy po teście
+    //test passed!
     @Test
     public void actionTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
@@ -55,9 +50,6 @@ public class ActionRepoQuerryTest {
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
-        //  action.setActionDescription("x");
-        action.setBook(book);
-        action.setUser(user);
         actionRepository.save(action);
 
         Action action1 = actionRepository.getOne(action.getId());
@@ -68,6 +60,7 @@ public class ActionRepoQuerryTest {
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
         assertFalse(actionRepository.findActionByActionDescription("xxxyyyzzz").isEmpty());
+        assertTrue(actionRepository.findActionByActionDescription("sdffds").isEmpty());
         assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
     }

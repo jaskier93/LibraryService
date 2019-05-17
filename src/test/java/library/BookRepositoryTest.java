@@ -1,5 +1,6 @@
 package library;
 
+import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Author;
@@ -26,60 +27,24 @@ public class BookRepositoryTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
-    private final BookStateRepository bookStateRepository = null;
-
-    @Autowired
-    private final ActionRepository actionRepository = null;
-
-    @Autowired
-    private final UserRepository userRepository = null;
-
-    @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
 
     @After
     public void after() {
-        jdbcTemplate.update("delete from actions");
-        jdbcTemplate.update("delete from books");
-        jdbcTemplate.update("delete from author");
-        jdbcTemplate.update("delete from user");
-        jdbcTemplate.update("delete from book_states");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
     }
 
-
-    //test passed
+    //test passed!
     @Test
     public void bookTest() {
-
-        Author author = TestUtils.createAuthor();
-        authorRepository.save(author);
-
-        Book book = TestUtils.createBook(author);
+        Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
-        User user = TestUtils.createUser();
-        userRepository.save(user);
-
-        Action action = TestUtils.createAction(book, user);
-        actionRepository.save(action);
-
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
-        bookState.setUser(user);
-        bookState.setBook(book);
-        bookState.setAction(action);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
-        bookStateRepository.save(bookState);
-
-        assertNotNull(bookState);
         assertNotNull(book.getId());
-        assertEquals(bookState.getBook(), book);
-
         Book bookFromBase = bookRepository.getOne(book.getId());
-
+        assertTrue(bookRepository.findBookByAgeCategory(AgeCategory.NASTOLATKOWIE).isEmpty());
         assertFalse(book.getTitle().isEmpty());
         assertEquals(book.getId(), bookFromBase.getId());
         assertEquals(bookFromBase.getReleaseDate(), book.getReleaseDate());

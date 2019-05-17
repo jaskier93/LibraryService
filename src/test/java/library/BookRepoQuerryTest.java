@@ -24,18 +24,15 @@ public class BookRepoQuerryTest {
     private final JdbcTemplate jdbcTemplate = null;
 
     @Autowired
-    private final AuthorRepository authorRepository = null;
-
-    @Autowired
     private final BookRepository bookRepository = null;
 
     @After
     public void after() {
-        jdbcTemplate.update("delete from books");
-        jdbcTemplate.update("delete from author");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
     }
 
-    //test passed! sql do poprawy
+    //test passed!
     @Test
     public void querryTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
