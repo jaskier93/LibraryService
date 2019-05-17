@@ -18,16 +18,6 @@ public class AuthorService {
     }
 
     public Author addAuthor(Author author) {
-        author.setLastName(author.getLastName());
-        author.setCreated(author.getCreated());
-        author.setDateOfBirth(author.getDateOfBirth());
-        author.setDateOfDeath(author.getDateOfDeath());
-        /**
-         * data śmierci opcjonalna, uzupełniana w przypadku oczywistym-jeśli autor umarł
-         */
-        author.setName(author.getName());
-        author.setStatus(author.getStatus());
-        author.setSecondName(author.getSecondName());  //opcjonalne
         return authorRepository.save(author);
     }
 

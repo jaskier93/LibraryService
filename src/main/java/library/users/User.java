@@ -42,7 +42,7 @@ public class User {
 
     @Email
     @NotNull
-    private String email; //TODO: sprawdzić, czy typ Email nie pokrywa się z adnotacją @Email
+    private String email;
 
     @NotNull
     private boolean isAdmin;

@@ -18,6 +18,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * metoda może zwracać Stringa, który byłby treścią maila z informacjami początkowymi dla nowego użytkownika
+     */
     public User addUser(User user) {
         user.setSecondName(user.getSecondName()); //opcjonalne
         user.setLastName(user.getLastName());
@@ -30,12 +33,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(User user, Integer userId) {
+    public User updateUser(Integer userId) {
         if (userRepository.findUserById(userId).equals(null)) {
             log.info("Nie ma takiego użytkownika");
         } else {
-            userRepository.getOne(userId);
-            user.setDateOfRegistration(LocalDate.now()); //opcjonalne-ewentualnie dodać datę zaktualizowania danych
+            User user = userRepository.getOne(userId);
+        //    user.setDateOfRegistration(LocalDate.now()); // ustawiane automatycznie już w klasie User
             user.setSecondName(user.getSecondName()); //opcjonalne
             user.setLastName(user.getLastName());
             user.setName(user.getName());
@@ -45,7 +48,7 @@ public class UserService {
             user.setAdmin(user.isAdmin());
             user.setDateOfBirth(user.getDateOfBirth());
         }
-        return userRepository.save(user);
+        return userRepository.save(userRepository.getOne(userId)); //czy to jest poprawny zapis?
     }
 
     public User banUser(User user) {

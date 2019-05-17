@@ -8,6 +8,7 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
+import library.validators.IsBookLoanable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,27 +31,6 @@ public class RentService {
         this.actionRepository = actionRepository;
     }
 
-    /**
-     * warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
-     * czy wynieść tą metodę do oddzielnej klasy i zrobić z niej walidator (boolean)?
-     */
-   private void isBookAbleToLoan(Book book) {
-       BookState bookState = bookStateRepository.getOne(book.getId());
-       if (bookState != (null)) {
-           if (bookState.getBookStateEnum() == BookStateEnum.NOWA || bookState.getBookStateEnum() == BookStateEnum.ZWRÓCONA) {
-               log.info("Możesz wypożyczyć tę książkę");
-           } else if (bookState.getBookStateEnum() == BookStateEnum.WYPOŻYCZONA) {
-               log.info("Książka jest aktualnie wypożyczona");
-           } else {
-               log.info("Książka jest zniszczona.");
-           }
-       } else {
-           log.info("Nie odnaleziono informacji o książce");
-       }
-    }
-
-
-
     //warunek sprawdzający, czy książka istnieje (jest w bibliotece)
     private BookState isBookExisting(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
@@ -60,21 +40,27 @@ public class RentService {
         return bookState;
     }
 
-    //wypożyczanie książki
-    public void rentBook(Book book, User user) {
+    /**
+     * wypożyczanie książki
+     * TODO: do przemyślenia :czy na potrzeby Mail Schedulera metody powinny zwracać Stringa z odpowiednim komunikatem?
+     */
+
+    public String rentBook(Book book, User user) {
         Action action = new Action();
         action.setActionDescription("Wypożyczenie");
         action.setBook(book);
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState3 = new BookState();
-        bookState3.setBook(book);
-        bookState3.setDateOfLoan(LocalDate.now());
-        bookState3.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
-        bookState3.setDateOfReturn(LocalDate.now().plusDays(LOAN_PERIOD));
-        bookState3.setAction(action);
-        bookStateRepository.save(bookState3);
+        BookState bookState = new BookState();
+        bookState.setBook(book);
+        bookState.setDateOfLoan(LocalDate.now());
+        bookState.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
+        bookState.setDateOfReturn(LocalDate.now().plusDays(LOAN_PERIOD));
+        bookState.setAction(action);
+        bookStateRepository.save(bookState);
+        return "Wypoczyłeś książkę pt. \"" + book.getTitle() + "\", dnia: " +
+                LocalDate.now() + ". \nTermin zwrotu to:" + LocalDate.now().plusDays(30);
     }
 
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {

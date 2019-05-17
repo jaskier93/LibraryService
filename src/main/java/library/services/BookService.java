@@ -38,14 +38,6 @@ public class BookService {
     }
 
     private Book addBook(Book book) {
-        book.setTitle(book.getTitle());
-        book.setAddingDate(LocalDate.now());
-        book.setAgeCategory(book.getAgeCategory());
-        book.setAuthor(book.getAuthor());
-        book.setCategory(book.getCategory());
-        book.setReleaseDate(book.getReleaseDate());
-        book.setStatus(0); //wartość tymczasowa, później się ustali TODO
-
         Action action = new Action();
         action.setBook(book);
         //action.setUser(); tutaj powinno dodawać się login admina
@@ -55,7 +47,7 @@ public class BookService {
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookState.setBook(book);
-        bookState.setDateOfCreating(book.getAddingDate());
+     //   bookState.setDateOfCreating(book.getAddingDate());
         bookState.setAction(action);
         bookState.setDateOfReturn(null);
         bookState.setDateOfUpdating(LocalDate.now());
@@ -66,17 +58,16 @@ public class BookService {
     }
 
     /**
-     * metoda zwraca BSEnuma-info o statusie ksiązki, czy jest wypożyczona/zwrócona/zniszczona/nowa
-     * Czy zrobić z tej metody oddzielny walidator ?
+     * metoda zwraca BSEnuma-info o statusie ksiązki, czy jest wypożyczona/zwrócona/nowa/zniszczona etc
      */
-    private BookStateEnum isBookLoanable(Book book) {
-        return bookStateRepository.getOne(book.getId()).getBookStateEnum();
+    private BookStateEnum getBookStateEnum(Integer bookId) {
+        return bookStateRepository.findBookStateByBook(bookId).getBookStateEnum();
     }
 
-    private Book updateBook(Book book) {
-        bookRepository.getOne(book.getId());
+    private Book updateBook(Integer bookId) {
+        Book book = bookRepository.getOne(bookId);
         book.setTitle(book.getTitle());
-        book.setAddingDate(LocalDate.now());
+     //   book.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
         book.setAgeCategory(book.getAgeCategory());
         book.setAuthor(book.getAuthor());
         book.setCategory(book.getCategory());
@@ -110,10 +101,10 @@ public class BookService {
      * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
-    public Book deleteBook(Book book, User user) {
+    public Book deleteBook(Integer bookId, User user) {
         Action action = new Action();
         action.setUser(user);
-        action.setBook(book);
+        action.setBook(bookRepository.getOne(bookId));
         action.setActionDescription("Książka zniszczona");
         actionRepository.save(action);
 
@@ -127,10 +118,10 @@ public class BookService {
         payment.setAmount(PENALTY_AMOUNT);
         payment.setUser(user);
         payment.setActive(true);
-        payment.setBook(book);
+        payment.setBook(bookRepository.getOne(bookId));
         paymentRepository.save(payment);
 
-        return bookRepository.save(book);
+        return bookRepository.save(bookRepository.getOne(bookId));
         /*TODO
          * Do dodania:
          * repozytoria: akcji, płatnośći

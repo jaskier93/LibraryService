@@ -29,7 +29,7 @@ public class Book {
     private LocalDate releaseDate; //data wydania książki
 
     @NotNull
-    private LocalDate addingDate; //created date
+    private LocalDate addingDate = LocalDate.now(); //data dodania książki do bazy
 
     @Convert(converter = CategoryConverter.class)
     private Category category;
