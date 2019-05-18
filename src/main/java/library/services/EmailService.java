@@ -43,6 +43,7 @@ public class EmailService {
      */ //:TODO do przerobienia : metoda powinna przeszukać całą bazę w poszukiwaniu wszystkich aktualnych wypożyczeń i po nich sprawdzać daty oddania-w razie spełnienia warunków należy wysłać maila
     @Scheduled(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
     public void send(String title, Integer bookId, Integer userId) {
+        //tak właściwie tego rodzaju warunek będzie przy zbliżającej się dacie zwrotu-np codziennie wysyłanie przypomnienia z prośbą zwrotu ksiązki (np ostani tydzień)
         if (bookStateRepository.findBookStateByBook(bookId).getDateOfReturn().equals(LocalDate.now().plusDays(30))) {
             MimeMessage mail = javaMailSender.createMimeMessage();
             try {

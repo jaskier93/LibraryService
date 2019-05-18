@@ -1,6 +1,8 @@
 package library.services;
 
+import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
+import library.enums.Category;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
@@ -47,7 +49,7 @@ public class BookService {
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookState.setBook(book);
-     //   bookState.setDateOfCreating(book.getAddingDate());
+        //   bookState.setDateOfCreating(book.getAddingDate());
         bookState.setAction(action);
         bookState.setDateOfReturn(null);
         bookState.setDateOfUpdating(LocalDate.now());
@@ -67,7 +69,7 @@ public class BookService {
     private Book updateBook(Integer bookId) {
         Book book = bookRepository.getOne(bookId);
         book.setTitle(book.getTitle());
-     //   book.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
+        //   book.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
         book.setAgeCategory(book.getAgeCategory());
         book.setAuthor(book.getAuthor());
         book.setCategory(book.getCategory());
@@ -95,6 +97,26 @@ public class BookService {
         bookState.setDateOfUpdating(LocalDate.now());
         bookStateRepository.save(bookState);
         return bookRepository.save(book);
+    }
+
+    public List<Book> sortedBooksByReleaseDate() {
+        return bookRepository.sortedBooksByReleaseData();
+    }
+
+    public List<Book> sortedBooksByAddingDate() {
+        return bookRepository.sortedBooksByAddingData();
+    }
+
+
+    /**
+     * TODO: w tych dwóch metodach może trzeba będzie zmienić parametry na Stringi
+     */
+    public List<Book> booksByCategory(Category category) {
+        return bookRepository.findBookByCategory(category);
+    }
+
+    public List<Book> booksByAgeCategory(AgeCategory ageCategory) {
+        return bookRepository.findBookByAgeCategory(ageCategory);
     }
 
     /**

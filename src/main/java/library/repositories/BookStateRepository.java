@@ -23,4 +23,8 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
     @Query("select bs.book from BookState bs where bs.user=?1")
     List<Book> findBooksByUser(User user);
+
+    //metoda zwraca listę aktualnie wypożyczonych książek przez użytkownika
+    @Query("select bs.book from BookState bs where bs.user=?1 and bs.bookStateEnum='WYPOŻYCZONA'")
+    List<Book> findLoanedBooksByUser(User user);
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -16,4 +17,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u where u.id=:userId")
     User findUserById(@Param("userId") Integer userId);
+
+    /**
+     * w serwisie UserService jako parametr będzie wpisywana dzisiejsza data -18 lat
+     * TODO: sprawdzić czy dobrze działa-ma wypisać listę dorosłych użytkowników
+     */
+    @Query("select  u from User u where u.dateOfBirth<:date")
+    List <User> findAdultUsers (@Param("date") LocalDate localDate);
+
 }

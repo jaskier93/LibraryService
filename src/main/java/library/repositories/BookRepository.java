@@ -20,22 +20,32 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
 
     //czy parametr powinien być typu String czy Category?
-    @Query("select b from Book b where b.category =?1")
+    @Query("select b from Book b where b.category =?1 order by b.title")
     List<Book> findBookByCategory(@Param("category") Category category);
 
     //czy parametr powinien być typu String czy AgeCategory?
-    @Query("select b from Book b where b.ageCategory =?1")
+    @Query("select b from Book b where b.ageCategory =?1 order by b.ageCategory")
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
-
-/*    @Query("select b from Author a " +
-            "inner join Book b on a.book.id=b.id where a.lastName=:author") //sprawdzić czy działa
-    List<Book> findBookByAuthor(@Param("author") String author);
-
+    /**
+     *     wyświetlanie książek w kolejności dodania do biblioteki
+     *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
+     */
     @Query("select b from Book order by addingDate")
     List<Book> sortedBooksByAddingData();
 
+
+    /**
+     *     wyświetlanie książek w kolejności wydania
+     *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie książek wydanych w danym roku
+     */
     @Query("select b from Book order by releaseDate")
-    List<Book> sortedBooksByReleaseData(); */
+    List<Book> sortedBooksByReleaseData();
+
+
+/*    @Query("select b from Author a " +
+            "inner join Book b on a.book.id=b.id where a.lastName=:author")
+        //sprawdzić czy działa
+    List<Book> findBookByAuthor(@Param("author") String author);*/
 
 }

@@ -9,6 +9,7 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
 import library.validators.IsBookLoanable;
+import library.validators.ProlongationValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,22 @@ public class RentService {
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
         bookState.setBookStateEnum(BookStateEnum.ZWRÓCONA);
+        bookState.setAction(action);
+        bookStateRepository.save(bookState);
+    }
+
+    public void loanBookProlongation(Book book, User user) {
+        //najpierw wywołać metodę walidującą z ProlongationValidator
+        Action action = new Action();
+        action.setActionDescription("Przedłużenie wypożyczenia książki");
+        action.setBook(book);
+        action.setUser(user);
+        actionRepository.save(action);
+
+        BookState bookState = new BookState();
+        bookState.setBook(book);
+        bookState.setDateOfReturn(LocalDate.now().plusDays(30));
+        bookState.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
     }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -49,6 +50,14 @@ public class UserService {
             user.setDateOfBirth(user.getDateOfBirth());
         }
         return userRepository.save(userRepository.getOne(userId)); //czy to jest poprawny zapis?
+    }
+
+    /**
+     *     zwraca listę dorosłych użytkowników
+     *     może się przydać np. przy wysyłaniu maila o nowościach dla dorosłych
+     */
+    public List<User> adultUsers(){
+        return userRepository.findAdultUsers(LocalDate.now().minusYears(18));
     }
 
     public User banUser(User user) {
