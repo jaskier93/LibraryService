@@ -32,7 +32,7 @@ public class User {
     @NotNull
     private LocalDate dateOfBirth;
 
-    @NotNull //zostawić adnotację?
+    @NotNull
     private LocalDate dateOfRegistration=LocalDate.now();
 
     private Integer adminDegree;

@@ -12,13 +12,17 @@ import java.util.List;
 
 public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
-
+    /**
+     * dopisać jeszcze jakiś warunek-maksymalna (najświeższa) data zwrotu wyskoczy,
+     * jeśli jakaś jest-przy nie wypożyczanej dotąd książce-nie sprawdzi się
+     */
     @Query("select bs " +
             "from BookState bs " +
             "where bs.book.id = :bookId " +
             "and bs.dateOfLoan = (select max(bs2.dateOfLoan) " +
             "                   from BookState bs2 " +
-            "                   where bs2.book.id = :bookId )")
+            "                   where bs2.book.id = :bookId ) and  bs.dateOfReturn= " +
+            "(select max (bs3.dateOfReturn) from BookState bs3 where bs3.dateOfReturn=:bookId)")
     BookState findBookStateByBook(@Param("bookId") Integer bookId); //czy ta metoda napewno wybiera najnowszego bookstate'a?
 
     @Query("select bs.book from BookState bs where bs.user=?1")

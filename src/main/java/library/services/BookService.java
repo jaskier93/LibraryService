@@ -66,18 +66,18 @@ public class BookService {
         return bookStateRepository.findBookStateByBook(bookId).getBookStateEnum();
     }
 
-    private Book updateBook(Integer bookId) {
-        Book book = bookRepository.getOne(bookId);
-        book.setTitle(book.getTitle());
-        //   book.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
-        book.setAgeCategory(book.getAgeCategory());
-        book.setAuthor(book.getAuthor());
-        book.setCategory(book.getCategory());
-        book.setReleaseDate(book.getReleaseDate());
-        book.setStatus(0);
+    private Book updateBook(Book book) {
+        Book book2 = bookRepository.getOne(book.getId());
+        book2.setTitle(book.getTitle());
+        //   book2.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
+        book2.setAgeCategory(book.getAgeCategory());
+        book2.setAuthor(book.getAuthor());
+        book2.setCategory(book.getCategory());
+        book2.setReleaseDate(book.getReleaseDate());
+        book2.setStatus(0);
 
         Action action = new Action();
-        action.setBook(book);
+        action.setBook(book2);
         /**
          *         action.setUser(); tutaj powinno dodawać się login admina
          *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
@@ -88,15 +88,22 @@ public class BookService {
         action.setActionDescription("Zaktualizowanie informacji o książce");
         actionRepository.save(action);
 
-        /**
-         *  aktualizacja daty, akcji oraz książki zamiast tworzenia nowego BS'a
-         */
+        //zrobić test
+        BookState bookState2 = new BookState();
         BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
-        bookState.setBook(book);
-        bookState.setAction(action);
-        bookState.setDateOfUpdating(LocalDate.now());
-        bookStateRepository.save(bookState);
-        return bookRepository.save(book);
+        bookState2.setBook(book2);
+        bookState2.setAction(action);
+        bookState2.setDateOfUpdating(LocalDate.now());
+        bookState2.setUser(bookState.getUser());
+        bookState2.setBookStateEnum(bookState.getBookStateEnum());
+        bookState2.setStatus(bookState.getStatus());
+        bookState2.setDateOfCreating(LocalDate.now());
+        bookState2.setDateOfUpdating(LocalDate.now());
+        bookState2.setDateOfLoan(bookState.getDateOfLoan());
+        bookState2.setDateOfReturn(bookState.getDateOfReturn());
+        bookStateRepository.save(bookState2);
+
+        return bookRepository.save(book2);
     }
 
     public List<Book> sortedBooksByReleaseDate() {
@@ -123,7 +130,7 @@ public class BookService {
      * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
-    public Book deleteBook(Integer bookId, User user) {
+    public void deleteBook(Integer bookId, User user) {
         Action action = new Action();
         action.setUser(user);
         action.setBook(bookRepository.getOne(bookId));
@@ -143,7 +150,6 @@ public class BookService {
         payment.setBook(bookRepository.getOne(bookId));
         paymentRepository.save(payment);
 
-        return bookRepository.save(bookRepository.getOne(bookId));
         /*TODO
          * Do dodania:
          * repozytoria: akcji, płatnośći

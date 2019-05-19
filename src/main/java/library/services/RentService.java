@@ -8,13 +8,9 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
-import library.validators.IsBookLoanable;
-import library.validators.ProlongationValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Slf4j
 @Service
@@ -55,13 +51,11 @@ public class RentService {
 
         BookState bookState = new BookState();
         bookState.setBook(book);
-        bookState.setDateOfLoan(LocalDate.now());
         bookState.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
-        bookState.setDateOfReturn(LocalDate.now().plusDays(LOAN_PERIOD));
         bookState.setAction(action);
         bookStateRepository.save(bookState);
         return "Wypoczyłeś książkę pt. \"" + book.getTitle() + "\", dnia: " +
-                LocalDate.now() + ". \nTermin zwrotu to:" + LocalDate.now().plusDays(30);
+                bookState.getDateOfLoan() + ". \nTermin zwrotu to:" + bookState.getDateOfReturn();
     }
 
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
@@ -73,7 +67,6 @@ public class RentService {
 
         BookState bookState = new BookState();
         bookState.setBook(book);
-        bookState.setDateOfReturn(LocalDate.now());
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
         bookState.setBookStateEnum(BookStateEnum.ZWRÓCONA);
@@ -91,7 +84,6 @@ public class RentService {
 
         BookState bookState = new BookState();
         bookState.setBook(book);
-        bookState.setDateOfReturn(LocalDate.now().plusDays(30));
         bookState.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
         bookState.setAction(action);
         bookStateRepository.save(bookState);

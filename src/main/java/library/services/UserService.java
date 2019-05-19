@@ -35,11 +35,10 @@ public class UserService {
     }
 
     public User updateUser(Integer userId) {
-        if (userRepository.findUserById(userId).equals(null)) {
+        if (userRepository.findUserById(userId) == null) {
             log.info("Nie ma takiego użytkownika");
         } else {
             User user = userRepository.getOne(userId);
-        //    user.setDateOfRegistration(LocalDate.now()); // ustawiane automatycznie już w klasie User
             user.setSecondName(user.getSecondName()); //opcjonalne
             user.setLastName(user.getLastName());
             user.setName(user.getName());
@@ -53,10 +52,10 @@ public class UserService {
     }
 
     /**
-     *     zwraca listę dorosłych użytkowników
-     *     może się przydać np. przy wysyłaniu maila o nowościach dla dorosłych
+     * zwraca listę dorosłych użytkowników
+     * może się przydać np. przy wysyłaniu maila o nowościach dla dorosłych
      */
-    public List<User> adultUsers(){
+    public List<User> adultUsers() {
         return userRepository.findAdultUsers(LocalDate.now().minusYears(18));
     }
 

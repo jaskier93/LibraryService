@@ -25,14 +25,14 @@ public class BookState {
     @ManyToOne(targetEntity = User.class)
     private User user;
 
-    private LocalDate dateOfLoan;
+    private LocalDate dateOfLoan=LocalDate.now();
 
     @NotNull
     private LocalDate dateOfCreating;
 
     private LocalDate dateOfUpdating;
 
-    private LocalDate dateOfReturn;
+    private LocalDate dateOfReturn=LocalDate.now().plusDays(30);
 
     @ManyToOne(targetEntity = Book.class)
     private Book book;
