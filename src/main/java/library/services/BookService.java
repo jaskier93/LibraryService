@@ -49,10 +49,8 @@ public class BookService {
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookState.setBook(book);
-        //   bookState.setDateOfCreating(book.getAddingDate());
         bookState.setAction(action);
-        bookState.setDateOfReturn(null);
-        bookState.setDateOfUpdating(LocalDate.now());
+        bookState.setDateOfReturn(null); //tutaj powinno być settowanie na nulla, ponieważ w klasie BooState domyślnie ustawia na obecną datę +30dni
         bookState.setStatus(0); //wartość tymczasowa, później się ustali TODO
         bookStateRepository.save(bookState);
 
@@ -131,23 +129,27 @@ public class BookService {
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
     public void deleteBook(Integer bookId, User user) {
+        Book bookFromBase = bookRepository.getOne(bookId);
         Action action = new Action();
         action.setUser(user);
-        action.setBook(bookRepository.getOne(bookId));
+        action.setBook(bookFromBase);
         action.setActionDescription("Książka zniszczona");
         actionRepository.save(action);
 
         BookState bookState = new BookState();
         bookState.setBookStateEnum(BookStateEnum.ZNISZCZONA);
-        bookState.setDateOfReturn(LocalDate.now());
-        bookState.setDateOfUpdating(LocalDate.now());
+        bookState.setAction(action);
+        bookState.setStatus(0);
+        bookState.setUser(user);
+        bookState.setBook(bookFromBase);
+        bookState.setDateOfReturn(null);
         bookStateRepository.save(bookState);
 
         Payment payment = new Payment();
         payment.setAmount(PENALTY_AMOUNT);
         payment.setUser(user);
         payment.setActive(true);
-        payment.setBook(bookRepository.getOne(bookId));
+        payment.setBook(bookFromBase);
         paymentRepository.save(payment);
 
         /*TODO

@@ -28,13 +28,13 @@ public class RentService {
         this.actionRepository = actionRepository;
     }
 
-    //warunek sprawdzający, czy książka istnieje (jest w bibliotece)
-    private BookState isBookExisting(Integer bookId) {
+    //warunek sprawdzający, czy książka istnieje (jest w bibliotece) i czy nie jest zniszczona
+    private Book isBookExisting(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
-        if (bookState == null) {
+        if (bookState == null || bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
             log.info("Nie znalezionego książki o podanym ID");
         }
-        return bookState;
+        return bookStateRepository.findBookStateByBook(bookId).getBook();
     }
 
     /**

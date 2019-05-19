@@ -34,7 +34,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(Integer userId) {
+    //TODO: do poprawki
+    public void updateUser(Integer userId) {
         if (userRepository.findUserById(userId) == null) {
             log.info("Nie ma takiego użytkownika");
         } else {
@@ -47,8 +48,8 @@ public class UserService {
             user.setActive(user.isActive());
             user.setAdmin(user.isAdmin());
             user.setDateOfBirth(user.getDateOfBirth());
+            userRepository.save(user);
         }
-        return userRepository.save(userRepository.getOne(userId)); //czy to jest poprawny zapis?
     }
 
     /**

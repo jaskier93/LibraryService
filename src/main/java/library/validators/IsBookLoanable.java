@@ -22,22 +22,32 @@ public class IsBookLoanable {
      * warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
      */
     private boolean isBookAbleToLoan(Book book) {
-        BookState bookState = bookStateRepository.getOne(book.getId());
-        if (bookState != (null)) {
-            if (bookState.getBookStateEnum() == BookStateEnum.NOWA || bookState.getBookStateEnum() == BookStateEnum.ZWRÓCONA) {
+        BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
+        boolean temp;
+        switch (bookState.getBookStateEnum()) {
+            case ZNISZCZONA:
                 log.info("Możesz wypożyczyć tę książkę");
-                return true;
-            } else if (bookState.getBookStateEnum() == BookStateEnum.WYPOŻYCZONA) {
-                log.info("Książka jest aktualnie wypożyczona");
-                return false;
-            } else {
-                log.info("Książka jest zniszczona.");
-                return false;
-            }
-        } else {
-            log.info("Nie odnaleziono informacji o książce");
-            return false;
-        }
-    }
+                temp = true;
+                break;
+            case NOWA:
+                log.info("Możesz wypożyczyć tę książkę");
+                temp = true;
+                break;
 
+            case WYPOŻYCZONA:
+                log.info("Książka jest aktualnie wypożyczona");
+                temp = false;
+                break;
+
+            case ZWRÓCONA:
+                log.info("Książka jest zniszczona");
+                temp = false;
+                break;
+            default:
+                log.info("Nie odnaleziono informacji o książce");
+                temp = false;
+                break;
+        }
+        return temp;
+    }
 }
