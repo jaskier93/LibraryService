@@ -64,8 +64,8 @@ public class BookService {
         return bookStateRepository.findBookStateByBook(bookId).getBookStateEnum();
     }
 
-    private Book updateBook(Book book) {
-        Book book2 = bookRepository.getOne(book.getId());
+    private Book updateBook(Book book, Integer bookId) {
+        Book book2 = bookRepository.getOne(bookId);
         book2.setTitle(book.getTitle());
         //   book2.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
         book2.setAgeCategory(book.getAgeCategory());
@@ -87,19 +87,19 @@ public class BookService {
         actionRepository.save(action);
 
         //zrobić test
-        BookState bookState2 = new BookState();
-        BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
-        bookState2.setBook(book2);
-        bookState2.setAction(action);
-        bookState2.setDateOfUpdating(LocalDate.now());
-        bookState2.setUser(bookState.getUser());
-        bookState2.setBookStateEnum(bookState.getBookStateEnum());
-        bookState2.setStatus(bookState.getStatus());
-        bookState2.setDateOfCreating(LocalDate.now());
-        bookState2.setDateOfUpdating(LocalDate.now());
-        bookState2.setDateOfLoan(bookState.getDateOfLoan());
-        bookState2.setDateOfReturn(bookState.getDateOfReturn());
-        bookStateRepository.save(bookState2);
+        BookState newBookState = new BookState();
+        BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
+        newBookState.setBook(book2);
+        newBookState.setAction(action);
+        newBookState.setDateOfUpdating(LocalDate.now());
+        newBookState.setUser(bookStateFromBase.getUser());
+        newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
+        newBookState.setStatus(bookStateFromBase.getStatus());
+        newBookState.setDateOfCreating(LocalDate.now());
+        newBookState.setDateOfUpdating(LocalDate.now());
+        newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
+        newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
+        bookStateRepository.save(newBookState);
 
         return bookRepository.save(book2);
     }

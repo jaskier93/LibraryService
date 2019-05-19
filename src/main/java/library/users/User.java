@@ -33,7 +33,7 @@ public class User {
     private LocalDate dateOfBirth;
 
     @NotNull
-    private LocalDate dateOfRegistration=LocalDate.now();
+    private LocalDate dateOfRegistration = LocalDate.now();
 
     private Integer adminDegree;
 

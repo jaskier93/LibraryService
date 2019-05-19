@@ -36,17 +36,17 @@ public class UserService {
 
     //TODO: do poprawki
     public void updateUser(Integer userId) {
-        if (userRepository.findUserById(userId) == null) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
             log.info("Nie ma takiego użytkownika");
         } else {
-            User user = userRepository.getOne(userId);
             user.setSecondName(user.getSecondName()); //opcjonalne
             user.setLastName(user.getLastName());
             user.setName(user.getName());
             user.setEmail(user.getEmail());
             user.setAdminDegree(user.getAdminDegree());
-            user.setActive(user.isActive());
-            user.setAdmin(user.isAdmin());
+            user.setActive(user.isActive()); //ta zmienna raczej nie będzie zmieniana
+            user.setAdmin(user.isAdmin()); //ta raczej też
             user.setDateOfBirth(user.getDateOfBirth());
             userRepository.save(user);
         }

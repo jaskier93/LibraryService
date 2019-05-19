@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Slf4j
 @Service
 public class RentService {
@@ -58,6 +60,7 @@ public class RentService {
                 bookState.getDateOfLoan() + ". \nTermin zwrotu to:" + bookState.getDateOfReturn();
     }
 
+    //czy jest sens wysyłać maila w przypadku zwrotu książki?
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
         Action action = new Action();
         action.setActionDescription("Zwrot książki");
@@ -74,7 +77,11 @@ public class RentService {
         bookStateRepository.save(bookState);
     }
 
-    public void loanBookProlongation(Book book, User user) {
+    /**
+     * TODO: dorobić walidację, czy użytkownik już wcześniej przedłużał te wypożyczenie (będzie można przedłużyć tylko raz)
+     * oraz czy nie próbuje przedłużyć po dacie zwrotu
+     */
+    public String loanBookProlongation(Book book, User user) {
         //najpierw wywołać metodę walidującą z ProlongationValidator
         Action action = new Action();
         action.setActionDescription("Przedłużenie wypożyczenia książki");
@@ -86,6 +93,9 @@ public class RentService {
         bookState.setBook(book);
         bookState.setBookStateEnum(BookStateEnum.WYPOŻYCZONA);
         bookState.setAction(action);
+        bookState.setDateOfUpdating(LocalDate.now());
         bookStateRepository.save(bookState);
+        return "Przedłużyłeś wypożyczenie książki pt.\"" + bookStateRepository.findBookStateByBook(book.getId()).getBook().getTitle() + "\"." +
+                "Termin zwrotu książki to: " + bookState.getDateOfUpdating();
     }
 }
