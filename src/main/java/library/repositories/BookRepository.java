@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -28,16 +29,23 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     /**
-     *     wyświetlanie książek w kolejności dodania do biblioteki
-     *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
+     * wyświetlanie książek w kolejności dodania do biblioteki
+     * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
      */
     @Query("select b from Book b order by b.addingDate")
     List<Book> sortedBooksByAddingData();
 
+    //lista książek wydana w danym okresie, np w przeciągu roku
+    @Query("select b from Book b where b.releaseDate>:date order by b.title")
+    List<Book> booksAddedInPeriod(@Param("date") LocalDate localDate);
+
+    //lista książek dodana w danym okresie, np w przeciągu miesiąca
+    @Query("select b from Book b where b.addingDate>:date order by b.title")
+    List<Book> booksReleasedInPeriod(@Param("date") LocalDate localDate);
 
     /**
-     *     wyświetlanie książek w kolejności wydania
-     *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie książek wydanych w danym roku
+     * wyświetlanie książek w kolejności wydania
+     * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie książek wydanych w danym roku
      */
     @Query("select b from Book b order by b.releaseDate")
     List<Book> sortedBooksByReleaseData();

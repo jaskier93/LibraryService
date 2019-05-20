@@ -98,7 +98,7 @@ public class EmailService {
     }
 
     /**
-     *informacja o zapłaconej płatności za zniszczenie książki/oddanie po terminie
+     * TODO: do zrobienia dwie wersje: za zniszczenie książki/oddanie po terminie
      */
     public void paymentInfo(Integer userId, Book book, Payment payment){
         String mailMessage = "Zniszczyłeś książkę pt. \""+book.getTitle()+"\".\nW związku z tym naliczyliśmy karę wynoszącą:"

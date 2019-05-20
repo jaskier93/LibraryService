@@ -66,41 +66,54 @@ public class BookService {
 
     private Book updateBook(Book book, Integer bookId) {
         Book bookFromBase = bookRepository.getOne(bookId);
-        bookFromBase.setTitle(book.getTitle());
-        //   book2.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
-        bookFromBase.setAgeCategory(book.getAgeCategory());
-        bookFromBase.setAuthor(book.getAuthor());
-        bookFromBase.setCategory(book.getCategory());
-        bookFromBase.setReleaseDate(book.getReleaseDate());
-        bookFromBase.setStatus(0);
+        if (bookFromBase == null) {
+            log.info("Nie znaleziono takiej książki");
+        } else {
+            if (!book.getTitle().isEmpty()) {
+                bookFromBase.setTitle(book.getTitle());
+            }
+            if (book.getAgeCategory() != bookFromBase.getAgeCategory()) {
+                bookFromBase.setAgeCategory(book.getAgeCategory());
+            }
+            if (book.getAuthor() != null) {
+                bookFromBase.setAuthor(book.getAuthor());
+            }
+            if (book.getCategory() != bookFromBase.getCategory()) {
+                bookFromBase.setCategory(book.getCategory());
+            }
+            if (book.getReleaseDate().isEqual(bookFromBase.getReleaseDate())) {
+                bookFromBase.setReleaseDate(book.getReleaseDate());
+            }
+            if (book.getStatus() != 0) {
+                bookFromBase.setStatus(book.getStatus());
+            }
 
-        Action action = new Action();
-        action.setBook(bookFromBase);
-        /**
-         *         action.setUser(); tutaj powinno dodawać się login admina
-         *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
-         *         dodatkowo walidacja czy ma status admina
-         *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
-         *         lub odpowiednia adnotacja (trzeba by dodać całe security)
-         */
-        action.setActionDescription("Zaktualizowanie informacji o książce");
-        actionRepository.save(action);
+            Action action = new Action();
+            action.setBook(bookFromBase);
+            /**
+             *         action.setUser(); tutaj powinno dodawać się login admina
+             *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
+             *         dodatkowo walidacja czy ma status admina
+             *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
+             *         lub odpowiednia adnotacja (trzeba by dodać całe security)
+             */
+            action.setActionDescription("Zaktualizowanie informacji o książce"); //TODO: actionENUM
+            actionRepository.save(action);
 
-        //zrobić test
-        BookState newBookState = new BookState();
-        BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
-        newBookState.setBook(bookFromBase);
-        newBookState.setAction(action);
-        newBookState.setDateOfUpdating(LocalDate.now());
-        newBookState.setUser(bookStateFromBase.getUser());
-        newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
-        newBookState.setStatus(bookStateFromBase.getStatus());
-        newBookState.setDateOfCreating(LocalDate.now());
-        newBookState.setDateOfUpdating(LocalDate.now());
-        newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
-        newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
-        bookStateRepository.save(newBookState);
-
+            BookState newBookState = new BookState();
+            BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
+            newBookState.setBook(bookFromBase);
+            newBookState.setAction(action);
+            newBookState.setDateOfUpdating(LocalDate.now());
+            newBookState.setUser(bookStateFromBase.getUser());
+            newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
+            newBookState.setStatus(bookStateFromBase.getStatus());
+            newBookState.setDateOfCreating(LocalDate.now());
+            newBookState.setDateOfUpdating(LocalDate.now());
+            newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
+            newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
+            bookStateRepository.save(newBookState);
+        }
         return bookRepository.save(bookFromBase);
     }
 
@@ -110,6 +123,16 @@ public class BookService {
 
     public List<Book> sortedBooksByAddingDate() {
         return bookRepository.sortedBooksByAddingData();
+    }
+
+    //książki wydane w ciągu roku
+    public List<Book> booksReleasedInPeriod() {
+        return bookRepository.booksReleasedInPeriod(LocalDate.now().minusYears(1));
+    }
+
+    //książki dodane w ciągu miesiąca-nowości w bibliotece
+    public List<Book> booksAddedInPeriod() {
+        return bookRepository.booksAddedInPeriod(LocalDate.now().minusMonths(1));
     }
 
 

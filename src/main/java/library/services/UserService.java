@@ -75,8 +75,19 @@ public class UserService {
         return userRepository.findAdultUsers(LocalDate.now().minusYears(18));
     }
 
+    /**
+     * można ewentualnie pomyśleć o tym, żeby kasować zbanowanego usera np po roku,
+     * a w przypadku, gdy np. odkupi zniszczoną książkę-można zdjąć bana
+    */
     public User banUser(User user) {
         user.setActive(false);
         return userRepository.save(user);
     }
+
+
+    public User unbanUser(User user) {
+        user.setActive(true);
+        return userRepository.save(user);
+    }
+
 }

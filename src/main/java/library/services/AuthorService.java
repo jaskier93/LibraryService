@@ -21,20 +21,33 @@ public class AuthorService {
         return authorRepository.save(author);
     }
 
-    public Author updateAuthor(Author author) {
-
-        if (authorRepository.findAuthorsByLastName(author.getLastName()).isEmpty()) {
+    public Author updateAuthor(Integer authorId, Author author) {
+        Author authorFromBase = authorRepository.getOne(authorId);
+        if (authorFromBase == null) {
             log.info("Nie odnaleziono takie autora");
         } else {
-            authorRepository.findAuthorsByLastName(author.getLastName());
-            author.setLastName(author.getLastName());
-            author.setCreated(author.getCreated());
-            author.setDateOfBirth(author.getDateOfBirth());
-            author.setDateOfDeath(author.getDateOfDeath());
-            author.setName(author.getName());
-            author.setStatus(author.getStatus());
-            author.setSecondName(author.getSecondName());
-            authorRepository.save(author);
+            if (!author.getLastName().isEmpty()) {
+                authorFromBase.setLastName(author.getLastName());
+            }
+            if (!author.getCreated().isEqual(authorFromBase.getCreated())) {
+                authorFromBase.setCreated(author.getCreated());
+            }
+            if (!author.getDateOfBirth().isEqual(authorFromBase.getDateOfBirth())) {
+                authorFromBase.setDateOfBirth(author.getDateOfBirth());
+            }
+            if (!author.getDateOfDeath().isEqual(authorFromBase.getDateOfDeath())) {
+                authorFromBase.setDateOfDeath(author.getDateOfDeath());
+            }
+            if (!author.getName().isEmpty()) {
+                authorFromBase.setName(author.getName());
+            }
+            if (author.getStatus() != 0) {
+                authorFromBase.setStatus(author.getStatus());
+            }
+            if (!author.getSecondName().isEmpty()) {
+                authorFromBase.setSecondName(author.getSecondName());
+            }
+            authorRepository.save(authorFromBase);
         }
         return author;
     }
