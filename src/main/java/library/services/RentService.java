@@ -36,7 +36,7 @@ public class RentService {
         if (bookState == null || bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
             log.info("Nie znalezionego książki o podanym ID");
         }
-        return bookStateRepository.findBookStateByBook(bookId).getBook();
+        return bookState.getBook();
     }
 
     /**

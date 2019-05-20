@@ -25,23 +25,18 @@ public class IsBookLoanable {
         BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
         boolean temp;
         switch (bookState.getBookStateEnum()) {
-            case ZNISZCZONA:
-                log.info("Możesz wypożyczyć tę książkę");
-                temp = true;
-                break;
-            case NOWA:
-                log.info("Możesz wypożyczyć tę książkę");
-                temp = true;
-                break;
-
             case WYPOŻYCZONA:
                 log.info("Książka jest aktualnie wypożyczona");
                 temp = false;
                 break;
-
-            case ZWRÓCONA:
+            case ZNISZCZONA:
                 log.info("Książka jest zniszczona");
                 temp = false;
+                break;
+            case ZWRÓCONA:
+            case NOWA:
+                log.info("Możesz wypożyczyć tę książkę");
+                temp = true;
                 break;
             default:
                 log.info("Nie odnaleziono informacji o książce");

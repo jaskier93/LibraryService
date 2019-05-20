@@ -65,17 +65,17 @@ public class BookService {
     }
 
     private Book updateBook(Book book, Integer bookId) {
-        Book book2 = bookRepository.getOne(bookId);
-        book2.setTitle(book.getTitle());
+        Book bookFromBase = bookRepository.getOne(bookId);
+        bookFromBase.setTitle(book.getTitle());
         //   book2.setAddingDate(LocalDate.now()); //ta zmienna nie powinna być zmieniana
-        book2.setAgeCategory(book.getAgeCategory());
-        book2.setAuthor(book.getAuthor());
-        book2.setCategory(book.getCategory());
-        book2.setReleaseDate(book.getReleaseDate());
-        book2.setStatus(0);
+        bookFromBase.setAgeCategory(book.getAgeCategory());
+        bookFromBase.setAuthor(book.getAuthor());
+        bookFromBase.setCategory(book.getCategory());
+        bookFromBase.setReleaseDate(book.getReleaseDate());
+        bookFromBase.setStatus(0);
 
         Action action = new Action();
-        action.setBook(book2);
+        action.setBook(bookFromBase);
         /**
          *         action.setUser(); tutaj powinno dodawać się login admina
          *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
@@ -89,7 +89,7 @@ public class BookService {
         //zrobić test
         BookState newBookState = new BookState();
         BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
-        newBookState.setBook(book2);
+        newBookState.setBook(bookFromBase);
         newBookState.setAction(action);
         newBookState.setDateOfUpdating(LocalDate.now());
         newBookState.setUser(bookStateFromBase.getUser());
@@ -101,7 +101,7 @@ public class BookService {
         newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
         bookStateRepository.save(newBookState);
 
-        return bookRepository.save(book2);
+        return bookRepository.save(bookFromBase);
     }
 
     public List<Book> sortedBooksByReleaseDate() {

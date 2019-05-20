@@ -5,6 +5,7 @@ import javax.mail.internet.MimeMessage;
 
 import library.models.Book;
 import library.models.BookState;
+import library.models.Payment;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
@@ -38,6 +39,7 @@ public class EmailService {
         this.bookStateRepository = bookStateRepository;
     }
 
+
     //TODO: zrobić maile dla: akcji związanych z książką-wypożyczenie, oddanie, zniszczenie, związanych z akcjami ewentualnymi zniszczeniami;
     //TODO: rejestracja, zbanowanie użytkownika, aktualizacja danych
     //TODO: można zrobić np. biuletyn co tydzień/miesiąc z informacją o nowych książkach (z walidacją wieku użytkownika)
@@ -62,33 +64,6 @@ public class EmailService {
         javaMailSender.send(mail);
     }
 
-    //TODO:do przemyślenia czy wiadomość ma być wysyłana codziennie w ostatnim tygodniu, czy np 2 razy-tydzień przed i ostatniego dnia
-    @Scheduled(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
-    public void returnBookReminder(String title, Integer bookId, Integer userId) {
-        String mailMessage = "Przypominamy, że termin oddania książki pt.\"" + bookRepository.getOne(bookId).getTitle()
-                + "\" to: " + bookStateRepository.findBookStateByBook(bookId).getDateOfReturn() + ". Prosimy o terminowy zwrot książki!";
-
-        //warunek sprawi, że maile będą wysłane tylko w ostatnim tygodniu wypożyczenia
-        if (LocalDate.now().isBefore(bookStateRepository.findBookStateByBook(bookId).getDateOfReturn()) &&
-                LocalDate.now().isAfter(bookStateRepository.findBookStateByBook(bookId).getDateOfUpdating().plusDays(23))) {
-            MimeMessage mail = javaMailSender.createMimeMessage();
-            try {
-                MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-                helper.setTo(userRepository.getOne(userId).getEmail());
-                helper.setReplyTo("@przykladowy@mail.com");         //:TODO : ustawić maila
-                helper.setFrom("@przykladowy@mail.com");            //:TODO : ustawić maila
-                helper.setSubject(title);
-                helper.setText(mailMessage);
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            } finally { //:TODO ?
-            }
-            javaMailSender.send(mail);
-        } else {
-            log.info("Nie wysłano żadnej wiadomości"); //
-        }
-    }
-
     public void userRegistrationInfo(Integer userId) {
         String mailMessage = "Dziękujemy za rejestrację na naszym serwisie!\n" +
                 "Przypominamy, że książki można wypożyczyć na 30 dni, natomiast w określonych warunkach można przedłużyć wypożyczenie o kolejne 30 dni\n";
@@ -107,7 +82,7 @@ public class EmailService {
     }
 
     public void userUpdateInfo(Integer userId) {
-        String mailMessage = "Twoje dane zostały zaktualizowane zgodnie z nowymi danmi!\n";
+        String mailMessage = "Twoje dane zostały zaktualizowane zgodnie z nowymi danymi!\n";
         // + "Twoje aktualne dane to:"; //tu można albo wypisać nowe dane usera (imię, nazwisko itd) albo ewentualnie w przyszłości dodać login/hasło etc
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
@@ -122,15 +97,64 @@ public class EmailService {
         }
     }
 
-    @Scheduled(cron = " 0 12 1 * *") //newsletter będzie wysyłany pierwszego dnia miesiąca o godzinie 12
+    /**
+     *informacja o zapłaconej płatności za zniszczenie książki/oddanie po terminie
+     */
+    public void paymentInfo(Integer userId, Book book, Payment payment){
+        String mailMessage = "Zniszczyłeś książkę pt. \""+book.getTitle()+"\".\nW związku z tym naliczyliśmy karę wynoszącą:"
+                +payment.getAmount()+" złotych.\n";
+        MimeMessage mail = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setTo(userRepository.getOne(userId).getEmail());
+            helper.setReplyTo("@przykladowy@mail.com");         //:TODO : ustawić maila
+            helper.setFrom("@przykladowy@mail.com");            //:TODO : ustawić maila
+            helper.setSubject("Informacje o płatności");
+            helper.setText(mailMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //TODO: !!! W przypadku użycia adnotacji @Scheduled, metody muszą bez parametrów!
+    // Trzeba będzie rozwiązać inaczej niż przez parametr przekazywanie danych
+/*
+    //TODO:do przemyślenia czy wiadomość ma być wysyłana codziennie w ostatnim tygodniu, czy np 2 razy-tydzień przed i ostatniego dnia
+    @Scheduled //(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
+    public void returnBookReminder(String title, Integer bookId, Integer userId) {
+        String mailMessage = "Przypominamy, że termin oddania książki pt.\"" + bookRepository.getOne(bookId).getTitle()
+                + "\" to: " + bookStateRepository.findBookStateByBook(bookId).getDateOfReturn() + ". Prosimy o terminowy zwrot książki!";
+
+        //warunek sprawi, że maile będą wysłane tylko w ostatnim tygodniu wypożyczenia
+        if (LocalDate.now().isBefore(bookStateRepository.findBookStateByBook(bookId).getDateOfReturn()) &&
+                LocalDate.now().isAfter(bookStateRepository.findBookStateByBook(bookId).getDateOfUpdating().plusDays(23))) {
+            MimeMessage mail = javaMailSender.createMimeMessage();
+            try {
+                MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+                helper.setTo(userRepository.getOne(userId).getEmail());
+                helper.setReplyTo("@przykladowy@mail.com");         //:TODO : ustawić maila
+                helper.setFrom("@przykladowy@mail.com");            //:TODO : ustawić maila
+                helper.setSubject(title);
+                helper.setText(mailMessage);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            javaMailSender.send(mail);
+        } else {
+            log.info("Nie wysłano żadnej wiadomości"); //
+        }
+    }
+
+    @Scheduled //(cron = " 0 12 1 * *") //newsletter będzie wysyłany pierwszego dnia miesiąca o godzinie 12
     public void newsletter(Integer userId) {
 
-        /**
-         * zrobić nową klasę newsletter, z walidacjami, która:
-         * będzie zwracać różne wiadomości dla różnych użytkowników, tzn:
-         * dla dorosłych i dla dzieci będzie oddzielny mail, z listą nowych książek (z walidacją AgeCategory)
-         * można też zwrócić listę 5 najpopularniejszych książek z poprzedniego miesiąca lub coś w tym stylu
-         */
+        *//**
+     * zrobić nową klasę newsletter, z walidacjami, która:
+     * będzie zwracać różne wiadomości dla różnych użytkowników, tzn:
+     * dla dorosłych i dla dzieci będzie oddzielny mail, z listą nowych książek (z walidacją AgeCategory)
+     * można też zwrócić listę 5 najpopularniejszych książek z poprzedniego miesiąca lub coś w tym stylu
+     *//*
 
         String mailMessage = "";
         MimeMessage mail = javaMailSender.createMimeMessage();
@@ -144,7 +168,5 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-
-
+    }*/
 }

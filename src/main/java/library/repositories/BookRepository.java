@@ -31,7 +31,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
      *     wyświetlanie książek w kolejności dodania do biblioteki
      *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
      */
-    @Query("select b from Book order by addingDate")
+    @Query("select b from Book b order by b.addingDate")
     List<Book> sortedBooksByAddingData();
 
 
@@ -39,7 +39,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
      *     wyświetlanie książek w kolejności wydania
      *     można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie książek wydanych w danym roku
      */
-    @Query("select b from Book order by releaseDate")
+    @Query("select b from Book b order by b.releaseDate")
     List<Book> sortedBooksByReleaseData();
 
 
