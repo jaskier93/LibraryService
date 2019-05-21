@@ -2,7 +2,6 @@ package library;
 
 import library.enums.BookStateEnum;
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;

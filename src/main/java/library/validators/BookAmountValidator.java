@@ -18,15 +18,12 @@ public class BookAmountValidator extends AbstractValidator {
         this.bookStateRepository = bookStateRepository;
     }
 
-/*   // metoda sprawdzająca, czy dany użytkownik ma wypożyczone więcej niż 3 książki
-    public boolean isMoreThanThree(User user) {
-        List<Book> bookList = bookStateRepository.findBooksByUser(user);
-        return (bookList.size() > 3 && (!bookList.isEmpty()));
-    }*/
-
+    /**
+     * metoda sprawdzająca, czy dany użytkownik ma wypożyczone więcej niż 3 książki
+     */
     @Override
     public boolean validator(User user) {
-        List<Book> bookList = bookStateRepository.findBooksByUser(user);
+        List<Book> bookList = bookStateRepository.findLoanedBooksByUser(user);
         return (bookList.size() > 3 && (!bookList.isEmpty()));
     }
 

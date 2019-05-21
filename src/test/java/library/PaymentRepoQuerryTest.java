@@ -82,9 +82,5 @@ public class PaymentRepoQuerryTest {
         assertFalse(paymentRepository.findByUser(user).isEmpty());
         assertFalse(paymentRepository.findPaymentsAboveAmount(8).isEmpty());
         assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558).isEmpty());
-
-        paymentRepository.delete(payment);
-        userRepository.delete(user);
-        bookRepository.delete(book);
     }
 }
