@@ -38,12 +38,13 @@ public class PaymentRepositoryTest {
 
     @After
     public void after() {
-            jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
-            jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
-            jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
-            jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
-            jdbcTemplate.update("delete from book_states where status=1020304050");
-            jdbcTemplate.update("delete from payments where amount=1020304050");    }
+        jdbcTemplate.update("Delete from actions where action_description ='TEST'"); //TODO:do przetestowania
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+        jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("delete from payments where amount=1020304050");
+    }
 
     //test passed!
     @Test

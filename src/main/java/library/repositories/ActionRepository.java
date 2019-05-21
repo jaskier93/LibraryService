@@ -1,5 +1,6 @@
 package library.repositories;
 
+import library.enums.ActionDescription;
 import library.models.Action;
 import library.models.Book;
 import library.users.User;
@@ -18,14 +19,14 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     //metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc
     @Query("select a from Action  a where  a.actionDescription=?1")
-    List<Action> findActionByActionDescription(String description);
+    List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
     /**
      * metoda zwracająca listę akcji związanych ze zniszczoną książką
      * aby to miało sens należy do actionDescription zawsze opisywać tak samo zniszczenie -można to ewentualnie zmienić na enuma
      * lub podczas przesyłania z htmla do bazy ustalić jako value=Zniszczenie (przy polu actionDescription wypełnianym przez admina)
      */
-    @Query("select a from Action  a where  a.actionDescription='Zniszczenie' and a.user=:value")
+    @Query("select a from Action  a where  a.actionDescription='ZNISZCZENIE' and a.user=:value")
     List<Action> findActionsWithDestroyedBooksByUser(@Param("value") User user);
 
     //zwraca listę akcji danej książki

@@ -1,5 +1,6 @@
 package library;
 
+import library.enums.ActionDescription;
 import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
 import library.enums.Category;
@@ -52,7 +53,7 @@ public class TestUtils {
 
     public static Action createAction(Book book, User user) {
         Action action = new Action();
-        action.setActionDescription("xxxyyyzzz");
+        action.setActionDescription(ActionDescription.TEST);
         action.setBook(book);
         action.setUser(null);
         return action;

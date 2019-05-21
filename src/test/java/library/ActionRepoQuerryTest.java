@@ -1,5 +1,6 @@
 package library;
 
+import library.enums.ActionDescription;
 import library.models.Action;
 import library.models.Book;
 import library.repositories.*;
@@ -34,7 +35,7 @@ public class ActionRepoQuerryTest {
 
     @After
     public void after() {
-        jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
@@ -59,8 +60,8 @@ public class ActionRepoQuerryTest {
 
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
-        assertFalse(actionRepository.findActionByActionDescription("xxxyyyzzz").isEmpty());
-        assertTrue(actionRepository.findActionByActionDescription("sdffds").isEmpty());
+        assertFalse(actionRepository.findActionByActionDescription(ActionDescription.TEST).isEmpty()); // TODO: sprawdzić czy działa
+        assertTrue(actionRepository.findActionByActionDescription(ActionDescription.ZWROT).isEmpty());
         assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
     }

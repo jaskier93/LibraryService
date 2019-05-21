@@ -38,7 +38,7 @@ public class BookStateRepoQuerryTest {
 
     @After
     public void after() {
-        jdbcTemplate.update("Delete from actions where action_description ='xxxyyyzzz'");
+        jdbcTemplate.update("Delete from actions where action_description ='TEST'"); //TODO:do przetestowania
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");

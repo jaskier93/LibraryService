@@ -1,5 +1,6 @@
 package library.models;
 
+import library.enums.ActionDescription;
 import library.users.User;
 import lombok.Data;
 
@@ -20,11 +21,14 @@ public class Action {
      * i możliwość dodadania po prostu własnego opisu
      */
     @NotNull
-    private String actionDescription;
+    @Enumerated(EnumType.STRING)
+    private ActionDescription actionDescription;
 
     @ManyToOne
     private Book book;
 
     @ManyToOne
     private User user;
+
+
 }

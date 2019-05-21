@@ -1,5 +1,6 @@
 package library.services;
 
+import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Book;
@@ -46,7 +47,7 @@ public class RentService {
 
     public String rentBook(Book book, User user) {
         Action action = new Action();
-        action.setActionDescription("Wypożyczenie");
+        action.setActionDescription(ActionDescription.WYPOŻYCZENIE);
         action.setBook(book);
         action.setUser(user);
         actionRepository.save(action);
@@ -63,7 +64,7 @@ public class RentService {
     //czy jest sens wysyłać maila w przypadku zwrotu książki?
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
         Action action = new Action();
-        action.setActionDescription("Zwrot książki");
+        action.setActionDescription(ActionDescription.ZWROT);
         action.setBook(book);
         action.setUser(user);
         actionRepository.save(action);
@@ -84,7 +85,7 @@ public class RentService {
     public String loanBookProlongation(Book book, User user) {
         //najpierw wywołać metodę walidującą z ProlongationValidator
         Action action = new Action();
-        action.setActionDescription("Przedłużenie wypożyczenia książki");
+        action.setActionDescription(ActionDescription.PRZEDŁUŻENIE);
         action.setBook(book);
         action.setUser(user);
         actionRepository.save(action);

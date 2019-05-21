@@ -1,5 +1,6 @@
 package library.services;
 
+import library.enums.ActionDescription;
 import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
 import library.enums.Category;
@@ -43,7 +44,7 @@ public class BookService {
         Action action = new Action();
         action.setBook(book);
         //action.setUser(); tutaj powinno dodawać się login admina
-        action.setActionDescription("Dodanie nowej książki");
+        action.setActionDescription(ActionDescription.NOWOŚĆ);
         actionRepository.save(action);
 
         BookState bookState = new BookState();
@@ -97,7 +98,7 @@ public class BookService {
              *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
              *         lub odpowiednia adnotacja (trzeba by dodać całe security)
              */
-            action.setActionDescription("Zaktualizowanie informacji o książce"); //TODO: actionENUM
+            action.setActionDescription(ActionDescription.AKTUALIZACJA); //TODO: actionENUM
             actionRepository.save(action);
 
             BookState newBookState = new BookState();
@@ -156,7 +157,7 @@ public class BookService {
         Action action = new Action();
         action.setUser(user);
         action.setBook(bookFromBase);
-        action.setActionDescription("Książka zniszczona");
+        action.setActionDescription(ActionDescription.ZNISZCZENIE);
         actionRepository.save(action);
 
         BookState bookState = new BookState();
