@@ -5,11 +5,11 @@ import javax.mail.internet.MimeMessage;
 
 import library.models.Book;
 import library.models.BookState;
+import library.models.EmailServiceModel;
 import library.models.Payment;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
-import library.users.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,8 +17,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Slf4j
 @Service
@@ -28,17 +26,16 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     private BookRepository bookRepository;
     private UserRepository userRepository;
-    private BookStateRepository bookStateRepository;
+    private EmailServiceModel emailServiceModel;
 
     @Autowired
-    public EmailService(RentService rentService, JavaMailSender javaMailSender, BookRepository bookRepository, UserRepository userRepository, BookStateRepository bookStateRepository) {
+    public EmailService(RentService rentService, JavaMailSender javaMailSender, BookRepository bookRepository, UserRepository userRepository, EmailServiceModel emailServiceModel) {
         this.rentService = rentService;
         this.javaMailSender = javaMailSender;
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.bookStateRepository = bookStateRepository;
+        this.emailServiceModel = emailServiceModel;
     }
-
 
     //TODO: zrobić maile dla: akcji związanych z książką-wypożyczenie, oddanie, zniszczenie, związanych z akcjami ewentualnymi zniszczeniami;
     //TODO: rejestracja, zbanowanie użytkownika, aktualizacja danych
@@ -48,6 +45,7 @@ public class EmailService {
      * wysyłanie maili, póki co dla konkretnego użytkownika
      * //:TODO do poprawienia/zrobić wariant dla różnych akcji
      */ //:TODO do przerobienia : metoda powinna przeszukać całą bazę w poszukiwaniu wszystkich aktualnych wypożyczeń i po nich sprawdzać daty oddania-w razie spełnienia warunków należy wysłać maila
+
     public void sendMailAboutRentBook(String title, Integer bookId, Integer userId) {
         String mailMessage = rentService.rentBook(bookRepository.getOne(bookId), userRepository.getOne(userId));
         MimeMessage mail = javaMailSender.createMimeMessage();

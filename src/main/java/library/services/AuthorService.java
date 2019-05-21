@@ -29,9 +29,6 @@ public class AuthorService {
             if (!author.getLastName().isEmpty()) {
                 authorFromBase.setLastName(author.getLastName());
             }
-            if (!author.getCreated().isEqual(authorFromBase.getCreated())) {
-                authorFromBase.setCreated(author.getCreated());
-            }
             if (!author.getDateOfBirth().isEqual(authorFromBase.getDateOfBirth())) {
                 authorFromBase.setDateOfBirth(author.getDateOfBirth());
             }
@@ -41,14 +38,14 @@ public class AuthorService {
             if (!author.getName().isEmpty()) {
                 authorFromBase.setName(author.getName());
             }
+            //domyślny status autora to 0 (przy tworzeniu)
             if (author.getStatus() != 0) {
                 authorFromBase.setStatus(author.getStatus());
             }
             if (!author.getSecondName().isEmpty()) {
                 authorFromBase.setSecondName(author.getSecondName());
             }
-            authorRepository.save(authorFromBase);
         }
-        return author;
+        return authorRepository.save(authorFromBase);
     }
 }

@@ -48,19 +48,13 @@ public class UserService {
             if (!user.getName().isEmpty()) {
                 userFromBase.setName(user.getName());
             }
-            if (!user.getName().isEmpty()) {
+            if (!user.getEmail().isEmpty()) {
                 userFromBase.setEmail(user.getEmail());
             }
-            if (!user.getName().isEmpty()) {
+            if (!user.getAdminDegree().equals(userFromBase.getAdminDegree())) {
                 userFromBase.setAdminDegree(user.getAdminDegree());
             }
-            if (!user.getName().isEmpty()) {
-                userFromBase.setActive(user.isActive()); //ta zmienna raczej nie będzie zmieniana
-            }
-            if (!user.getName().isEmpty()) {
-                userFromBase.setAdmin(user.isAdmin()); //ta raczej też
-            }
-            if (!user.getName().isEmpty()) {
+            if (!user.getDateOfRegistration().isEqual(userFromBase.getDateOfBirth())) {
                 userFromBase.setDateOfBirth(user.getDateOfBirth());
             }
             userRepository.save(userFromBase);
@@ -78,16 +72,21 @@ public class UserService {
     /**
      * można ewentualnie pomyśleć o tym, żeby kasować zbanowanego usera np po roku,
      * a w przypadku, gdy np. odkupi zniszczoną książkę-można zdjąć bana
-    */
+     */
     public User banUser(User user) {
         user.setActive(false);
         return userRepository.save(user);
     }
-
 
     public User unbanUser(User user) {
         user.setActive(true);
         return userRepository.save(user);
     }
 
+    //nadanie użytkownikowi uprawnień administratora
+    public User giveUserAdmin(User user) {
+        user = userRepository.getOne(user.getId());
+        user.setAdmin(true);
+        return userRepository.save(user);
+    }
 }
