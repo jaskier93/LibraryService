@@ -24,6 +24,6 @@ public class PaymentAmountValidator extends AbstractValidator {
     @Override
     public boolean validator(User user) {
         List<Payment> paymentList = paymentRepository.findByUser(user);
-        return  (paymentList.size() >= MAX_PAYMENTS_AMOUNT);
+        return (paymentList.size() >= MAX_PAYMENTS_AMOUNT);
     }
 }

@@ -21,7 +21,7 @@ public class IsBookLoanable {
     /**
      * warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
      */
-    private boolean isBookAbleToLoan(Book book) {
+    public boolean isBookAbleToLoan(Book book) {
         BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
         boolean temp;
         switch (bookState.getBookStateEnum()) {

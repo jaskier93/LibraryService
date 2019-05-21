@@ -15,7 +15,7 @@ public class TestUtils {
     public static User createUser() {
         User user = new User();
         user.setActive(true);
-        user.setDateOfBirth(LocalDate.now());
+        user.setDateOfBirth(LocalDate.now().minusYears(20));
         user.setAdmin(false);
         user.setDateOfRegistration(LocalDate.now());
         user.setAdminDegree(0);
@@ -40,8 +40,10 @@ public class TestUtils {
     }
 
     public static Author createAuthor() {
-        Author author = new Author("Andrzej", "", "SapkowskiAndrzej", LocalDate.of(2015, 12, 31),
-                LocalDate.of(2015, 12, 31), LocalDate.of(2015, 12, 31), 5);
+        Author author = new Author("Andrzej", "", "SapkowskiAndrzej",
+                LocalDate.of(1955, 12, 31),
+                LocalDate.of(2015, 12, 31),
+                LocalDate.of(2018, 12, 31), 5);
         return author;
     }
 
@@ -55,7 +57,7 @@ public class TestUtils {
         Action action = new Action();
         action.setActionDescription(ActionDescription.TEST);
         action.setBook(book);
-        action.setUser(null);
+        action.setUser(null); //TODO: czy user? do sprawdzenia
         return action;
     }
 
@@ -66,7 +68,7 @@ public class TestUtils {
         payment.setBook(book);
         payment.setDateOfPayment(LocalDate.now());
         payment.setUser(user);
-        payment.setStatus(0);
+        payment.setStatus(1020304050);
         return payment;
     }
 }

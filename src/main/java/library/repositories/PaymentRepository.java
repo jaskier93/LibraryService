@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PaymentRepository extends JpaRepository<Payment, Integer>  {
+public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
 
     /* metoda zwraca listę płatnośći powyżej 10zł
@@ -24,7 +24,12 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer>  {
     @Query("select p from Payment  p where p.user = ?1")
     List<Payment> findByUser(User user);
 
-    //wyliczenie sumy płatności dla jednego użytkownika
-    @Query("select sum(p.amount) from Payment p where p.user.id = : userid ")
+    /**
+     * wyliczenie sumy płatności dla jednego użytkownika (niezapłaconych-p.active=true lub 1
+     * przy próbie dodania warunku p.active=1 (lub true) wyskakuje błąd z BookService i problem utworzenia beana)
+     * TODO: ta metoda nie działa prawidłowo!
+     */
+    @Query("select sum(p.amount) from Payment p where p.user.id = :userid")
     Integer sumPaymentsForOneUser(@Param("userid") Integer userId);
+
 }

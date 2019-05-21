@@ -7,8 +7,11 @@ import java.time.LocalDate;
 @Component
 public class IsDateCorrect {
     /**
-     *metoda do sprawdzania poprawnośći wprowadzanej daty, np daty rejestracji, narodzin, śmierci itd
+     * metoda do sprawdzania poprawnośći wprowadzanej daty, np daty rejestracji, narodzin, śmierci itd
+     * localDate = localDate.plusDays(1) spowoduje, że możliwe będzie wpisanie dzisiejszej daty
      */
-    public boolean validator(LocalDate localDate) { return localDate.isBefore(LocalDate.now());
+    public boolean validator(LocalDate localDate) {
+        localDate = localDate.minusDays(1);
+        return localDate.isBefore(LocalDate.now());
     }
 }

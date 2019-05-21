@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Component
 public class IsUserAdult extends AbstractValidator {
@@ -17,8 +18,8 @@ public class IsUserAdult extends AbstractValidator {
      * */
     @Override
     public boolean validator(User user) {
-        long age = Duration.between(user.getDateOfBirth(), LocalDate.now()).toDays();
-        float years = age / 365.25f;
-        return (years > 18);
+        LocalDate today = LocalDate.now();
+        Period period=Period.between(user.getDateOfBirth(), today);
+        return (period.getYears() >= 18);
     }
 }

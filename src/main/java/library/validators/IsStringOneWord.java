@@ -15,8 +15,8 @@ public class IsStringOneWord {
      * -może być wykorzystana przy imionach, nazwiskach itd
      */
     public boolean validator(String variable) {
-        if (Character.isUpperCase(variable.charAt(0)) && variable.isEmpty()
-                && Character.isLetter(variable.charAt(variable.length() - 1))) {
+        if (Character.isUpperCase(variable.charAt(0)) && variable != null) {
+
             for (int i = 0; i < variable.length() - 1; i++) {
                 // sprawdzić czy isLetter uzwględni polskie znaki
                 if (Character.isLetter(variable.charAt(i))) {
@@ -24,6 +24,6 @@ public class IsStringOneWord {
                 }
             }
         }
-        return counter == variable.length();
+        return counter == variable.length() - 1;
     }
 }

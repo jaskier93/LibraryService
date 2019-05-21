@@ -25,7 +25,7 @@ import java.util.List;
 public class BookService {
 
     //kara 20zł za zniszczenie książki
-    public static final Integer PENALTY_AMOUNT = 20;
+    private static final Integer PENALTY_AMOUNT = 20;
 
     private BookRepository bookRepository;
     private BookStateRepository bookStateRepository;
@@ -170,8 +170,12 @@ public class BookService {
         bookStateRepository.save(bookState);
 
         Payment payment = new Payment();
+        payment.setDateOfPayment(LocalDate.now());
+        payment.setAction(action);
+        payment.setBookState(bookState);
         payment.setAmount(PENALTY_AMOUNT);
         payment.setUser(user);
+        payment.setStatus(0);
         payment.setActive(true);
         payment.setBook(bookFromBase);
         paymentRepository.save(payment);

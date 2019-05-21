@@ -8,6 +8,6 @@ public class IsUserAdmin extends AbstractValidator {
     //metoda zwraca informację, czy user ma status admina
     @Override
     public boolean validator(User user) {
-        return user.isActive();
+        return user.isAdmin();
     }
 }

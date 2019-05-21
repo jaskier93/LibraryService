@@ -1,10 +1,8 @@
 package library.validatorsTests;
 
 import library.TestUtils;
-import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.ActionRepository;
@@ -12,7 +10,7 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.BookAmountValidator;
+import library.validators.IsBookLoanable;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,16 +19,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class BookAmountValidatorTest {
+public class IsBookLoanableTest {
 
     @Autowired
-    private BookAmountValidator bookAmountValidator;
+    private IsBookLoanable isBookLoanable;
 
     @Autowired
     private BookStateRepository bookStateRepository;
@@ -56,7 +54,7 @@ public class BookAmountValidatorTest {
         jdbcTemplate.update("delete from book_states where status=1020304050");
     }
 
-    @Test
+    @Test //test passed! prawdiłowo usuwane obiekty z bazy
     public void validatorTest() {
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
@@ -65,12 +63,6 @@ public class BookAmountValidatorTest {
         bookRepository.save(book1);
         Book book2 = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book2);
-        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book3);
-        Book book4 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book4);
-        Book book5 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book5);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
@@ -93,26 +85,40 @@ public class BookAmountValidatorTest {
         action2.setBook(book2);
         actionRepository.save(action2);
 
-        Action action3 = TestUtils.createAction(book3, user);
-        action3.setUser(user);
-        action3.setBook(book3);
-        actionRepository.save(action3);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Action action4 = TestUtils.createAction(book4, user);
-        action4.setUser(user);
-        action4.setBook(book4);
-        actionRepository.save(action4);
-
-        Action action5 = TestUtils.createAction(book5, user);
-        action5.setUser(user);
-        action5.setBook(book5);
-        actionRepository.save(action5);
-
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWRÓCONA);
+        bookState.setDateOfReturn(LocalDate.now().plusDays(1));
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
+
+        BookState bookState2 = TestUtils.createBookState(book, action2, BookStateEnum.WYPOŻYCZONA);
+        bookState2.setUser(user);
+        bookState2.setBook(book);
+        bookState2.setAction(action2);
+        bookStateRepository.save(bookState2);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        BookState bookState3 = TestUtils.createBookState(book2, action1, BookStateEnum.WYPOŻYCZONA);
+        bookState3.setUser(user);
+        bookState3.setBook(book2);
+        bookState3.setAction(action1);
+        bookStateRepository.save(bookState3);
+
+        BookState bookState4 = TestUtils.createBookState(book2, action2, BookStateEnum.NOWA);
+        bookState4.setUser(user);
+        /**
+         * //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2
+         */
+        bookState4.setDateOfReturn(LocalDate.now().minusDays(1));
+        bookState4.setBook(book2);
+        bookState4.setAction(action2);
+        bookStateRepository.save(bookState4);
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOŻYCZONA);
         bookState1.setUser(user);
@@ -120,31 +126,16 @@ public class BookAmountValidatorTest {
         bookState1.setAction(action1);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book2, action2, BookStateEnum.WYPOŻYCZONA);
-        bookState2.setUser(user);
-        bookState2.setBook(book2);
-        bookState2.setAction(action2);
-        bookStateRepository.save(bookState2);
-
-        BookState bookState3 = TestUtils.createBookState(book3, action3, BookStateEnum.WYPOŻYCZONA);
-        bookState3.setUser(user);
-        bookState3.setBook(book3);
-        bookState3.setAction(action3);
-        bookStateRepository.save(bookState3);
-
-        BookState bookState4 = TestUtils.createBookState(book4, action4, BookStateEnum.WYPOŻYCZONA);
-        bookState4.setUser(user);
-        bookState4.setBook(book4);
-        bookState4.setAction(action4);
-        bookStateRepository.save(bookState4);
-
-        BookState bookState5 = TestUtils.createBookState(book5, action5, BookStateEnum.WYPOŻYCZONA);
-        bookState5.setUser(user2);
-        bookState5.setBook(book5);
-        bookState5.setAction(action5);
+        BookState bookState5 = TestUtils.createBookState(book1, action1, BookStateEnum.ZNISZCZONA);
+        bookState5.setDateOfReturn(LocalDate.now().plusDays(1));
+        bookState5.setUser(user);
+        bookState5.setBook(book1);
+        bookState5.setAction(action1);
         bookStateRepository.save(bookState5);
 
-        assertTrue(bookAmountValidator.validator(user));
-        assertFalse(bookAmountValidator.validator(user2));
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        assertTrue(isBookLoanable.isBookAbleToLoan(book));
+        assertFalse(isBookLoanable.isBookAbleToLoan(book2));
+        assertFalse(isBookLoanable.isBookAbleToLoan(book1));
     }
 }
