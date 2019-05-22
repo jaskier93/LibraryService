@@ -7,7 +7,6 @@ import library.enums.Category;
 import library.models.*;
 import library.users.User;
 
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 
 public class TestUtils {
@@ -31,7 +30,7 @@ public class TestUtils {
         bookState.setBook(book);
         bookState.setBookStateEnum(bookStateEnum);
         bookState.setDateOfReturn(LocalDate.now());
-        bookState.setDateOfUpdating(LocalDate.now());
+        bookState.setDateOfUpdate(LocalDate.now());
         bookState.setDateOfCreating(LocalDate.now());
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
@@ -49,7 +48,7 @@ public class TestUtils {
 
     public static Book createBook(Author author) {
         Book book = new Book("WiedźminWiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
-                Category.ADVENTURE, AgeCategory.DOROŚLI, author, 5);
+                Category.ADVENTURE, AgeCategory.DOROSLI, author, 5);
         return book;
     }
 

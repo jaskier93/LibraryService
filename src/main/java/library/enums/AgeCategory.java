@@ -1,7 +1,8 @@
 package library.enums;
 
+//TODO: dodawać kategorie bez polskich znaków
 public enum AgeCategory {
-    NAJMŁODSI,
+    NAJMLODSI,
     NASTOLATKOWIE,
-    DOROŚLI;
+    DOROSLI;
 }

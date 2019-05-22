@@ -1,11 +1,12 @@
 package library.enums;
 
+//TODO: dodawać zwroty bez polskich znaków
 public enum ActionDescription {
     TEST, //enum tylko do testów-łatwiejsze usuwanie testowych obiektów typu Action
-    WYPOŻYCZENIE,
-    NOWOŚĆ,
+    WYPOZYCZENIE,
+    NOWOSC,
     ZNISZCZENIE,
     AKTUALIZACJA,
-    PRZEDŁUŻENIE,
+    PRZEDLUZENIE,
     ZWROT;
 }

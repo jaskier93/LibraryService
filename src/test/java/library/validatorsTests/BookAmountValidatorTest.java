@@ -1,10 +1,8 @@
 package library.validatorsTests;
 
 import library.TestUtils;
-import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.models.Action;
-import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.ActionRepository;
@@ -20,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -108,37 +104,37 @@ public class BookAmountValidatorTest {
         action5.setBook(book5);
         actionRepository.save(action5);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOZYCZONA);
         bookState1.setUser(user);
         bookState1.setBook(book1);
         bookState1.setAction(action1);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book2, action2, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState2 = TestUtils.createBookState(book2, action2, BookStateEnum.WYPOZYCZONA);
         bookState2.setUser(user);
         bookState2.setBook(book2);
         bookState2.setAction(action2);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(book3, action3, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState3 = TestUtils.createBookState(book3, action3, BookStateEnum.WYPOZYCZONA);
         bookState3.setUser(user);
         bookState3.setBook(book3);
         bookState3.setAction(action3);
         bookStateRepository.save(bookState3);
 
-        BookState bookState4 = TestUtils.createBookState(book4, action4, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState4 = TestUtils.createBookState(book4, action4, BookStateEnum.WYPOZYCZONA);
         bookState4.setUser(user);
         bookState4.setBook(book4);
         bookState4.setAction(action4);
         bookStateRepository.save(bookState4);
 
-        BookState bookState5 = TestUtils.createBookState(book5, action5, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState5 = TestUtils.createBookState(book5, action5, BookStateEnum.WYPOZYCZONA);
         bookState5.setUser(user2);
         bookState5.setBook(book5);
         bookState5.setAction(action5);

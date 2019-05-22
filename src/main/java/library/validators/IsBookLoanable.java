@@ -1,6 +1,5 @@
 package library.validators;
 
-import library.enums.BookStateEnum;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookStateRepository;
@@ -25,7 +24,7 @@ public class IsBookLoanable {
         BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
         boolean temp;
         switch (bookState.getBookStateEnum()) {
-            case WYPOŻYCZONA:
+            case WYPOZYCZONA:
                 log.info("Książka jest aktualnie wypożyczona");
                 temp = false;
                 break;
@@ -33,7 +32,7 @@ public class IsBookLoanable {
                 log.info("Książka jest zniszczona");
                 temp = false;
                 break;
-            case ZWRÓCONA:
+            case ZWROCONA:
             case NOWA:
                 log.info("Możesz wypożyczyć tę książkę");
                 temp = true;

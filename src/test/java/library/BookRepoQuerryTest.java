@@ -2,9 +2,7 @@ package library;
 
 import library.enums.AgeCategory;
 import library.enums.Category;
-import library.models.Author;
 import library.models.Book;
-import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import org.junit.After;
 import org.junit.Test;
@@ -44,12 +42,12 @@ public class BookRepoQuerryTest {
         assertFalse(bookRepository.findBookByTitle("WiedźminWiedźmin").isEmpty());
         assertEquals("WiedźminWiedźmin", book.getTitle());
         assertNotEquals("sdfssdffds", book.getTitle());
-        assertEquals(book.getAgeCategory(), AgeCategory.DOROŚLI);
-        assertNotEquals(book.getAgeCategory(), AgeCategory.NAJMŁODSI);
+        assertEquals(book.getAgeCategory(), AgeCategory.DOROSLI);
+        assertNotEquals(book.getAgeCategory(), AgeCategory.NAJMLODSI);
         assertEquals(book.getCategory(), Category.ADVENTURE);
         assertNotEquals(book.getCategory(), Category.DICTIONARY);
-        assertFalse(bookRepository.findBookByAgeCategory(AgeCategory.DOROŚLI).isEmpty());
-        assertTrue(bookRepository.findBookByAgeCategory(AgeCategory.NAJMŁODSI).isEmpty());
+        assertFalse(bookRepository.findBookByAgeCategory(AgeCategory.DOROSLI).isEmpty());
+        assertTrue(bookRepository.findBookByAgeCategory(AgeCategory.NAJMLODSI).isEmpty());
         assertFalse(bookRepository.findBookByCategory(Category.ADVENTURE).isEmpty());
         assertTrue(bookRepository.findBookByCategory(Category.THRILLER).isEmpty());
     }

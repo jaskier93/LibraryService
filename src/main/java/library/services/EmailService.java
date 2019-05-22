@@ -126,7 +126,7 @@ public class EmailService {
 
         //warunek sprawi, że maile będą wysłane tylko w ostatnim tygodniu wypożyczenia
         if (LocalDate.now().isBefore(bookStateRepository.findBookStateByBook(bookId).getDateOfReturn()) &&
-                LocalDate.now().isAfter(bookStateRepository.findBookStateByBook(bookId).getDateOfUpdating().plusDays(23))) {
+                LocalDate.now().isAfter(bookStateRepository.findBookStateByBook(bookId).getDateOfUpdate().plusDays(23))) {
             MimeMessage mail = javaMailSender.createMimeMessage();
             try {
                 MimeMessageHelper helper = new MimeMessageHelper(mail, true);

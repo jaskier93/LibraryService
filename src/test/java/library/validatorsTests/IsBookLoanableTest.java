@@ -87,14 +87,14 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWRÓCONA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setDateOfReturn(LocalDate.now().plusDays(1));
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
-        BookState bookState2 = TestUtils.createBookState(book, action2, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState2 = TestUtils.createBookState(book, action2, BookStateEnum.WYPOZYCZONA);
         bookState2.setUser(user);
         bookState2.setBook(book);
         bookState2.setAction(action2);
@@ -102,7 +102,7 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState3 = TestUtils.createBookState(book2, action1, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState3 = TestUtils.createBookState(book2, action1, BookStateEnum.WYPOZYCZONA);
         bookState3.setUser(user);
         bookState3.setBook(book2);
         bookState3.setAction(action1);
@@ -120,7 +120,7 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOŻYCZONA);
+        BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOZYCZONA);
         bookState1.setUser(user);
         bookState1.setBook(book1);
         bookState1.setAction(action1);

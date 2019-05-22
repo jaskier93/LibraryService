@@ -30,7 +30,7 @@ public class BookState {
     @NotNull
     private LocalDate dateOfCreating = LocalDate.now();
 
-    private LocalDate dateOfUpdating = LocalDate.now();
+    private LocalDate dateOfUpdate = LocalDate.now();
 
     private LocalDate dateOfReturn = LocalDate.now().plusDays(30);
 

@@ -44,7 +44,7 @@ public class BookService {
         Action action = new Action();
         action.setBook(book);
         //action.setUser(); tutaj powinno dodawać się login admina
-        action.setActionDescription(ActionDescription.NOWOŚĆ);
+        action.setActionDescription(ActionDescription.NOWOSC);
         actionRepository.save(action);
 
         BookState bookState = new BookState();
@@ -105,12 +105,12 @@ public class BookService {
             BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
             newBookState.setBook(bookFromBase);
             newBookState.setAction(action);
-            newBookState.setDateOfUpdating(LocalDate.now());
+            newBookState.setDateOfUpdate(LocalDate.now());
             newBookState.setUser(bookStateFromBase.getUser());
             newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
             newBookState.setStatus(bookStateFromBase.getStatus());
             newBookState.setDateOfCreating(LocalDate.now());
-            newBookState.setDateOfUpdating(LocalDate.now());
+            newBookState.setDateOfUpdate(LocalDate.now());
             newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
             newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
             bookStateRepository.save(newBookState);
