@@ -20,15 +20,13 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class IsUsedAdultTest {
-    @Autowired
-    private UserRepository userRepository;
+public class IsUserAdultTest {
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
 
     @Autowired
-    private IsUserAdult isUserAdult;
+    private final IsUserAdult isUserAdult = null;
 
     @After
     public void after() {
@@ -37,18 +35,13 @@ public class IsUsedAdultTest {
 
     @Test
     public void validatorTest() {
+
         User user = TestUtils.createUser();
         user.setDateOfBirth(LocalDate.now().plusYears(17)); //w tym przypadku user ma ~3 lata
-        userRepository.save(user);
 
         User user2 = TestUtils.createUser();
 
-        userRepository.save(user2);
-
         assertFalse(isUserAdult.validator(user));
         assertTrue(isUserAdult.validator(user2));
-
     }
-
-
 }

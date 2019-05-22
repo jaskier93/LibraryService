@@ -54,7 +54,7 @@ public class UserService {
             if (!user.getAdminDegree().equals(userFromBase.getAdminDegree())) {
                 userFromBase.setAdminDegree(user.getAdminDegree());
             }
-            if (!user.getDateOfRegistration().isEqual(userFromBase.getDateOfBirth())) {
+            if (!user.getDateOfBirth().isEqual(userFromBase.getDateOfBirth())) {
                 userFromBase.setDateOfBirth(user.getDateOfBirth());
             }
             userRepository.save(userFromBase);
@@ -85,7 +85,6 @@ public class UserService {
 
     //nadanie użytkownikowi uprawnień administratora
     public User giveUserAdmin(User user) {
-        user = userRepository.getOne(user.getId());
         user.setAdmin(true);
         return userRepository.save(user);
     }

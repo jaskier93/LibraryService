@@ -21,10 +21,10 @@ import static org.junit.Assert.*;
 public class IsDateCorrectTest {
 
     @Autowired
-    private IsDateCorrect isDateCorrect;
+    private final IsDateCorrect isDateCorrect = null;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
@@ -47,11 +47,10 @@ public class IsDateCorrectTest {
 
         assertNotEquals(user.getDateOfBirth(), user2.getDateOfBirth());
 
-        User userFromBase=userRepository.getOne(user.getId());
+        User userFromBase = userRepository.getOne(user.getId());
 
         assertFalse(isDateCorrect.validator(user.getDateOfBirth()));
         assertFalse(isDateCorrect.validator(userFromBase.getDateOfBirth()));
         assertTrue(isDateCorrect.validator(user2.getDateOfBirth()));
-
     }
 }

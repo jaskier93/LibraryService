@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class DestroyerValidator extends AbstractValidator {
 
-    private ActionRepository actionRepository;
+    private final ActionRepository actionRepository;
 
     @Autowired
     public DestroyerValidator(ActionRepository actionRepository) {

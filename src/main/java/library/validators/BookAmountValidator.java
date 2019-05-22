@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class BookAmountValidator extends AbstractValidator {
 
-    private BookStateRepository bookStateRepository;
+    private final BookStateRepository bookStateRepository;
 
     @Autowired
     public BookAmountValidator(BookStateRepository bookStateRepository) {

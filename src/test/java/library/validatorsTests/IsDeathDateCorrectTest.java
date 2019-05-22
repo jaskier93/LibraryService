@@ -23,10 +23,10 @@ import static org.junit.Assert.*;
 public class IsDeathDateCorrectTest {
 
     @Autowired
-    private IsDeathDateCorrect isDeathDateCorrect;
+    private final IsDeathDateCorrect isDeathDateCorrect = null;
 
     @Autowired
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;

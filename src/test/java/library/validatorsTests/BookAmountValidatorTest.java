@@ -26,19 +26,19 @@ import static org.junit.Assert.*;
 public class BookAmountValidatorTest {
 
     @Autowired
-    private BookAmountValidator bookAmountValidator;
+    private final BookAmountValidator bookAmountValidator = null;
 
     @Autowired
-    private BookStateRepository bookStateRepository;
+    private final BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository = null;
 
     @Autowired
     private final ActionRepository actionRepository = null;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;

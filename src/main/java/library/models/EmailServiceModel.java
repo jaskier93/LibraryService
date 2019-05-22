@@ -4,12 +4,12 @@ import library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Component
+@Service
 public class EmailServiceModel {
     private JavaMailSender javaMailSender;
     private UserRepository userRepository;
@@ -22,9 +22,10 @@ public class EmailServiceModel {
 
     public void sendMail(String title, String mailMessage, Integer userId) {
         MimeMessage mail = javaMailSender.createMimeMessage();
+        String email = userRepository.getOne(userId).getEmail();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-            helper.setTo(userRepository.getOne(userId).getEmail());
+            helper.setTo(email);
             helper.setReplyTo("@przykladowy@mail.com");         //:TODO : ustawić maila
             helper.setFrom("@przykladowy@mail.com");            //:TODO : ustawić maila
             helper.setSubject(title);

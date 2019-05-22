@@ -12,7 +12,7 @@ import java.time.Duration;
 @Component
 public class ReturnBookVaildator {
 
-    private PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
     public ReturnBookVaildator(PaymentRepository paymentRepository) {
@@ -44,6 +44,7 @@ public class ReturnBookVaildator {
             paymentRepository.save(payment);
         }
     }
+
     /*metoda sprawdzająca, czy dana płatność jest powyżej ustalonej kwoty
       jeśli użytkownik wygeneruje płatność np. powyżej 100zł, nie płaci przez długi okres kary,
       należy sprawę zgłosić odpowiednim organom, a konto zawiesić   */

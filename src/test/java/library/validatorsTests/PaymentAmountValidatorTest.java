@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class PaymentAmountValidatorTest {
 
     @Autowired
-    private PaymentAmountValidator paymentAmountValidator;
+    private final PaymentAmountValidator paymentAmountValidator = null;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
@@ -44,10 +44,10 @@ public class PaymentAmountValidatorTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private BookStateRepository bookStateRepository = null;
+    private final BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private ActionRepository actionRepository = null;
+    private final ActionRepository actionRepository = null;
 
     @After
     public void after() {

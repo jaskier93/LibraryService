@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class IsStringOneWord {
-    private int counter = 0;
 
+    private int counter = 0;
     /**
      * metoda ma za zadanie sprawdzać czy podana zmienna typu string:
      * -jest jednym słowem

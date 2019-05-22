@@ -13,8 +13,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProlongationValidator extends AbstractValidator {
-    private PaymentRepository paymentRepository;
-    private BookStateRepository bookStateRepository;
+    private final PaymentRepository paymentRepository;
+    private final BookStateRepository bookStateRepository;
+
+    public ProlongationValidator(PaymentRepository paymentRepository, BookStateRepository bookStateRepository) {
+        this.paymentRepository = paymentRepository;
+        this.bookStateRepository = bookStateRepository;
+    }
 
     @Override
     public boolean validator(User user) {

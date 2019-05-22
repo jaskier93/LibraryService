@@ -14,14 +14,14 @@ import java.util.List;
 
 @Component
 public class RentFifthBookValidator extends AbstractValidator {
-    private BookStateRepository bookStateRepository;
+    private final BookStateRepository bookStateRepository;
 
     @Autowired
     public RentFifthBookValidator(BookStateRepository bookStateRepository) {
         this.bookStateRepository = bookStateRepository;
     }
 
-/* metoda metoda sprawdzająca, czy użytkownik może wypożyczyć piątą książkę (zależne od od tego kiedy się zarejestrował)   */
+    /* metoda metoda sprawdzająca, czy użytkownik może wypożyczyć piątą książkę (zależne od od tego kiedy się zarejestrował)   */
     @Override
     public boolean validator(User user) {
         List<Book> bookListLoanedByUser = bookStateRepository.findBooksByUser(user);

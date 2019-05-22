@@ -13,7 +13,7 @@ public class PaymentAmountValidator extends AbstractValidator {
 
     private static final Integer MAX_PAYMENTS_AMOUNT = 3;
 
-    private PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
     public PaymentAmountValidator(PaymentRepository paymentRepository) {

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class IsBookLoanable {
-    private BookStateRepository bookStateRepository;
+    private final BookStateRepository bookStateRepository;
 
     @Autowired
     public IsBookLoanable(BookStateRepository bookStateRepository) {

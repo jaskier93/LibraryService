@@ -19,13 +19,13 @@ import static org.junit.Assert.*;
 public class IsStringOneWordTest {
 
     @Autowired
-    private IsStringOneWord isStringOneWord;
+    private final IsStringOneWord isStringOneWord = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository = null;
 
     @After
     public void after() {

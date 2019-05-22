@@ -10,6 +10,7 @@ import library.models.Payment;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
+import library.users.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -45,9 +46,10 @@ public class EmailService {
      * wysyłanie maili, póki co dla konkretnego użytkownika
      * //:TODO do poprawienia/zrobić wariant dla różnych akcji
      */ //:TODO do przerobienia : metoda powinna przeszukać całą bazę w poszukiwaniu wszystkich aktualnych wypożyczeń i po nich sprawdzać daty oddania-w razie spełnienia warunków należy wysłać maila
-
     public void sendMailAboutRentBook(String title, Integer bookId, Integer userId) {
-        String mailMessage = rentService.rentBook(bookRepository.getOne(bookId), userRepository.getOne(userId));
+        Book book = bookRepository.getOne(bookId);
+        User user = userRepository.getOne(userId);
+        String mailMessage = rentService.rentBook(book, user);
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
@@ -98,9 +100,9 @@ public class EmailService {
     /**
      * TODO: do zrobienia dwie wersje: za zniszczenie książki/oddanie po terminie
      */
-    public void paymentInfo(Integer userId, Book book, Payment payment){
-        String mailMessage = "Zniszczyłeś książkę pt. \""+book.getTitle()+"\".\nW związku z tym naliczyliśmy karę wynoszącą:"
-                +payment.getAmount()+" złotych.\n";
+    public void paymentInfo(Integer userId, Book book, Payment payment) {
+        String mailMessage = "Zniszczyłeś książkę pt. \"" + book.getTitle() + "\".\nW związku z tym naliczyliśmy karę wynoszącą:"
+                + payment.getAmount() + " złotych.\n";
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);

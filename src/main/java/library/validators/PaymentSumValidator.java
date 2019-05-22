@@ -10,7 +10,7 @@ public class PaymentSumValidator extends AbstractValidator {
 
     private static final Integer MAX_PAYMENTS_SUM = 100;
 
-    private PaymentRepository paymentRepository;
+    private final PaymentRepository paymentRepository;
 
     @Autowired
     public PaymentSumValidator(PaymentRepository paymentRepository) {
@@ -22,6 +22,7 @@ public class PaymentSumValidator extends AbstractValidator {
      */
     @Override
     public boolean validator(User user) {
-        return paymentRepository.sumPaymentsForOneUser(user.getId()) > MAX_PAYMENTS_SUM-1;
+        Integer amount = paymentRepository.sumPaymentsForOneUser(user.getId());
+        return amount >= MAX_PAYMENTS_SUM;
     }
 }

@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 public class PaymentSumValidatorTest {
 
     @Autowired
-    private PaymentSumValidator paymentSumValidator;
+    private final PaymentSumValidator paymentSumValidator = null;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
@@ -43,10 +43,10 @@ public class PaymentSumValidatorTest {
     private final BookRepository bookRepository = null;
 
     @Autowired
-    private BookStateRepository bookStateRepository = null;
+    private final BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private ActionRepository actionRepository = null;
+    private final ActionRepository actionRepository = null;
 
     @After
     public void after() {
@@ -58,7 +58,7 @@ public class PaymentSumValidatorTest {
         jdbcTemplate.update("delete from payments where status=1020304050");
     }
 
-    @Test
+    @Test //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
     public void validatorTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
@@ -89,7 +89,7 @@ public class PaymentSumValidatorTest {
         paymentRepository.save(payment);
 
         Payment payment2 = TestUtils.createPayment(book, user);
-        payment.setAmount(50);
+        payment2.setAmount(50);
         payment2.setBook(book);
         payment2.setUser(user);
         payment2.setAction(action);
@@ -97,7 +97,7 @@ public class PaymentSumValidatorTest {
         paymentRepository.save(payment2);
 
         Payment payment3 = TestUtils.createPayment(book, user2);
-        payment.setAmount(55);
+        payment3.setAmount(55);
         payment3.setBook(book);
         payment3.setUser(user2);
         payment3.setAction(action);
@@ -105,6 +105,6 @@ public class PaymentSumValidatorTest {
         paymentRepository.save(payment3);
 
         assertTrue(paymentSumValidator.validator(user));
-//        assertFalse(paymentSumValidator.validator(user2));
+        assertFalse(paymentSumValidator.validator(user2));
     }
 }

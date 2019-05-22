@@ -16,12 +16,10 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class IsUsedAdminTest {
+public class IsUserAdminTest {
 
     @Autowired
-    private IsUserAdmin isUserAdmin;
-    @Autowired
-    private UserRepository userRepository;
+    private final IsUserAdmin isUserAdmin = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
@@ -36,10 +34,9 @@ public class IsUsedAdminTest {
 
         User user = TestUtils.createUser();
         user.setAdmin(true);
-        userRepository.save(user);
 
         User user2 = TestUtils.createUser();
-        userRepository.save(user2);
+        // domyślnie user.getAdmin =false
 
         assertTrue(isUserAdmin.validator(user));
         assertFalse(isUserAdmin.validator(user2));

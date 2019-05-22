@@ -27,16 +27,16 @@ import static org.junit.Assert.*;
 public class DestroyerValidatorTest {
 
     @Autowired
-    private DestroyerValidator destroyerValidator;
+    private final DestroyerValidator destroyerValidator = null;
 
     @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository = null;
 
     @Autowired
     private final ActionRepository actionRepository = null;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
