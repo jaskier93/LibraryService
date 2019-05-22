@@ -149,6 +149,14 @@ public class BookService {
     }
 
     /**
+     * metoda zwraca pełną listę wypożyczeń użytkownika posortowaną według daty wypożczenia
+     * można ewentualnie zmienić typ na listę książek
+     */
+    public List<BookState> showLoanHistory(User user) {
+        return bookStateRepository.findBookStateByUser(user);
+    }
+
+    /**
      * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
@@ -187,5 +195,4 @@ public class BookService {
          * testy-sprawdzenie, czy dodajac /edytujac ksiazke, wypozyczenie, etc czy w odpowiednich repozytoriach tworza sie odpowiednia odniesienia do danej ksiazki, usera itd
          * */
     }
-
 }
