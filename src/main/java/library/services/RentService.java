@@ -96,7 +96,7 @@ public class RentService {
         bookState.setAction(action);
         bookState.setDateOfUpdate(LocalDate.now());
         bookStateRepository.save(bookState);
-        return "Przedłużyłeś wypożyczenie książki pt.\"" + bookStateRepository.findBookStateByBook(book.getId()).getBook().getTitle() + "\"." +
+        return "Przedłużyłeś wypożyczenie książki pt.\"" + bookState.getBook().getTitle() + "\"." +
                 "Termin zwrotu książki to: " + bookState.getDateOfUpdate();
     }
 }

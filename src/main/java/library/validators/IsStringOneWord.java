@@ -16,7 +16,6 @@ public class IsStringOneWord {
      */
     public boolean validator(String variable) {
         if (Character.isUpperCase(variable.charAt(0)) && variable != null) {
-
             for (int i = 0; i < variable.length() - 1; i++) {
                 // sprawdzić czy isLetter uzwględni polskie znaki
                 if (Character.isLetter(variable.charAt(i))) {

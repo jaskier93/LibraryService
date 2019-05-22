@@ -1,4 +1,4 @@
-package library.validatorsTests;
+package library.validators;
 
 import library.TestUtils;
 import library.enums.ActionDescription;
@@ -8,10 +8,8 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.DestroyerValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

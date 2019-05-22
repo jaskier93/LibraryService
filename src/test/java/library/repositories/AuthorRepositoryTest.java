@@ -1,5 +1,6 @@
-package library;
+package library.repositories;
 
+import library.TestUtils;
 import library.models.Author;
 import library.repositories.AuthorRepository;
 import org.junit.After;
@@ -14,7 +15,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AuthorRepoQuerryTest {
+public class AuthorRepositoryTest {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;

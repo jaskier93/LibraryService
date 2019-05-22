@@ -1,4 +1,4 @@
-package library.validatorsTests;
+package library.validators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
@@ -8,7 +8,6 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.*;
 import library.users.User;
-import library.validators.ProlongationValidator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

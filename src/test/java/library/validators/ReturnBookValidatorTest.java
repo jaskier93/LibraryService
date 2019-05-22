@@ -1,15 +1,15 @@
-package library.validatorsTests;
+package library.validators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
-import library.models.Payment;
-import library.repositories.*;
+import library.repositories.ActionRepository;
+import library.repositories.BookRepository;
+import library.repositories.BookStateRepository;
+import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.PaymentSumValidator;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,23 +18,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+
 import static org.junit.Assert.*;
 
-//TODO: do poprawienia wraz z walidatorem oraz metodą z paymentRepository!
-
-@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class PaymentSumValidatorTest {
+
+public class ReturnBookValidatorTest {
 
     @Autowired
-    private final PaymentSumValidator paymentSumValidator = null;
+    private final ReturnBookVaildator returnBookVaildator = null;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
-
-    @Autowired
-    private final PaymentRepository paymentRepository = null;
 
     @Autowired
     private final UserRepository userRepository = null;
@@ -48,6 +45,7 @@ public class PaymentSumValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -55,16 +53,17 @@ public class PaymentSumValidatorTest {
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
-        jdbcTemplate.update("delete from payments where status=1020304050");
     }
 
-    @Test //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
-    public void isUserPaymentsSumAbove100() {
+    @Test
+    public void wasBookReturnedInTime() {
+
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
+
         User user2 = TestUtils.createUser();
         userRepository.save(user2);
 
@@ -73,38 +72,37 @@ public class PaymentSumValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
+        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        Payment payment = TestUtils.createPayment(book, user);
-        payment.setAmount(70);
-        payment.setBook(book);
-        payment.setUser(user);
-        payment.setAction(action);
-        payment.setBookState(bookState);
-        paymentRepository.save(payment);
+        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState1.setBook(book);
+        bookState1.setAction(action);
+        bookState1.setUser(user);
+        bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState1);
 
-        Payment payment2 = TestUtils.createPayment(book, user);
-        payment2.setAmount(50);
-        payment2.setBook(book);
-        payment2.setUser(user);
-        payment2.setAction(action);
-        payment2.setBookState(bookState);
-        paymentRepository.save(payment2);
+        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState2.setBook(book);
+        bookState2.setAction(action);
+        bookState2.setUser(user);
+        bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState2);
 
-        Payment payment3 = TestUtils.createPayment(book, user2);
-        payment3.setAmount(55);
-        payment3.setBook(book);
-        payment3.setUser(user2);
-        payment3.setAction(action);
-        payment3.setBookState(bookState);
-        paymentRepository.save(payment3);
+        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState3.setDateOfReturn(LocalDate.now().plusDays(15));
+        bookState3.setBook(book);
+        bookState3.setAction(action);
+        bookState3.setUser(user2);
+        bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState3);
 
-        assertTrue(paymentSumValidator.validator(user));
-        assertFalse(paymentSumValidator.validator(user2));
+        assertTrue(returnBookVaildator.validator(user));
+        assertFalse(returnBookVaildator.validator(user2));
+
     }
 }

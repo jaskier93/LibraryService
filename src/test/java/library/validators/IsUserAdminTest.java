@@ -1,8 +1,7 @@
-package library.validatorsTests;
+package library.validators;
 
 import library.TestUtils;
 import library.users.User;
-import library.validators.IsUserAdult;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,35 +10,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-
 import static org.junit.Assert.*;
-
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class IsUserAdultTest {
+public class IsUserAdminTest {
+
+    @Autowired
+    private final IsUserAdmin isUserAdmin = null;
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
-
-    @Autowired
-    private final IsUserAdult isUserAdult = null;
 
     @After
     public void after() {
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
     }
 
-    @Test
-    public void isUsedAdult() {
+    @Test //test passed! obiekty prawidłowo usuwane z bazy
+    public void isUserAdmin() {
 
         User user = TestUtils.createUser();
-        user.setDateOfBirth(LocalDate.now().plusYears(17)); //w tym przypadku user ma ~3 lata
+        user.setAdmin(true);
 
         User user2 = TestUtils.createUser();
+        // domyślnie user.getAdmin =false
 
-        assertFalse(isUserAdult.validator(user));
-        assertTrue(isUserAdult.validator(user2));
+        assertTrue(isUserAdmin.validator(user));
+        assertFalse(isUserAdmin.validator(user2));
     }
 }

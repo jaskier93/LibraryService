@@ -1,9 +1,9 @@
-package library;
+package library.repositories;
 
+import library.TestUtils;
 import library.enums.AgeCategory;
 import library.enums.Category;
 import library.models.Book;
-import library.repositories.BookRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class BookRepoQuerryTest {
+public class BookRepositoryTest {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;

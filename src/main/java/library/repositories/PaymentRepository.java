@@ -27,7 +27,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     /**
      * wyliczenie sumy płatności dla jednego użytkownika (niezapłaconych-p.active=true lub 1
      * przy próbie dodania warunku p.active=1 (lub true) wyskakuje błąd z BookService i problem utworzenia beana)
-     * TODO: ta metoda nie działa prawidłowo!
      */
     @Query("select sum(p.amount) from Payment p where p.user.id = :userid")
     Integer sumPaymentsForOneUser(@Param("userid") Integer userId);

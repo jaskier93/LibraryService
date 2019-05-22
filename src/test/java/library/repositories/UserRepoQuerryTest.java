@@ -1,5 +1,6 @@
-package library;
+package library.repositories;
 
+import library.TestUtils;
 import library.repositories.UserRepository;
 import library.users.User;
 import org.junit.Test;

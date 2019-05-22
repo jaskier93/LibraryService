@@ -1,5 +1,6 @@
-package library;
+package library.repositories;
 
+import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
 import library.models.Book;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ActionRepoQuerryTest {
+public class ActionRepositoryTest {
 
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;

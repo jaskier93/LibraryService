@@ -1,9 +1,8 @@
-package library;
+package library.repositories;
 
+import library.TestUtils;
 import library.enums.BookStateEnum;
-import library.models.Action;
-import library.models.Book;
-import library.models.BookState;
+import library.models.*;
 import library.repositories.*;
 import library.users.User;
 import org.junit.After;
@@ -18,22 +17,25 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class BookStateRepoQuerryTest {
+public class PaymentRepositoryTest {
 
     @Autowired
-    private final BookRepository bookRepository = null;
+    private final JdbcTemplate jdbcTemplate = null;
 
     @Autowired
-    private final BookStateRepository bookStateRepository = null;
-
-    @Autowired
-    private final ActionRepository actionRepository = null;
+    private final PaymentRepository paymentRepository = null;
 
     @Autowired
     private final UserRepository userRepository = null;
 
     @Autowired
-    private final JdbcTemplate jdbcTemplate = null;
+    private final BookRepository bookRepository = null;
+
+    @Autowired
+    private BookStateRepository bookStateRepository = null;
+
+    @Autowired
+    private ActionRepository actionRepository = null;
 
     @After
     public void after() {
@@ -42,11 +44,12 @@ public class BookStateRepoQuerryTest {
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("delete from payments where amount=1020304050");
     }
 
     //test passed!
     @Test
-    public void bsTest() {
+    public void querryTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
@@ -54,21 +57,31 @@ public class BookStateRepoQuerryTest {
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
+        action.setBook(book);
+        action.setUser(user);
         actionRepository.save(action);
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
-        bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
+        bookState.setUser(user);
         bookState.setBookStateEnum(BookStateEnum.NOWA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = bookStateRepository.getOne(bookState.getId());
+        Payment payment = TestUtils.createPayment(book, user);
+        payment.setBook(book);
+        payment.setUser(user);
+        payment.setAction(action);
+        payment.setBookState(bookState);
+        paymentRepository.save(payment);
 
-        assertFalse(bookStateRepository.findBooksByUser(user).isEmpty());
-        assertNotNull(bookStateRepository.findBookStateByBook(book.getId()));
-        assertEquals(bookState.getId(), bookState1.getId());
-        assertNotNull(bookState);
+        Payment payment1 = paymentRepository.getOne(payment.getId());
+        paymentRepository.save(payment1);
+
+        assertEquals(payment.isActive(), payment1.isActive());
+
+        assertFalse(paymentRepository.findByUser(user).isEmpty());
+        assertFalse(paymentRepository.findPaymentsAboveAmount(8).isEmpty());
+        assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558).isEmpty());
     }
-
 }

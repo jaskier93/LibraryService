@@ -17,6 +17,7 @@ public class ProlongationValidator extends AbstractValidator {
     private final PaymentRepository paymentRepository;
     private final BookStateRepository bookStateRepository;
 
+    @Autowired
     public ProlongationValidator(PaymentRepository paymentRepository, BookStateRepository bookStateRepository) {
         this.paymentRepository = paymentRepository;
         this.bookStateRepository = bookStateRepository;
