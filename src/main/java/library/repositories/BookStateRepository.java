@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface BookStateRepository extends JpaRepository<BookState, Integer> {
+
     /**
      * dopisać test
      */
@@ -30,7 +31,7 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
     @Query("select bs.book from BookState bs where bs.user=?1")
     List<Book> findBooksByUser(User user);
 
-    //metoda zwraca listę aktualnie wypożyczonych książek przez użytkownika
-    @Query("select bs.book from BookState bs where bs.user=?1 and bs.bookStateEnum=WYPOZYCZONA")
+    //metoda zwraca listę aktualnych wypożyczeń użytkownika
+    @Query("select bs.book from BookState bs where bs.user=?1 and bs.bookStateEnum='WYPOZYCZONA'")
     List<Book> findLoanedBooksByUser(User user);
 }

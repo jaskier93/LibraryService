@@ -1,10 +1,8 @@
 package library.validatorsTests;
 
 import library.TestUtils;
-import library.repositories.UserRepository;
 import library.users.User;
 import library.validators.IsUserAdult;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +32,7 @@ public class IsUserAdultTest {
     }
 
     @Test
-    public void validatorTest() {
+    public void isUsedAdult() {
 
         User user = TestUtils.createUser();
         user.setDateOfBirth(LocalDate.now().plusYears(17)); //w tym przypadku user ma ~3 lata

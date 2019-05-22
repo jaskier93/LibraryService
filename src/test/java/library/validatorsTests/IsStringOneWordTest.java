@@ -33,7 +33,7 @@ public class IsStringOneWordTest {
     }
 
     @Test //test passed! obiekty prawidłowo usuwane z bazy
-    public void validatorTest() {
+    public void isStringOneWordAndStartsWithUpperCase() {
 
         User user = TestUtils.createUser();
         user.setName("Damian");

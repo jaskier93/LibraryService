@@ -12,6 +12,7 @@ import library.repositories.UserRepository;
 import library.users.User;
 import library.validators.BookAmountValidator;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,11 @@ public class BookAmountValidatorTest {
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
-        jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("delete from book_states  where status=1020304050");
     }
 
-    @Test
-    public void validatorTest() {
-
+    @Test //test passed! obiekty prawidłowo usuwane z bazy
+    public void isUserAbleToLoan4thBook() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
         Book book1 = TestUtils.createBook(TestUtils.createAuthor());
@@ -140,7 +140,10 @@ public class BookAmountValidatorTest {
         bookState5.setAction(action5);
         bookStateRepository.save(bookState5);
 
-        assertTrue(bookAmountValidator.validator(user));
-        assertFalse(bookAmountValidator.validator(user2));
+        //test ma zwrócić false, użytkownik ma przynajmniej 4 książki wypożyczone
+        assertFalse(bookAmountValidator.validator(user));
+
+        //test ma zwrócić true, użytkownik ma maksymalnie 3 książki wypożyczone
+        assertTrue(bookAmountValidator.validator(user2));
     }
 }

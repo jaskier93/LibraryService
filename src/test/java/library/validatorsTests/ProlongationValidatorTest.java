@@ -1,7 +1,6 @@
 package library.validatorsTests;
 
 import library.TestUtils;
-import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Book;
@@ -9,11 +8,8 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.*;
 import library.users.User;
-import library.validators.DestroyerValidator;
-import library.validators.PaymentAmountValidator;
-import lombok.extern.slf4j.Slf4j;
+import library.validators.ProlongationValidator;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +19,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
-@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class PaymentAmountValidatorTest {
+public class ProlongationValidatorTest {
 
     @Autowired
-    private final PaymentAmountValidator paymentAmountValidator = null;
+    private final ProlongationValidator prolongationValidator = null;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
@@ -56,16 +51,17 @@ public class PaymentAmountValidatorTest {
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
-        jdbcTemplate.update("delete from payments where status=1020304050");
     }
 
     @Test //test passed! prawidłowo usuwa obiekty
-    public void hasUserAtLeastThan3Payments() {
+    public void isUserAbleToExtendLoan() {
+
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
+
         User user2 = TestUtils.createUser();
         userRepository.save(user2);
 
@@ -78,31 +74,31 @@ public class PaymentAmountValidatorTest {
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
+        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
         Payment payment = TestUtils.createPayment(book, user);
         payment.setBook(book);
-        payment.setUser(user);
+        payment.setAmount(50);
+        payment.setUser(user2);
         payment.setAction(action);
         payment.setBookState(bookState);
         paymentRepository.save(payment);
 
-        Payment payment2 = TestUtils.createPayment(book, user);
-        payment2.setBook(book);
-        payment2.setUser(user);
-        payment2.setAction(action);
-        payment2.setBookState(bookState);
-        paymentRepository.save(payment2);
+        /*
+         *test określa, czy user może przedłużyć wypożyczenie książki
+         *tutaj może, bo ma tylko jedną wypożyczoną książkę oraz nie ma żadnej naliczonej płatności
+         */
+        assertTrue(prolongationValidator.validator(user));
 
-        Payment payment3 = TestUtils.createPayment(book, user);
-        payment3.setBook(book);
-        payment3.setUser(user);
-        payment3.setAction(action);
-        payment3.setBookState(bookState);
-        paymentRepository.save(payment3);
-
-        assertTrue(paymentAmountValidator.validator(user));
-        assertFalse(paymentAmountValidator.validator(user2));
+        /**
+         *test określa, czy user może przedłużyć wypożyczenie książki
+         * tutaj nie może, ponieważ ma naliczoną płatność
+         */
+        assertFalse(prolongationValidator.validator(user2));
     }
 }
+
+
+
+

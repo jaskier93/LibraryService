@@ -37,7 +37,7 @@ public class IsDeathDateCorrectTest {
     }
 
     @Test //test passed! obiekty są prawidłowo usuwane
-    public void validatorTest() {
+    public void isDeathDateNotFromFutureAndAfterBirthDay() {
         Author author = TestUtils.createAuthor();
         author.setDateOfDeath(LocalDate.now());
         authorRepository.save(author);

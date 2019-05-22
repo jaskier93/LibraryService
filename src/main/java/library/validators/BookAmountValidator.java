@@ -1,6 +1,7 @@
 package library.validators;
 
 import library.models.Book;
+import library.models.BookState;
 import library.repositories.BookStateRepository;
 import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,13 @@ public class BookAmountValidator extends AbstractValidator {
     }
 
     /**
-     * metoda sprawdzająca, czy dany użytkownik ma wypożyczone więcej niż 3 książki
+     * metoda sprawdzająca, czy dany użytkownik może wypożyczyć czwartą książkę
+     * jeśli ma wypożyczone już więcej niż 3 książki-metoda zwróci false
      */
     @Override
     public boolean validator(User user) {
         List<Book> bookList = bookStateRepository.findLoanedBooksByUser(user);
-        return (bookList.size() > 3 && (!bookList.isEmpty()));
+        return bookList.size() <= 3;
     }
 
 }

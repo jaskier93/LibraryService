@@ -35,7 +35,7 @@ public class IsDateCorrectTest {
     }
 
     @Test //test passed! obiekty są prawidłowo usuwane
-    public void validatorTest() {
+    public void isDateNotFromFuture() {
 
         User user = TestUtils.createUser();
         user.setDateOfBirth(LocalDate.now().plusDays(1)); //jutrzejsza data-ma nie przechodzić

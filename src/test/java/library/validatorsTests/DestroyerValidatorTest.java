@@ -50,7 +50,7 @@ public class DestroyerValidatorTest {
     }
 
     @Test //test passed! prawidłowo usuwa obiekty (akcje z enumem=TEST również)
-    public void validatorTest() {
+    public void didUserDestroyBook() {
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);

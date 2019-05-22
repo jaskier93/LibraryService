@@ -59,7 +59,7 @@ public class PaymentSumValidatorTest {
     }
 
     @Test //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
-    public void validatorTest() {
+    public void isUserPaymentsSumAbove100() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 

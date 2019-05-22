@@ -55,7 +55,7 @@ public class IsBookLoanableTest {
     }
 
     @Test //test passed! prawdiłowo usuwane obiekty z bazy
-    public void validatorTest() {
+    public void isBookLoanable() {
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);

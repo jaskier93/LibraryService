@@ -30,7 +30,7 @@ public class IsUserAdminTest {
     }
 
     @Test //test passed! obiekty prawidłowo usuwane z bazy
-    public void validatorTest() {
+    public void isUserAdmin() {
 
         User user = TestUtils.createUser();
         user.setAdmin(true);
