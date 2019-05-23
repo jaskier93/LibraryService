@@ -107,7 +107,7 @@ public class IsBookLoanableTest {
         bookState3.setAction(action1);
         bookStateRepository.save(bookState3);
 
-        BookState bookState4 = TestUtils.createBookState(book2, action2, BookStateEnum.NOWA);
+        BookState bookState4 = TestUtils.createBookState(book2, action2, BookStateEnum.ZWROCONA);
         bookState4.setUser(user);
         /**
          * //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2

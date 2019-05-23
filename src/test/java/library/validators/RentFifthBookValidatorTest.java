@@ -73,28 +73,28 @@ public class RentFifthBookValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState1.setBook(book);
         bookState1.setAction(action);
         bookState1.setUser(user);
         bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState2.setBook(book);
         bookState2.setAction(action);
         bookState2.setUser(user);
         bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState3.setBook(book);
         bookState3.setAction(action);
         bookState3.setUser(user);

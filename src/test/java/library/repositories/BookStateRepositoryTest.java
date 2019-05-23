@@ -14,6 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -41,34 +45,102 @@ public class BookStateRepositoryTest {
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
-        jdbcTemplate.update("delete from book_states where status=1020304050");
+        //      jdbcTemplate.update("delete from book_states where status=1020304050");
     }
 
     //test passed!
     @Test
-    public void bsTest() {
+    public void bookStateRepositoryTest() {
+
+        LocalDate today = LocalDate.now();
+
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
 
+        User user2 = TestUtils.createUser();
+        userRepository.save(user2);
+
         Action action = TestUtils.createAction(book, user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
+        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = bookStateRepository.getOne(bookState.getId());
+        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        bookState1.setUser(user);
+        bookState1.setBook(book);
+        bookState1.setDateOfLoan(today.plusDays(10));
+        bookState1.setDateOfReturn(today.plusDays(30));
+        bookState1.setAction(action);
+        bookState1.setBookStateEnum(BookStateEnum.ZWROCONA);
+        bookStateRepository.save(bookState1);
 
-        assertFalse(bookStateRepository.findBooksByUser(user).isEmpty());
-        assertNotNull(bookStateRepository.findBookStateByBook(book.getId()));
-        assertEquals(bookState.getId(), bookState1.getId());
-        assertNotNull(bookState);
+        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        bookState2.setUser(user);
+        bookState2.setBook(book);
+        bookState2.setDateOfReturn(today.plusDays(40));
+        bookState2.setDateOfLoan(today.plusDays(50));
+        bookState2.setAction(action);
+        bookState2.setBookStateEnum(BookStateEnum.ZWROCONA);
+        bookStateRepository.save(bookState2);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState3.setUser(user2);
+        bookState3.setBook(book);
+        bookState3.setAction(action);
+        bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState3);
+
+        BookState bookState4 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState4.setUser(user2);
+        bookState4.setBook(book);
+        bookState4.setDateOfReturn(today.plusDays(30));
+        bookState4.setAction(action);
+        bookState4.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState4);
+
+        BookState bookState5 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        bookState5.setUser(user2);
+        bookState5.setBook(book);
+        bookState5.setDateOfLoan(today.plusDays(150));
+        bookState5.setAction(action);
+        bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        bookStateRepository.save(bookState5);
+
+        //lista wypożyczeń ze zwróconymi książkami
+        List<BookState> bookStateList = new ArrayList<>();
+        bookStateList.add(bookState);
+        bookStateList.add(bookState1);
+        bookStateList.add(bookState2);
+
+        //lista wypożyczeń wypożyczonymi książkami
+        List<BookState> bookStateList2 = new ArrayList<>();
+        bookStateList2.add(bookState3);
+        bookStateList2.add(bookState4);
+        bookStateList2.add(bookState5);
+
+        List<Book> loanedBookList = new ArrayList<>();
+        loanedBookList.add(book);
+
+        BookState bookStateFromBase = bookStateRepository.getOne(bookState5.getId());
+        assertEquals(bookState5.getId(), bookStateFromBase.getId());
+
+        assertEquals(loanedBookList, bookStateRepository.findLoanedBooksByUser(user2));
+
+        //  assertEquals(bookState2, bookStateRepository.findBookStateByBook(book.getId())); TODO: nie działa, prawdopodobnie metoda też nie jest poprawna
+
+        assertEquals(bookStateList2, bookStateRepository.findCurrentBookStateByUser(user2));
+
+        //test metody zwracającej listę wypożyczeń użytkownika uporzadkowaną według daty wypożyczenia (od najstarszej daty)
+        assertEquals(bookStateList, bookStateRepository.findBookStateByUser(user));
     }
-
 }

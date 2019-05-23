@@ -4,7 +4,6 @@ import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
 import library.models.Book;
-import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class ActionRepositoryTest {
 
     //test passed!
     @Test
-    public void actionTest() {
+    public void actionRepositoryTest() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
@@ -61,7 +60,7 @@ public class ActionRepositoryTest {
 
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
-        assertFalse(actionRepository.findActionByActionDescription(ActionDescription.TEST).isEmpty()); // TODO: sprawdzić czy działa
+        assertFalse(actionRepository.findActionByActionDescription(ActionDescription.TEST).isEmpty());
         assertTrue(actionRepository.findActionByActionDescription(ActionDescription.ZWROT).isEmpty());
         assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());

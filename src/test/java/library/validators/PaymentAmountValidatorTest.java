@@ -70,11 +70,11 @@ public class PaymentAmountValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.NOWA);
+        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
+        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
         Payment payment = TestUtils.createPayment(book, user);

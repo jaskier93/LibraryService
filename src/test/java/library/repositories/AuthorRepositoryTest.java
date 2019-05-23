@@ -2,7 +2,6 @@ package library.repositories;
 
 import library.TestUtils;
 import library.models.Author;
-import library.repositories.AuthorRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,7 @@ public class AuthorRepositoryTest {
 
     //test passed!
     @Test
-    public void querryTest() {
+    public void authorRepositoryTest() {
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);
 

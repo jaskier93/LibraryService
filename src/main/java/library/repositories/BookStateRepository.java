@@ -28,11 +28,8 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "and bs.bookStateEnum='ZWROCONA'")
     BookState findBookStateByBook(@Param("bookId") Integer bookId); //czy ta metoda napewno wybiera najnowszego bookstate'a?
 
-    @Query("select bs.book from BookState bs where bs.user=?1")
-    List<Book> findBooksByUser(User user);
-
     //metoda zwraca listę aktualnych wypożyczonych książek użytkownika
-    @Query("select bs.book from BookState bs where bs.user=?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan")
+    @Query("select distinct bs.book from BookState bs where bs.user=?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan")
     List<Book> findLoanedBooksByUser(User user);
 
     //metoda zwraca aktualną listę wypożyczeń użytkownika

@@ -47,7 +47,9 @@ public class TestUtils {
     }
 
     public static Book createBook(Author author) {
-        Book book = new Book("WiedźminWiedźmin", LocalDate.of(2015, 11, 22), LocalDate.of(2015, 12, 21),
+        Book book = new Book("WiedźminWiedźmin",
+                LocalDate.of(2019, 5, 22),  //data wydania
+                LocalDate.of(2019, 5, 21),  //data dodania do biblioteki
                 Category.ADVENTURE, AgeCategory.DOROSLI, author, 5);
         return book;
     }
