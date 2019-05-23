@@ -1,5 +1,6 @@
 package library.validators;
 
+import library.enums.BookStateEnum;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookStateRepository;
@@ -21,7 +22,7 @@ public class IsBookLoanable {
      * warunek sprawdzający, czy książka ma status nowa/zwrócona-czy można ją wypożyczyć
      */
     public boolean isBookAbleToLoan(Book book) {
-        BookState bookState = bookStateRepository.findBookStateByBook(book.getId());
+        BookState bookState = bookStateRepository.findBookStateByBook2(book.getId());
         boolean temp;
         switch (bookState.getBookStateEnum()) {
             case WYPOZYCZONA:

@@ -93,9 +93,9 @@ public class IsBookLoanableTest {
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
-        BookState bookState2 = TestUtils.createBookState(book, action2, BookStateEnum.WYPOZYCZONA);
+        BookState bookState2 = TestUtils.createBookState(book1, action2, BookStateEnum.WYPOZYCZONA);
         bookState2.setUser(user);
-        bookState2.setBook(book);
+        bookState2.setBook(book1);
         bookState2.setAction(action2);
         bookStateRepository.save(bookState2);
 

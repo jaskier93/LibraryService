@@ -17,8 +17,8 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     /* metoda zwraca listę płatnośći powyżej 10zł
     TODO: zamiast 10 umieścić zmienną, w razie potrzeby zmiany wartośći */
 
-    @Query("select p from Payment  p where p.amount > :value")
-    List<Payment> findPaymentsAboveAmount(@Param("value") Integer amount);
+    @Query("select p from Payment  p where p.amount > :value and p.user.id= :userId")
+    List<Payment> findPaymentsAboveAmount(@Param("value") Integer amount, @Param("userId") Integer userId);
 
     //metoda zwraca listę płatności danego użytkownika
     @Query("select p from Payment  p where p.user = ?1")

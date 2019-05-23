@@ -60,6 +60,15 @@ public class RentFifthBookValidatorTest {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
+        Book book1 = TestUtils.createBook(TestUtils.createAuthor());
+        bookRepository.save(book1);
+
+        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        bookRepository.save(book2);
+
+        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
+        bookRepository.save(book3);
+
         User user = TestUtils.createUser();
         user.setDateOfRegistration(LocalDate.now().minusYears(3));
         userRepository.save(user);
@@ -80,22 +89,22 @@ public class RentFifthBookValidatorTest {
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
-        bookState1.setBook(book);
+        BookState bookState1 = TestUtils.createBookState(book1, action, BookStateEnum.ZWROCONA);
+        bookState1.setBook(book1);
         bookState1.setAction(action);
         bookState1.setUser(user);
         bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
-        bookState2.setBook(book);
+        BookState bookState2 = TestUtils.createBookState(book2, action, BookStateEnum.ZWROCONA);
+        bookState2.setBook(book2);
         bookState2.setAction(action);
         bookState2.setUser(user);
         bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
-        bookState3.setBook(book);
+        BookState bookState3 = TestUtils.createBookState(book3, action, BookStateEnum.ZWROCONA);
+        bookState3.setBook(book3);
         bookState3.setAction(action);
         bookState3.setUser(user);
         bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
