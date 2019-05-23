@@ -8,5 +8,6 @@ public enum ActionDescription {
     ZNISZCZENIE,
     AKTUALIZACJA,
     PRZEDLUZENIE,
+    PRZETERMINOWANIE, //przeterminowany zwrot książki
     ZWROT;
 }

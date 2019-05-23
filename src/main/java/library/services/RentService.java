@@ -63,18 +63,29 @@ public class RentService {
 
     //czy jest sens wysyłać maila w przypadku zwrotu książki?
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
+
+        /**
+         * tworzone będą dwie akcje w przypadku zwrotu książki po terminie, w przypadku prawidłowego-tylko jedna
+         */
+        //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
         Action action = new Action();
-        action.setActionDescription(ActionDescription.ZWROT);
+        action.setActionDescription(ActionDescription.PRZETERMINOWANIE);
         action.setBook(book);
         action.setUser(user);
         actionRepository.save(action);
+
+        Action action2 = new Action();
+        action2.setActionDescription(ActionDescription.ZWROT);
+        action2.setBook(book);
+        action2.setUser(user);
+        actionRepository.save(action2);
 
         BookState bookState = new BookState();
         bookState.setBook(book);
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
-        bookState.setAction(action);
+        bookState.setAction(action2);
         bookStateRepository.save(bookState);
     }
 

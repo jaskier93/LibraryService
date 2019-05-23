@@ -14,10 +14,7 @@ import java.util.List;
 @Repository
 public interface ActionRepository extends JpaRepository<Action, Integer> {
 
-    //TODO: w klasie Action można pomyśleć nad dorobieniem Enuma na podobieństwo BSEnum: zniszczenie, oddanie, wypożyczenie książki itd
-
-
-    //metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc
+    //metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc, dodać ewentualnie jakiś warunek
     @Query("select a from Action  a where  a.actionDescription=?1")
     List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
@@ -29,8 +26,12 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
     @Query("select a from Action  a where  a.actionDescription='ZNISZCZENIE' and a.user=:value")
     List<Action> findActionsWithDestroyedBooksByUser(@Param("value") User user);
 
+    //lista przeterminowanych zwrotów jednego użytkownika
+    @Query("select a from Action a where a.actionDescription='PRZETERMINOWANIE' and a.user=:value")
+    List<Action> findActionsWithOverdueReturnsByUser(@Param("value") User user);
+
     //zwraca listę akcji danej książki
-    @Query("select a from Action  a where  a.book=?1")
+    @Query("select a from Action a where a.book=?1")
     List<Action> findActionByBook(Book book);
 
     //zwraca listę akcji u danego użytkownika

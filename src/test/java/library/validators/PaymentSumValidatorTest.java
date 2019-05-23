@@ -18,9 +18,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
-
-//TODO: do poprawienia wraz z walidatorem oraz metodą z paymentRepository!
-
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)

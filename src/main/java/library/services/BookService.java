@@ -13,8 +13,8 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
 import library.users.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BookService {
 
     //kara 20zł za zniszczenie książki
@@ -31,14 +32,6 @@ public class BookService {
     private BookStateRepository bookStateRepository;
     private ActionRepository actionRepository;
     private PaymentRepository paymentRepository;
-
-    @Autowired
-    public BookService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, PaymentRepository paymentRepository) {
-        this.bookRepository = bookRepository;
-        this.bookStateRepository = bookStateRepository;
-        this.actionRepository = actionRepository;
-        this.paymentRepository = paymentRepository;
-    }
 
     private Book addBook(Book book) {
         Action action = new Action();

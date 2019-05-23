@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "book_states")
 public class BookState {
+    private final Integer LOAN_PERIOD = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,7 @@ public class BookState {
 
     private LocalDate dateOfUpdate = LocalDate.now();
 
-    private LocalDate dateOfReturn = LocalDate.now().plusDays(30);
+    private LocalDate dateOfReturn = dateOfReturnBook();
 
     @ManyToOne(targetEntity = Book.class)
     private Book book;
@@ -46,4 +47,8 @@ public class BookState {
 
     @NotNull
     private Integer status;
+
+    private LocalDate dateOfReturnBook() {
+        return LocalDate.now().plusDays(LOAN_PERIOD);
+    }
 }

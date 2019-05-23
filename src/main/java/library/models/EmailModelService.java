@@ -10,12 +10,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailServiceModel {
+public class EmailModelService {
     private JavaMailSender javaMailSender;
     private UserRepository userRepository;
 
     @Autowired
-    public EmailServiceModel(JavaMailSender javaMailSender, UserRepository userRepository) {
+    public EmailModelService(JavaMailSender javaMailSender, UserRepository userRepository) {
         this.javaMailSender = javaMailSender;
         this.userRepository = userRepository;
     }
