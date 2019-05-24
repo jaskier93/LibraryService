@@ -54,10 +54,19 @@ public class IsStringOneWordTest {
         user5.setName("Maciek       "); //teksty ze spacjami/znakami nie przejdą
         userRepository.save(user5);
 
+
+        User user6 = TestUtils.createUser();
+        user6.setSecondName(null);
+        userRepository.save(user6);
+
+
+
         assertTrue(isStringOneWord.validator(user.getName()));
         assertFalse(isStringOneWord.validator(user2.getName()));
         assertFalse(isStringOneWord.validator(user3.getName()));
         assertFalse(isStringOneWord.validator(user4.getName()));
         assertFalse(isStringOneWord.validator(user5.getName()));
+        assertFalse(isStringOneWord.validator(""));
+        assertFalse(isStringOneWord.validator(user6.getSecondName()));
     }
 }

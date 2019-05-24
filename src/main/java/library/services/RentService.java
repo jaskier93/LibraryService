@@ -68,24 +68,24 @@ public class RentService {
          * tworzone będą dwie akcje w przypadku zwrotu książki po terminie, w przypadku prawidłowego-tylko jedna
          */
         //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
-        Action action = new Action();
-        action.setActionDescription(ActionDescription.PRZETERMINOWANIE);
-        action.setBook(book);
-        action.setUser(user);
-        actionRepository.save(action);
+        Action actionExpiredLoan = new Action();
+        actionExpiredLoan.setActionDescription(ActionDescription.PRZETERMINOWANIE);
+        actionExpiredLoan.setBook(book);
+        actionExpiredLoan.setUser(user);
+        actionRepository.save(actionExpiredLoan);
 
-        Action action2 = new Action();
-        action2.setActionDescription(ActionDescription.ZWROT);
-        action2.setBook(book);
-        action2.setUser(user);
-        actionRepository.save(action2);
+        Action actionReturnBook = new Action();
+        actionReturnBook.setActionDescription(ActionDescription.ZWROT);
+        actionReturnBook.setBook(book);
+        actionReturnBook.setUser(user);
+        actionRepository.save(actionReturnBook);
 
         BookState bookState = new BookState();
         bookState.setBook(book);
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
-        bookState.setAction(action2);
+        bookState.setAction(actionReturnBook);
         bookStateRepository.save(bookState);
     }
 
@@ -105,9 +105,10 @@ public class RentService {
         bookState.setBook(book);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookState.setAction(action);
+        bookState.setDateOfReturn(LocalDate.now().plusDays(30)); //nowa data zwrotu
         bookState.setDateOfUpdate(LocalDate.now());
         bookStateRepository.save(bookState);
-        return "Przedłużyłeś wypożyczenie książki pt.\"" + bookState.getBook().getTitle() + "\"." +
+        return "Przedłużyłeś wypożyczenie książki pt.\"" + book.getTitle() + "\"." +
                 "Termin zwrotu książki to: " + bookState.getDateOfUpdate();
     }
 }

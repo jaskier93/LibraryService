@@ -29,6 +29,4 @@ public class Action {
 
     @ManyToOne
     private User user;
-
-
 }

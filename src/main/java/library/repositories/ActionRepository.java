@@ -15,7 +15,7 @@ import java.util.List;
 public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     //metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc, dodać ewentualnie jakiś warunek
-    @Query("select a from Action  a where  a.actionDescription=?1")
+    @Query("select a from Action  a where  a.actionDescription =:actionDescription")
     List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
     /**

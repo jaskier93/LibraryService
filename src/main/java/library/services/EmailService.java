@@ -17,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 
 @Slf4j
@@ -112,19 +113,26 @@ public class EmailService {
         }
     }
 
-/*
     //TODO: !!! W przypadku użycia adnotacji @Scheduled, metody muszą bez parametrów!
     // Trzeba będzie rozwiązać inaczej niż przez parametr przekazywanie danych
 
     //TODO:do przemyślenia czy wiadomość ma być wysyłana codziennie w ostatnim tygodniu, czy np 2 razy-tydzień przed i ostatniego dnia
-    @Scheduled //(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
+
+   /* @Scheduled //(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
     public void returnBookReminder(String title, Integer bookId, Integer userId) {
         String mailMessage = "Przypominamy, że termin oddania książki pt.\"" + bookRepository.getOne(bookId).getTitle()
                 + "\" to: " + bookStateRepository.findBookStateByBook(bookId).getDateOfReturn() + ". Prosimy o terminowy zwrot książki!";
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
+
         LocalDate today = LocalDate.now();
+
+        //ta zmienna sprawdza, czy dzisiejszy dzień jest przed datą zwrotu książki TODO:trzeba
+        boolean isBeforeReturn = today.isBefore(bookState.getDateOfReturn());
+        //ta zmienna sprawdza, czy dzisiejszy dzień jest w ostatnim tygodniu wypożyczenia
+        boolean isAfterUpdate = today.isAfter(bookState.getDateOfReturn().minusDays(7));
+
         //warunek sprawi, że maile będą wysłane tylko w ostatnim tygodniu wypożyczenia
-        if (today.isBefore(bookState.getDateOfReturn()) && today.isAfter(bookState.getDateOfUpdate().plusDays(23))) {
+        if (isBeforeReturn && isAfterUpdate) {
             MimeMessage mail = javaMailSender.createMimeMessage();
             try {
                 MimeMessageHelper helper = new MimeMessageHelper(mail, true);
@@ -150,7 +158,6 @@ public class EmailService {
      *będzie zwracać różne wiadomości dla różnych użytkowników, tzn:
      *dla dorosłych i dla dzieci będzie oddzielny mail, z listą nowych książek(z walidacją AgeCategory)
                 * można też zwrócić listę 5 najpopularniejszych książek z poprzedniego miesiąca lub coś w tym stylu
-
 
         String mailMessage = "";
         MimeMessage mail = javaMailSender.createMimeMessage();

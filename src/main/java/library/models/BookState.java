@@ -17,10 +17,8 @@ import java.time.LocalDate;
 @Table(name = "book_states")
 public class BookState {
 
- //TODO:    @Transient znaleźć adnotację, dzięki której te pole nie będziew bazie danej, transient wypełnia tylko nullami
+    //TODO:    @Transient znaleźć adnotację, dzięki której te pole nie będziew bazie danej, transient wypełnia tylko nullami
     private final static Integer LOAN_PERIOD = 30;
-
-   // private LocalDate today = LocalDate.now();    //TODO: dodać z adnotacją ignorująca wrzucenie zmienniej do bazy
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
