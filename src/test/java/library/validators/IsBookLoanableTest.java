@@ -88,6 +88,7 @@ public class IsBookLoanableTest {
 
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setDateOfReturn(LocalDate.now().plusDays(1));
+        bookState.setDateOfLoan(LocalDate.now().plusDays(1));
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
@@ -102,6 +103,8 @@ public class IsBookLoanableTest {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState3 = TestUtils.createBookState(book2, action1, BookStateEnum.WYPOZYCZONA);
+        bookState3.setDateOfReturn(LocalDate.now().plusDays(11));
+        bookState3.setDateOfLoan(LocalDate.now().plusDays(11));
         bookState3.setUser(user);
         bookState3.setBook(book2);
         bookState3.setAction(action1);
@@ -109,9 +112,7 @@ public class IsBookLoanableTest {
 
         BookState bookState4 = TestUtils.createBookState(book2, action2, BookStateEnum.ZWROCONA);
         bookState4.setUser(user);
-        /**
-         * //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2
-         */
+        /*** //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2*/
         bookState4.setDateOfReturn(LocalDate.now().minusDays(1));
         bookState4.setBook(book2);
         bookState4.setAction(action2);

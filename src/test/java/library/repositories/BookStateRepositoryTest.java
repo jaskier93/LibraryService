@@ -103,7 +103,7 @@ public class BookStateRepositoryTest {
         BookState bookState4 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
         bookState4.setUser(user2);
         bookState4.setBook(book);
-        bookState4.setDateOfReturn(today.plusDays(30));
+        bookState4.setDateOfLoan(today.plusDays(130));
         bookState4.setAction(action);
         bookState4.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState4);
@@ -111,22 +111,22 @@ public class BookStateRepositoryTest {
         BookState bookState5 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
         bookState5.setUser(user2);
         bookState5.setBook(book);
-        bookState5.setDateOfLoan(today.plusDays(150));
+        bookState5.setDateOfLoan(today.plusDays(50));
         bookState5.setAction(action);
         bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState5);
 
         //lista wypożyczeń ze zwróconymi książkami
         List<BookState> bookStateList = new ArrayList<>();
-        bookStateList.add(bookState);
-        bookStateList.add(bookState1);
         bookStateList.add(bookState2);
+        bookStateList.add(bookState1);
+        bookStateList.add(bookState);
 
-        //lista wypożyczeń wypożyczonymi książkami
+        //lista wypożyczeń wypożyczonymi książkami user2
         List<BookState> bookStateList2 = new ArrayList<>();
-        bookStateList2.add(bookState3);
         bookStateList2.add(bookState4);
         bookStateList2.add(bookState5);
+        bookStateList2.add(bookState3);
 
         List<Book> loanedBookList = new ArrayList<>();
         loanedBookList.add(book);
