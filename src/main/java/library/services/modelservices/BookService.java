@@ -1,4 +1,4 @@
-package library.services;
+package library.services.modelservices;
 
 import library.enums.ActionDescription;
 import library.enums.AgeCategory;
@@ -12,10 +12,12 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
+import library.services.exceptions.ExceptionFactory;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -82,8 +84,6 @@ public class BookService {
                 bookFromBase.setStatus(book.getStatus());
             }
 
-            Action action = new Action();
-            action.setBook(bookFromBase);
             /**
              *         action.setUser(); tutaj powinno dodawać się login admina
              *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
@@ -91,6 +91,8 @@ public class BookService {
              *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
              *         lub odpowiednia adnotacja (trzeba by dodać całe security)
              */
+            Action action = new Action();
+            action.setBook(bookFromBase);
             action.setActionDescription(ActionDescription.AKTUALIZACJA); //TODO: actionENUM
             actionRepository.save(action);
 
@@ -133,9 +135,13 @@ public class BookService {
     /**
      * TODO: w tych dwóch metodach może trzeba będzie zmienić parametry na Stringi
      */
-    public List<Book> booksByCategory(Category category) {
-        return bookRepository.findBookByCategory(category);
-    }
+//    public List<Book> booksByCategory(Category category) {
+//        List<Book> booksByCat = bookRepository.findBookByCategory(category);
+//        if(CollectionUtils.isEmpty(booksByCat)){
+////            throw ExceptionFactory.trowException()
+//        }
+//        return ;
+//    }
 
     public List<Book> booksByAgeCategory(AgeCategory ageCategory) {
         return bookRepository.findBookByAgeCategory(ageCategory);

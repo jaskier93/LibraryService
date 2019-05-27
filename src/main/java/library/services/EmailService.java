@@ -11,6 +11,10 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
 import library.users.User;
+import library.validators.AbstractValidator;
+import library.validators.PaymentAmountValidator;
+import library.validators.ProlongationValidator;
+import library.validators.ZbiorczyWalidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,18 +23,23 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
 @EnableScheduling
 @RequiredArgsConstructor
-public class EmailService {
-    private RentService rentService;
-    private JavaMailSender javaMailSender;
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
-    private BookStateRepository bookStateRepository;
-    private EmailModelService emailModelService;
+public class EmailService extends MotherOfServices{
+    private final RentService rentService;
+    private final JavaMailSender javaMailSender;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+    private final BookStateRepository bookStateRepository;
+    private final EmailModelService emailModelService;
+    private final ZbiorczyWalidator zbiorczyWalidator;
+    private final PaymentAmountValidator paymentAmountValidator;
+    private final ProlongationValidator prolongationValidator;
 
 
     //TODO: zrobić maile dla: akcji związanych z książką-wypożyczenie, oddanie, zniszczenie, związanych z akcjami ewentualnymi zniszczeniami;
@@ -172,4 +181,20 @@ public class EmailService {
             e.printStackTrace();
         }
     }*/
+
+    @Override
+    public void DoSomethingWithBook(User user, Book book) {
+        List<AbstractValidator> listaWalidacji = Arrays.asList(prolongationValidator);
+        zbiorczyWalidator.checkIt(listaWalidacji, user);
+    }
+
+    @Override
+    public void cancel(User user, Book book) {
+
+    }
+
+    @Override
+    public void corection(User user, Book book) {
+
+    }
 }

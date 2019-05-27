@@ -1,4 +1,4 @@
-package library.services;
+package library.services.modelservices;
 
 import library.models.Author;
 import library.repositories.AuthorRepository;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorService {
 
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     @Autowired
     public AuthorService(AuthorRepository authorRepository) {
@@ -39,7 +39,7 @@ public class AuthorService {
                 authorFromBase.setName(author.getName());
             }
             //domyślny status autora to 0 (przy tworzeniu)
-            if (author.getStatus() != 0) {
+            if (author.getStatus() == 0 || author.getSecondName().isEmpty()) {
                 authorFromBase.setStatus(author.getStatus());
             }
             if (!author.getSecondName().isEmpty()) {

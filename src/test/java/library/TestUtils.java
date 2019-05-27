@@ -1,15 +1,15 @@
 package library;
 
-import library.enums.ActionDescription;
-import library.enums.AgeCategory;
-import library.enums.BookStateEnum;
-import library.enums.Category;
+import library.enums.*;
 import library.models.*;
 import library.users.User;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TestUtils {
+
+    //TODO:dodać wszędzie setowanie wartości z StateEntity
 
     public static User createUser() {
         User user = new User();
@@ -59,6 +59,9 @@ public class TestUtils {
         action.setActionDescription(ActionDescription.TEST);
         action.setBook(book);
         action.setUser(null); //TODO: czy user? do sprawdzenia
+        action.setCreated(LocalDateTime.now());
+        action.setStatusRekordu(StatusRekordu.ACTIVE);
+        action.setUpdated(LocalDateTime.now());
         return action;
     }
 

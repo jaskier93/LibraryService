@@ -1,4 +1,4 @@
-package library.services;
+package library.services.modelservices;
 
 import library.repositories.UserRepository;
 import library.users.User;
@@ -23,14 +23,6 @@ public class UserService {
      * metoda może zwracać Stringa, który byłby treścią maila z informacjami początkowymi dla nowego użytkownika
      */
     public User addUser(User user) {
-        user.setSecondName(user.getSecondName()); //opcjonalne
-        user.setLastName(user.getLastName());
-        user.setEmail(user.getEmail());
-        user.setName(user.getName());
-        user.setAdminDegree(user.getAdminDegree());
-        user.setActive(user.isActive());
-        user.setAdmin(user.isAdmin());
-        user.setDateOfBirth(user.getDateOfBirth());
         return userRepository.save(user);
     }
 

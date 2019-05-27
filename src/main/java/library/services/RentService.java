@@ -9,27 +9,50 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
+import library.validators.AbstractValidator;
+import library.validators.ZbiorczyWalidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
-public class RentService {
+public class RentService extends MotherOfServices {
+
     public static final Integer LOAN_PERIOD = 30;
 
-    private BookRepository bookRepository;
-    private BookStateRepository bookStateRepository;
-    private ActionRepository actionRepository;
+    private final BookRepository bookRepository;
+    private final BookStateRepository bookStateRepository;
+    private final ActionRepository actionRepository;
+    private final ZbiorczyWalidator zbiorczyWalidator;
 
     @Autowired
-    public RentService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository) {
+    public RentService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, ZbiorczyWalidator zbiorczyWalidator) {
         this.bookRepository = bookRepository;
         this.bookStateRepository = bookStateRepository;
         this.actionRepository = actionRepository;
+        this.zbiorczyWalidator = zbiorczyWalidator;
     }
+
+    @Override
+    public void DoSomethingWithBook(User user, Book book) {
+
+    }
+
+    @Override
+    public void cancel(User user, Book book) {
+
+    }
+
+    @Override
+    public void corection(User user, Book book) {
+
+    }
+
 
     //warunek sprawdzający, czy książka istnieje (jest w bibliotece) i czy nie jest zniszczona
     private Book isBookExisting(Integer bookId) {
