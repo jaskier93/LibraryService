@@ -8,6 +8,7 @@ public enum ActionDescription {
     ZNISZCZENIE,
     AKTUALIZACJA,
     PRZEDLUZENIE,
+    ZAPLACENIE, //opłacenie płatności za zniszczenie książki/zwrot po terminie
     PRZETERMINOWANIE, //przeterminowany zwrot książki
     ZWROT;
 }

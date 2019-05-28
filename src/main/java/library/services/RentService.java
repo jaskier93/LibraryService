@@ -2,25 +2,33 @@ package library.services;
 
 import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
+import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
+import library.models.Payment;
 import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
+import library.services.modelservices.ActionService;
+import library.services.modelservices.BookStateService;
+import library.services.modelservices.PaymentService;
 import library.users.User;
 import library.validators.AbstractValidator;
 import library.validators.ZbiorczyWalidator;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class RentService extends MotherOfServices {
 
     public static final Integer LOAN_PERIOD = 30;
@@ -29,28 +37,20 @@ public class RentService extends MotherOfServices {
     private final BookStateRepository bookStateRepository;
     private final ActionRepository actionRepository;
     private final ZbiorczyWalidator zbiorczyWalidator;
-
-    @Autowired
-    public RentService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, ZbiorczyWalidator zbiorczyWalidator) {
-        this.bookRepository = bookRepository;
-        this.bookStateRepository = bookStateRepository;
-        this.actionRepository = actionRepository;
-        this.zbiorczyWalidator = zbiorczyWalidator;
-    }
+    private final ActionService actionService;
+    private final BookStateService bookStateService;
+    private final PaymentService paymentService;
 
     @Override
     public void DoSomethingWithBook(User user, Book book) {
-
     }
 
     @Override
     public void cancel(User user, Book book) {
-
     }
 
     @Override
     public void corection(User user, Book book) {
-
     }
 
 
@@ -68,18 +68,9 @@ public class RentService extends MotherOfServices {
      * TODO: do przemyślenia :czy na potrzeby Mail Schedulera metody powinny zwracać Stringa z odpowiednim komunikatem?
      */
 
-    public String rentBook(Book book, User user) {
-        Action action = new Action();
-        action.setActionDescription(ActionDescription.WYPOZYCZENIE);
-        action.setBook(book);
-        action.setUser(user);
-        actionRepository.save(action);
-
-        BookState bookState = new BookState();
-        bookState.setBook(book);
-        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
-        bookState.setAction(action);
-        bookStateRepository.save(bookState);
+    String rentBook(Book book, User user) {
+        Action action = actionService.loanBook(book, user);
+        BookState bookState = bookStateService.prolongation(action);
         return "Wypoczyłeś książkę pt. \"" + book.getTitle() + "\", dnia: " +
                 bookState.getDateOfLoan() + ". \nTermin zwrotu to:" + bookState.getDateOfReturn();
     }
@@ -87,29 +78,17 @@ public class RentService extends MotherOfServices {
     //czy jest sens wysyłać maila w przypadku zwrotu książki?
     public void returnBook(Book book, User user /*czy tutaj user będzie potrzebny?*/) {
 
-        /**
-         * tworzone będą dwie akcje w przypadku zwrotu książki po terminie, w przypadku prawidłowego-tylko jedna
-         */
         //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
-        Action actionExpiredLoan = new Action();
-        actionExpiredLoan.setActionDescription(ActionDescription.PRZETERMINOWANIE);
-        actionExpiredLoan.setBook(book);
-        actionExpiredLoan.setUser(user);
-        actionRepository.save(actionExpiredLoan);
-
-        Action actionReturnBook = new Action();
-        actionReturnBook.setActionDescription(ActionDescription.ZWROT);
-        actionReturnBook.setBook(book);
-        actionReturnBook.setUser(user);
-        actionRepository.save(actionReturnBook);
-
-        BookState bookState = new BookState();
-        bookState.setBook(book);
+        actionService.expiredLoan(book, user);
+        actionService.returnBook(book, user);
+        bookStateService.returnBook(actionService.returnBook(book, user));
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
         jeśli nie, to naliczyć karę*/
-        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
-        bookState.setAction(actionReturnBook);
-        bookStateRepository.save(bookState);
+        Payment expiredLoanPayment = paymentService.expiredLoan(bookStateService.returnBook(actionService.returnBook(book, user)));
+        //TODO:ewentualnie dodać walidację (jeśli potrzebna)-czy użytkownik od razu płaci karę
+        actionService.paymentInfo(book, user);
+        paymentService.updatePayment(expiredLoanPayment.getId());
+
     }
 
     /**
@@ -118,20 +97,9 @@ public class RentService extends MotherOfServices {
      */
     public String loanBookProlongation(Book book, User user) {
         //najpierw wywołać metodę walidującą z ProlongationValidator
-        Action action = new Action();
-        action.setActionDescription(ActionDescription.PRZEDLUZENIE);
-        action.setBook(book);
-        action.setUser(user);
-        actionRepository.save(action);
-
-        BookState bookState = new BookState();
-        bookState.setBook(book);
-        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
-        bookState.setAction(action);
-        bookState.setDateOfReturn(LocalDate.now().plusDays(30)); //nowa data zwrotu
-        bookState.setDateOfUpdate(LocalDate.now());
-        bookStateRepository.save(bookState);
+        actionService.prolongation(book, user);
+        bookStateService.prolongation(actionService.prolongation(book, user));
         return "Przedłużyłeś wypożyczenie książki pt.\"" + book.getTitle() + "\"." +
-                "Termin zwrotu książki to: " + bookState.getDateOfUpdate();
+                "Termin zwrotu książki to: " + LocalDate.now().plusDays(30);
     }
 }

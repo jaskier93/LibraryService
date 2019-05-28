@@ -19,6 +19,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static org.junit.Assert.*;
 
@@ -70,11 +72,11 @@ public class RentFifthBookValidatorTest {
         bookRepository.save(book3);
 
         User user = TestUtils.createUser();
-        user.setDateOfRegistration(LocalDate.now().minusYears(3));
+        user.setCreated(LocalDateTime.now().minusYears(3));
         userRepository.save(user);
 
         User user2 = TestUtils.createUser();
-        user2.setDateOfRegistration(LocalDate.now().minusMonths(3));
+        user2.setCreated(LocalDateTime.now().minusMonths(3));
         userRepository.save(user2);
 
         Action action = TestUtils.createAction(book, user);

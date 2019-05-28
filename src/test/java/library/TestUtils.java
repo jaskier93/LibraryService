@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 
 public class TestUtils {
 
-    //TODO:dodać wszędzie setowanie wartości z StateEntity
-
     public static User createUser() {
         User user = new User();
         user.setActive(true);
         user.setDateOfBirth(LocalDate.now().minusYears(20));
         user.setAdmin(false);
-        user.setDateOfRegistration(LocalDate.now());
+        user.setCreated(LocalDateTime.now());
+        user.setUpdated(LocalDateTime.now());
+        user.setStatusRekordu(StatusRekordu.TEST);
         user.setAdminDegree(0);
         user.setEmail("example@gmail.com");
         user.setLastName("XXXYYYZZZ");
@@ -30,8 +30,9 @@ public class TestUtils {
         bookState.setBook(book);
         bookState.setBookStateEnum(bookStateEnum);
         bookState.setDateOfReturn(LocalDate.now());
-        bookState.setDateOfUpdate(LocalDate.now());
-        bookState.setDateOfCreating(LocalDate.now());
+        bookState.setCreated(LocalDateTime.now());
+        bookState.setUpdated(LocalDateTime.now());
+        bookState.setStatusRekordu(StatusRekordu.TEST);
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
         bookState.setStatus(1020304050);
@@ -39,18 +40,30 @@ public class TestUtils {
     }
 
     public static Author createAuthor() {
-        Author author = new Author("Andrzej", "", "SapkowskiAndrzej",
-                LocalDate.of(1955, 12, 31),
-                LocalDate.of(2015, 12, 31),
-                LocalDate.of(2018, 12, 31), 5);
+        Author author = new Author();
+        author.setName("Andrzej");
+        author.setLastName("SapkowskiAndrzej");
+        author.setDateOfBirth(LocalDate.of(1948, 6, 21));
+        author.setDateOfDeath(LocalDate.of(2008, 4, 25)); //przykładowa data
+        author.setCreated(LocalDateTime.now());
+        author.setUpdated(LocalDateTime.now());
+        author.setUpdated(null);
+        author.setStatusRekordu(StatusRekordu.TEST);
+        author.setStatus(5);
         return author;
     }
 
     public static Book createBook(Author author) {
-        Book book = new Book("WiedźminWiedźmin",
-                LocalDate.of(2019, 5, 22),  //data wydania
-                LocalDate.of(2019, 5, 21),  //data dodania do biblioteki
-                Category.ADVENTURE, AgeCategory.DOROSLI, author, 5);
+        Book book = new Book();
+        book.setTitle("WiedźminWiedźmin");
+        book.setAuthor(author);
+        book.setReleaseDate(LocalDate.of(2019, 5, 2));
+        book.setCreated(LocalDateTime.of(2019, 5, 22, 15, 40));
+        book.setStatusRekordu(StatusRekordu.TEST);
+        book.setAgeCategory(AgeCategory.DOROSLI);
+        book.setUpdated(null);
+        book.setCategory(Category.ADVENTURE);
+        book.setStatus(5);
         return book;
     }
 
@@ -58,9 +71,9 @@ public class TestUtils {
         Action action = new Action();
         action.setActionDescription(ActionDescription.TEST);
         action.setBook(book);
-        action.setUser(null); //TODO: czy user? do sprawdzenia
+        action.setUser(user);
         action.setCreated(LocalDateTime.now());
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
+        action.setStatusRekordu(StatusRekordu.TEST);
         action.setUpdated(LocalDateTime.now());
         return action;
     }
@@ -70,7 +83,9 @@ public class TestUtils {
         payment.setAmount(1020304050);
         payment.setActive(true);
         payment.setBook(book);
-        payment.setDateOfPayment(LocalDate.now());
+        payment.setCreated(LocalDateTime.now());
+        payment.setStatusRekordu(StatusRekordu.TEST);
+        payment.setUpdated(LocalDateTime.now());
         payment.setUser(user);
         payment.setStatus(1020304050);
         return payment;

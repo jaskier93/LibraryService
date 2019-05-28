@@ -30,7 +30,7 @@ import java.util.List;
 @Service
 @EnableScheduling
 @RequiredArgsConstructor
-public class EmailService extends MotherOfServices{
+public class EmailService{
     private final RentService rentService;
     private final JavaMailSender javaMailSender;
     private final BookRepository bookRepository;
@@ -182,19 +182,4 @@ public class EmailService extends MotherOfServices{
         }
     }*/
 
-    @Override
-    public void DoSomethingWithBook(User user, Book book) {
-        List<AbstractValidator> listaWalidacji = Arrays.asList(prolongationValidator);
-        zbiorczyWalidator.checkIt(listaWalidacji, user);
-    }
-
-    @Override
-    public void cancel(User user, Book book) {
-
-    }
-
-    @Override
-    public void corection(User user, Book book) {
-
-    }
 }

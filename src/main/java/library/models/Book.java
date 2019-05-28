@@ -5,6 +5,7 @@ import library.enums.AgeCategory;
 import library.enums.Category;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
@@ -16,8 +17,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @Table(name = "Books")
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
-public class Book {
+public class Book extends StateEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +29,6 @@ public class Book {
     private String title;
 
     private LocalDate releaseDate; //data wydania książki
-
-    @NotNull
-    private LocalDate addingDate = LocalDate.now(); //data dodania książki do bazy
 
     @Convert(converter = CategoryConverter.class)
     private Category category;
@@ -44,16 +43,4 @@ public class Book {
 
     @NotNull
     private Integer status;
-
-    @Builder
-    public Book(@NotNull String title, LocalDate releaseDate, @NotNull LocalDate addingDate,
-                Category category, AgeCategory ageCategory, @NotNull Author author, @NotNull Integer status) {
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.addingDate = addingDate;
-        this.category = category;
-        this.ageCategory = ageCategory;
-        this.author = author;
-        this.status = status;
-    }
 }

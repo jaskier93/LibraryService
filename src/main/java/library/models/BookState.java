@@ -4,6 +4,7 @@ import library.enums.BookStateEnum;
 import library.users.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,9 +14,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "book_states")
-public class BookState {
+public class BookState extends StateEntity{
 
     //TODO:    @Transient znaleźć adnotację, dzięki której te pole nie będziew bazie danej, transient wypełnia tylko nullami
     private final static Integer LOAN_PERIOD = 30;
@@ -29,11 +31,6 @@ public class BookState {
     private User user;
 
     private LocalDate dateOfLoan = LocalDate.now();
-
-    @NotNull
-    private LocalDate dateOfCreating = LocalDate.now();
-
-    private LocalDate dateOfUpdate = LocalDate.now();
 
     private LocalDate dateOfReturn = dateOfReturnBook();
 

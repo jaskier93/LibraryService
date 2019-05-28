@@ -7,7 +7,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+import library.models.StateEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
@@ -15,7 +17,8 @@ import javax.persistence.*;
 @Entity
 @Table
 @Data
-public class User {
+@EqualsAndHashCode(callSuper = false)
+public class User extends StateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,8 +35,7 @@ public class User {
     @NotNull
     private LocalDate dateOfBirth;
 
-    @NotNull
-    private LocalDate dateOfRegistration = LocalDate.now();
+    //DateOfRegistration=created (StateEntity)
 
     private Integer adminDegree;
 

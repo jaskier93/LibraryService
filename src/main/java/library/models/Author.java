@@ -2,6 +2,7 @@ package library.models;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
@@ -12,7 +13,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Data
 @Table(name = "Author")
-public class Author {
+@EqualsAndHashCode(callSuper = false)
+public class Author extends StateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,20 +33,5 @@ public class Author {
     private LocalDate dateOfDeath;
 
     @NotNull
-    private LocalDate created;
-
-    @NotNull
     private Integer status;
-
-    @Builder //póki co bez Book book
-    public Author(@NotNull String name, String secondName, @NotNull String lastName, LocalDate dateOfBirth, LocalDate dateOfDeath,
-                  @NotNull LocalDate created, @NotNull Integer status) {
-        this.name = name;
-        this.secondName = secondName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfDeath = dateOfDeath;
-        this.created = created;
-        this.status = status;
-    }
 }

@@ -27,7 +27,7 @@ public class RentFifthBookValidator extends AbstractValidator {
     @Override
     public boolean validator(User user) {
         List<Book> bookListLoanedByUser = bookStateRepository.findLoanedBooksByUser(user);
-        Period period = Period.between(user.getDateOfRegistration(), LocalDate.now());
+        Period period = Period.between(user.getCreated().toLocalDate(), LocalDate.now());
         return (bookListLoanedByUser.size() == 4
                 && (period.getYears() >= 1));
     }

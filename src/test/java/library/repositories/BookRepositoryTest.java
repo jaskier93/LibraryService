@@ -42,7 +42,7 @@ public class BookRepositoryTest {
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         book.setReleaseDate(book.getReleaseDate().plusDays(50));
-        book.setAddingDate(book.getAddingDate().plusDays(50));
+        book.setCreated(book.getCreated().plusDays(50));
         bookRepository.save(book);
 
         Book book1 = TestUtils.createBook(TestUtils.createAuthor());
@@ -50,7 +50,7 @@ public class BookRepositoryTest {
 
         Book book2 = TestUtils.createBook(TestUtils.createAuthor());
         book2.setReleaseDate(book2.getReleaseDate().plusDays(30));
-        book2.setAddingDate(book2.getAddingDate().plusDays(30));
+        book2.setCreated(book2.getCreated().plusDays(30));
         bookRepository.save(book2);
 
         Book bookFromBase = bookRepository.getOne(book.getId());

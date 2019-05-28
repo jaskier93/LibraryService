@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,29 +28,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService {
 
-    //kara 20zł za zniszczenie książki
-    private static final Integer PENALTY_AMOUNT = 20;
 
-    private BookRepository bookRepository;
-    private BookStateRepository bookStateRepository;
-    private ActionRepository actionRepository;
-    private PaymentRepository paymentRepository;
+    private final BookRepository bookRepository;
+    private final BookStateRepository bookStateRepository;
+    private final ActionRepository actionRepository;
+    private final PaymentRepository paymentRepository;
+    private final ActionService actionService;
+    private final BookStateService bookStateService;
+    private final PaymentService paymentService;
 
-    private Book addBook(Book book) {
-        Action action = new Action();
-        action.setBook(book);
-        //action.setUser(); tutaj powinno dodawać się login admina
-        action.setActionDescription(ActionDescription.NOWOSC);
-        actionRepository.save(action);
-
-        BookState bookState = new BookState();
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
-        bookState.setBook(book);
-        bookState.setAction(action);
-        bookState.setDateOfReturn(null); //tutaj powinno być settowanie na nulla, ponieważ w klasie BooState domyślnie ustawia na obecną datę +30dni
-        bookState.setStatus(0); //wartość tymczasowa, później się ustali TODO
-        bookStateRepository.save(bookState);
-
+    private Book addBook(Book book, User user) {
+        Action newBookAction = actionService.addBook(book, user);
+        bookStateService.newBook(newBookAction);
         return bookRepository.save(book);
     }
 
@@ -60,7 +50,7 @@ public class BookService {
         return bookStateRepository.findBookStateByBook(bookId).getBookStateEnum();
     }
 
-    private Book updateBook(Book book, Integer bookId) {
+    private Book updateBook(Book book, Integer bookId, User user) {
         Book bookFromBase = bookRepository.getOne(bookId);
         if (bookFromBase == null) {
             log.info("Nie znaleziono takiej książki");
@@ -84,31 +74,28 @@ public class BookService {
                 bookFromBase.setStatus(book.getStatus());
             }
 
-            /**
-             *         action.setUser(); tutaj powinno dodawać się login admina
+            /**        action.setUser(); tutaj powinno dodawać się login admina
              *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
              *         dodatkowo walidacja czy ma status admina
              *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
              *         lub odpowiednia adnotacja (trzeba by dodać całe security)
              */
-            Action action = new Action();
-            action.setBook(bookFromBase);
-            action.setActionDescription(ActionDescription.AKTUALIZACJA); //TODO: actionENUM
-            actionRepository.save(action);
+            Action action = actionService.updateBook(book, user);
 
-            BookState newBookState = new BookState();
+            //TODO: na 99% bookState tutaj nie będzie potrzebny, do przemyślenia
+    /*        BookState newBookState = new BookState();
             BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
             newBookState.setBook(bookFromBase);
             newBookState.setAction(action);
-            newBookState.setDateOfUpdate(LocalDate.now());
+            newBookState.setUpdated(LocalDateTime.now());
             newBookState.setUser(bookStateFromBase.getUser());
             newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
             newBookState.setStatus(bookStateFromBase.getStatus());
-            newBookState.setDateOfCreating(LocalDate.now());
-            newBookState.setDateOfUpdate(LocalDate.now());
+            newBookState.setCreated(LocalDateTime.now());
+            newBookState.setUpdated(LocalDateTime.now());
             newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
             newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
-            bookStateRepository.save(newBookState);
+            bookStateRepository.save(newBookState);*/
         }
         return bookRepository.save(bookFromBase);
     }
@@ -142,7 +129,6 @@ public class BookService {
 //        }
 //        return ;
 //    }
-
     public List<Book> booksByAgeCategory(AgeCategory ageCategory) {
         return bookRepository.findBookByAgeCategory(ageCategory);
     }
@@ -155,38 +141,15 @@ public class BookService {
         return bookStateRepository.findBookStateByUser(user);
     }
 
+
     /**
      * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
-    public void deleteBook(Integer bookId, User user) {
-        Book bookFromBase = bookRepository.getOne(bookId);
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(bookFromBase);
-        action.setActionDescription(ActionDescription.ZNISZCZENIE);
-        actionRepository.save(action);
-
-        BookState bookState = new BookState();
-        bookState.setBookStateEnum(BookStateEnum.ZNISZCZONA);
-        bookState.setAction(action);
-        bookState.setStatus(0);
-        bookState.setUser(user);
-        bookState.setBook(bookFromBase);
-        bookState.setDateOfReturn(null);
-        bookStateRepository.save(bookState);
-
-        Payment payment = new Payment();
-        payment.setDateOfPayment(LocalDate.now());
-        payment.setAction(action);
-        payment.setBookState(bookState);
-        payment.setAmount(PENALTY_AMOUNT);
-        payment.setUser(user);
-        payment.setStatus(0);
-        payment.setActive(true);
-        payment.setBook(bookFromBase);
-        paymentRepository.save(payment);
-
+    public void deleteBook(Book book, User user) {
+        Action action = actionService.updateBook(book, user);
+        BookState bookState = bookStateService.destroyBook(action);
+        paymentService.destroyedBookPayment(bookState);
         /*TODO
          * Do dodania:
          * repozytoria: akcji, płatnośći

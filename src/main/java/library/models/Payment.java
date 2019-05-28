@@ -10,8 +10,9 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "payments")
+@EqualsAndHashCode(callSuper = false)
 //@RequiredArgsConstructor
-public class Payment {
+public class Payment extends StateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +39,6 @@ public class Payment {
 
     @ManyToOne
     private Action action;
-
-    //data nadania lub opłacenia płatności
-    @NotNull
-    private LocalDate dateOfPayment;
 
     @NotNull
     private Integer status;
