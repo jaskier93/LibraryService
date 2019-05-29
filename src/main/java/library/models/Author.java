@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-//@RequiredArgsConstructor
 @Data
 @Table(name = "Author")
 @EqualsAndHashCode(callSuper = false)
@@ -36,8 +35,4 @@ public class Author extends StateEntity {
 
     @NotNull
     private Integer status;
-
-    public Author(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
-        super(created, updated, statusRekordu);
-    }
 }

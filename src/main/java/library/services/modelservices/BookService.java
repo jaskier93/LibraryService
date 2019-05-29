@@ -110,7 +110,7 @@ public class BookService {
 
     //książki wydane w ciągu roku
     public List<Book> booksReleasedInPeriod() {
-        return bookRepository.booksReleasedInPeriod(LocalDate.now().minusYears(1));
+        return bookRepository.booksReleasedInPeriod(LocalDateTime.now().minusYears(1));
     }
 
     //książki dodane w ciągu miesiąca-nowości w bibliotece

@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -41,7 +42,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     //lista książek dodana w danym okresie, np w przeciągu miesiąca
     @Query("select b from Book b where b.created>:date order by b.title")
-    List<Book> booksReleasedInPeriod(@Param("date") LocalDate localDate);
+    List<Book> booksReleasedInPeriod(@Param("date") LocalDateTime localDateTime);
 
     /**
      * wyświetlanie książek w kolejności wydania

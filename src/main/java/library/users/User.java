@@ -20,7 +20,6 @@ import javax.persistence.*;
 @Entity
 @Table
 @Data
-//@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends StateEntity {
 
@@ -52,8 +51,4 @@ public class User extends StateEntity {
 
     @NotNull
     private boolean isAdmin;
-
-    public User(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
-        super(created, updated, statusRekordu);
-    }
 }

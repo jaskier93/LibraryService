@@ -1,20 +1,14 @@
 package library.models;
 
 import library.enums.BookStateEnum;
-import library.enums.StatusRekordu;
 import library.users.User;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-//@NoArgsConstructor
-//@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -48,10 +42,6 @@ public class BookState extends StateEntity{
 
     @NotNull
     private Integer status;
-
-    public BookState(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
-        super(created, updated, statusRekordu);
-    }
 
     private LocalDate dateOfReturnBook() {
         return LocalDate.now().plusDays(LOAN_PERIOD);

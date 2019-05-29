@@ -91,6 +91,7 @@ public class ActionService {
         action.setActionDescription(ActionDescription.PRZETERMINOWANIE);
         return actionRepository.save(action);
     }
+
     public Action destroyBook(Book book, User user) {
         Action action = new Action();
         action.setUser(user);

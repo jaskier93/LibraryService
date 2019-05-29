@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class BookRepositoryTest {
     public void bookRepositoryTest() {
 
         LocalDate today = LocalDate.now();
+        LocalDateTime today2 = LocalDateTime.now();
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         book.setReleaseDate(book.getReleaseDate().plusDays(50));
@@ -83,8 +85,8 @@ public class BookRepositoryTest {
         assertTrue(bookRepository.booksAddedInPeriod(today.plusDays(111)).isEmpty());
 
         //test ma sprawdzić, czy w  bibliotece są ksiązki wydane w przeciągu określonego czasu
-        assertFalse(bookRepository.booksReleasedInPeriod(today.minusYears(10)).isEmpty());
-        assertTrue(bookRepository.booksReleasedInPeriod(today.plusYears(10)).isEmpty());
+        assertFalse(bookRepository.booksReleasedInPeriod(today2.minusYears(10)).isEmpty());
+        assertTrue(bookRepository.booksReleasedInPeriod(today2.plusYears(10)).isEmpty());
 
         //test ma na celu sprawdzić, czy książki są posortowane prawidłowo po dacie wydania (od najstarszej)
         assertEquals(bookListOrderByReleaseDate, bookRepository.sortedBooksByReleaseData());

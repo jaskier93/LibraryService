@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @Table(name = "Books")
 @EqualsAndHashCode(callSuper = false)
-//@RequiredArgsConstructor
 public class Book extends StateEntity{
 
     @Id
@@ -45,8 +44,4 @@ public class Book extends StateEntity{
 
     @NotNull
     private Integer status;
-
-    public Book(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
-        super(created, updated, statusRekordu);
-    }
 }

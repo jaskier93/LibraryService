@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -23,14 +24,13 @@ public class StateEntity {
     @Enumerated(EnumType.STRING)
     private StatusRekordu statusRekordu;
 
-    public StateEntity(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
-        this.created = LocalDateTime.now();
-        this.updated = null;
-        this.statusRekordu = StatusRekordu.ACTIVE;
+    @PrePersist
+    private void StateEntityMethod() {
+        if (statusRekordu == null) {
+            statusRekordu = StatusRekordu.ACTIVE;
+        }
+        if (created == null) {
+            created = LocalDateTime.now();
+        }
     }
-
-    /* public StateEntity() {
-        this.created = LocalDateTime.now();
-        this.statusRekordu = StatusRekordu.ACTIVE;
-    }*/
 }
