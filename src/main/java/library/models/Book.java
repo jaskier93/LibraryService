@@ -3,6 +3,7 @@ package library.models;
 import library.converters.CategoryConverter;
 import library.enums.AgeCategory;
 import library.enums.Category;
+import library.enums.StatusRekordu;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Table(name = "Books")
 @EqualsAndHashCode(callSuper = false)
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class Book extends StateEntity{
 
     @Id
@@ -43,4 +45,8 @@ public class Book extends StateEntity{
 
     @NotNull
     private Integer status;
+
+    public Book(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
+        super(created, updated, statusRekordu);
+    }
 }

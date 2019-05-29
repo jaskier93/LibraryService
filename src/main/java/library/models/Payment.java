@@ -1,11 +1,13 @@
 package library.models;
 
+import library.enums.StatusRekordu;
 import library.users.User;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -42,4 +44,8 @@ public class Payment extends StateEntity {
 
     @NotNull
     private Integer status;
+
+    public Payment(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
+        super(created, updated, statusRekordu);
+    }
 }

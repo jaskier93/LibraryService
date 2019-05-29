@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @MappedSuperclass
-public abstract class StateEntity {
+public class StateEntity {
 
     @NotNull
     private LocalDateTime created = LocalDateTime.now();
@@ -23,8 +23,13 @@ public abstract class StateEntity {
     @Enumerated(EnumType.STRING)
     private StatusRekordu statusRekordu;
 
+    public StateEntity(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
+        this.created = LocalDateTime.now();
+        this.updated = null;
+        this.statusRekordu = StatusRekordu.ACTIVE;
+    }
 
-   /* public StateEntity() {
+    /* public StateEntity() {
         this.created = LocalDateTime.now();
         this.statusRekordu = StatusRekordu.ACTIVE;
     }*/

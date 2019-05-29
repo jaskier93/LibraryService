@@ -1,6 +1,7 @@
 package library.models;
 
 import library.enums.ActionDescription;
+import library.enums.StatusRekordu;
 import library.users.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
+@RequiredArgsConstructor
 @Table(name = "Actions")
 @EqualsAndHashCode(callSuper = false)
 public class Action extends StateEntity{
@@ -28,4 +31,8 @@ public class Action extends StateEntity{
 
     @ManyToOne
     private User user;
+
+    public Action(@NotNull LocalDateTime created, LocalDateTime updated, @NotNull StatusRekordu statusRekordu) {
+        super(created, updated, statusRekordu);
+    }
 }
