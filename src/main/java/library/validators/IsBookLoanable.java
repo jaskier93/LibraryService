@@ -1,6 +1,5 @@
 package library.validators;
 
-import library.enums.BookStateEnum;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookStateRepository;

@@ -18,11 +18,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
     @Query("select a from Action  a where  a.actionDescription =:actionDescription")
     List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
-    /**
-     * metoda zwracająca listę akcji związanych ze zniszczoną książką
-     * aby to miało sens należy do actionDescription zawsze opisywać tak samo zniszczenie -można to ewentualnie zmienić na enuma
-     * lub podczas przesyłania z htmla do bazy ustalić jako value=Zniszczenie (przy polu actionDescription wypełnianym przez admina)
-     */
+    ///metoda zwracająca listę zniszczeń jednego użytkownika
     @Query("select a from Action  a where  a.actionDescription='ZNISZCZENIE' and a.user=:value")
     List<Action> findActionsWithDestroyedBooksByUser(@Param("value") User user);
 

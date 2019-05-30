@@ -43,15 +43,16 @@ public class BookRepositoryTest {
         LocalDateTime today2 = LocalDateTime.now();
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
-        book.setReleaseDate(book.getReleaseDate().plusDays(50));
+        book.setReleaseDate(book.getReleaseDate().minusDays(50));
         book.setCreated(book.getCreated().plusDays(50));
         bookRepository.save(book);
 
         Book book1 = TestUtils.createBook(TestUtils.createAuthor());
+        book1.setReleaseDate(LocalDate.now());
         bookRepository.save(book1);
 
         Book book2 = TestUtils.createBook(TestUtils.createAuthor());
-        book2.setReleaseDate(book2.getReleaseDate().plusDays(30));
+        book2.setReleaseDate(book2.getReleaseDate().minusDays(30));
         book2.setCreated(book2.getCreated().plusDays(30));
         bookRepository.save(book2);
 

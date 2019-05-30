@@ -1,5 +1,6 @@
 package library.services.modelservices;
 
+import library.enums.StatusRekordu;
 import library.models.Author;
 import library.repositories.AuthorRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,12 @@ public class AuthorService {
             }
         }
         return authorRepository.save(authorFromBase);
+    }
+
+    public Author deleteAuthor(Integer authorId) {
+        Author author = authorRepository.getOne(authorId);
+        author.setStatusRekordu(StatusRekordu.HISTORY);
+        return authorRepository.save(author);
     }
 
 

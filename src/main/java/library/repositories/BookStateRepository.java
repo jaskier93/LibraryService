@@ -1,6 +1,5 @@
 package library.repositories;
 
-
 import library.models.Book;
 import library.models.BookState;
 import library.users.User;
@@ -14,12 +13,11 @@ import java.util.List;
 @Repository
 public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
-
     //TODO: przy sortowaniu (order by) po dacie trzeba dodać słówko kluczowe DESC jeśli chcemy od najnowszej daty lub ASC (domyślnie) jeśli od najstarszej
 
     /**
      * dopisać test
-     *///TODO:póki co nie działa
+     */
     @Query("select bs " +
             "from BookState bs " +
             "where bs.book.id = :bookId " +
@@ -45,7 +43,6 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
     List<BookState> findCurrentBookStateByUser(User user);
 
     //metoda zwraca listę wypożyczeń użytkownika-całą historię
-    //TODO:ewentualnie można zwracać książki i w takiej formie pokazać userowi jego listę wypożyczonych książek (cała historia)
     @Query("select bs from BookState bs where bs.user=?1 order by bs.dateOfLoan desc ")
     List<BookState> findBookStateByUser(User user);
 }

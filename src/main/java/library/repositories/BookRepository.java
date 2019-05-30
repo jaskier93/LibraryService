@@ -41,14 +41,14 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> booksAddedInPeriod(@Param("date") LocalDate localDate);
 
     //lista książek dodana w danym okresie, np w przeciągu miesiąca
-    @Query("select b from Book b where b.created>:date order by b.title")
+    @Query("select b from Book b where b.created>:date order by b.title ")
     List<Book> booksReleasedInPeriod(@Param("date") LocalDateTime localDateTime);
 
     /**
      * wyświetlanie książek w kolejności wydania
      * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie książek wydanych w danym roku
      */
-    @Query("select b from Book b order by b.releaseDate")
+    @Query("select b from Book b order by b.releaseDate desc")
     List<Book> sortedBooksByReleaseData();
 
 

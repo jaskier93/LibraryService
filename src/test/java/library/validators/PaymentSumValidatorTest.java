@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
+
 @Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -54,7 +55,8 @@ public class PaymentSumValidatorTest {
         jdbcTemplate.update("delete from payments where status=1020304050");
     }
 
-    @Test //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
+    @Test
+    //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
     public void isUserPaymentsSumAbove100() {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);

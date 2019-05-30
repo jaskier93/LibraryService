@@ -18,7 +18,7 @@ public class IsStringOneWord {
      */
     public boolean validator(String variable) {
         //pierwszy warunek sprawdza czy wprowadzone słowo nie jest jedną litere lub pustym stringiem ( "")
-        if (variable == null ||variable.length() <= 1  ) {
+        if (variable == null || variable.length() <= 1) {
             return false;
         } else if (Character.isUpperCase(variable.charAt(0))) {
             for (int i = 0; i < variable.length() - 1; i++) {

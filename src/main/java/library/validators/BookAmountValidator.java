@@ -1,7 +1,6 @@
 package library.validators;
 
 import library.models.Book;
-import library.models.BookState;
 import library.repositories.BookStateRepository;
 import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;

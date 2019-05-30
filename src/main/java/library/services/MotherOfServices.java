@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 public abstract class MotherOfServices {
 
     public abstract void DoSomethingWithBook(User user, Book book);
+
     public abstract void cancel(User user, Book book);
+
     public abstract void corection(User user, Book book);
 
 
-    private void method(User user, Book book){
+    private void method(User user, Book book) {
         DoSomethingWithBook(user, book);
 //        TODO: walidacja;
 

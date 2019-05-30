@@ -1,9 +1,6 @@
 package library.services.modelservices;
 
-import library.enums.ActionDescription;
-import library.enums.AgeCategory;
-import library.enums.BookStateEnum;
-import library.enums.Category;
+import library.enums.*;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
@@ -73,30 +70,8 @@ public class BookService {
             if (book.getStatus() != 0) {
                 bookFromBase.setStatus(book.getStatus());
             }
-
-            /**        action.setUser(); tutaj powinno dodawać się login admina
-             *         login można wyciągnąć w kontrolerze z akutalnej sesji gdy user jest zalogowany,
-             *         dodatkowo walidacja czy ma status admina
-             *         taką walidację można zrobić dwojako: sprawdzić czy isAdmin(true)
-             *         lub odpowiednia adnotacja (trzeba by dodać całe security)
-             */
-            Action action = actionService.updateBook(book, user);
-
-            //TODO: na 99% bookState tutaj nie będzie potrzebny, do przemyślenia
-    /*        BookState newBookState = new BookState();
-            BookState bookStateFromBase = bookStateRepository.findBookStateByBook(book.getId());
-            newBookState.setBook(bookFromBase);
-            newBookState.setAction(action);
-            newBookState.setUpdated(LocalDateTime.now());
-            newBookState.setUser(bookStateFromBase.getUser());
-            newBookState.setBookStateEnum(bookStateFromBase.getBookStateEnum());
-            newBookState.setStatus(bookStateFromBase.getStatus());
-            newBookState.setCreated(LocalDateTime.now());
-            newBookState.setUpdated(LocalDateTime.now());
-            newBookState.setDateOfLoan(bookStateFromBase.getDateOfLoan());
-            newBookState.setDateOfReturn(bookStateFromBase.getDateOfReturn());
-            bookStateRepository.save(newBookState);*/
         }
+        actionService.updateBook(book, user);
         return bookRepository.save(bookFromBase);
     }
 
@@ -119,16 +94,6 @@ public class BookService {
     }
 
 
-    /**
-     * TODO: w tych dwóch metodach może trzeba będzie zmienić parametry na Stringi
-     */
-//    public List<Book> booksByCategory(Category category) {
-//        List<Book> booksByCat = bookRepository.findBookByCategory(category);
-//        if(CollectionUtils.isEmpty(booksByCat)){
-////            throw ExceptionFactory.trowException()
-//        }
-//        return ;
-//    }
     public List<Book> booksByAgeCategory(AgeCategory ageCategory) {
         return bookRepository.findBookByAgeCategory(ageCategory);
     }
@@ -141,7 +106,6 @@ public class BookService {
         return bookStateRepository.findBookStateByUser(user);
     }
 
-
     /**
      * metoda usuwa książkę ze zbioru dostępnych do wypożyczenia książek nadając jej status ZNISZCZONA
      * ustala też umowną karę dla użytkownika za zniszczenie książki
@@ -150,11 +114,5 @@ public class BookService {
         Action action = actionService.updateBook(book, user);
         BookState bookState = bookStateService.destroyBook(action);
         paymentService.destroyedBookPayment(bookState);
-        /*TODO
-         * Do dodania:
-         * repozytoria: akcji, płatnośći
-         * pola w bookstate-user (prawdopodobnie
-         * testy-sprawdzenie, czy dodajac /edytujac ksiazke, wypozyczenie, etc czy w odpowiednich repozytoriach tworza sie odpowiednia odniesienia do danej ksiazki, usera itd
-         * */
     }
 }

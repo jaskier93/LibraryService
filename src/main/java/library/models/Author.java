@@ -1,15 +1,11 @@
 package library.models;
 
-import library.enums.StatusRekordu;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data

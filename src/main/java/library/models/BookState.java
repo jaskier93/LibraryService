@@ -5,6 +5,7 @@ import library.users.User;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "book_states")
-public class BookState extends StateEntity{
+public class BookState extends StateEntity {
 
     //TODO:    @Transient znaleźć adnotację, dzięki której te pole nie będziew bazie danej, transient wypełnia tylko nullami
     private final static Integer LOAN_PERIOD = 30;

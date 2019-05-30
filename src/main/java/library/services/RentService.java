@@ -1,8 +1,6 @@
 package library.services;
 
-import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
-import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
@@ -14,24 +12,17 @@ import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
 import library.users.User;
-import library.validators.AbstractValidator;
 import library.validators.ZbiorczyWalidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class RentService extends MotherOfServices {
-
-    public static final Integer LOAN_PERIOD = 30;
 
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
@@ -53,12 +44,15 @@ public class RentService extends MotherOfServices {
     public void corection(User user, Book book) {
     }
 
-
     //warunek sprawdzający, czy książka istnieje (jest w bibliotece) i czy nie jest zniszczona
     private Book isBookExisting(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
-        if (bookState == null || bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
+        Book book = bookState.getBook();
+        if (bookState == null) {
             log.info("Nie znalezionego książki o podanym ID");
+        }
+        if (bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
+            log.info("Ta książka jest zniszczona");
         }
         return bookState.getBook();
     }

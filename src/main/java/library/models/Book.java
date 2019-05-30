@@ -3,24 +3,19 @@ package library.models;
 import library.converters.CategoryConverter;
 import library.enums.AgeCategory;
 import library.enums.Category;
-import library.enums.StatusRekordu;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
 @Table(name = "Books")
 @EqualsAndHashCode(callSuper = false)
-public class Book extends StateEntity{
+public class Book extends StateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

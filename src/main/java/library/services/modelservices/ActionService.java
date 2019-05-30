@@ -3,6 +3,7 @@ package library.services.modelservices;
 import library.enums.ActionDescription;
 import library.enums.StatusRekordu;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.repositories.ActionRepository;
 import library.users.User;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ActionService {
 
-    private ActionRepository actionRepository;
+    private final ActionRepository actionRepository;
 
     //czy ta metoda jest potrzebna?
     public Action addBook(Book book, User user) {

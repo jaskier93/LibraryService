@@ -6,16 +6,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import library.enums.StatusRekordu;
 import library.models.StateEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-
 
 @Entity
 @Table
