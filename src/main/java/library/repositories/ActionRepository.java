@@ -33,6 +33,4 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
     //zwraca listę akcji u danego użytkownika
     @Query("select a from Action  a where  a.user=?1")
     List<Action> findActionByUser(User user);
-
-
 }

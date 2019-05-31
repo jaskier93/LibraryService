@@ -24,6 +24,8 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class RentService extends MotherOfServices {
 
+    public static final Integer LOAN_PERIOD = 30;
+
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
     private final ActionRepository actionRepository;
@@ -54,7 +56,7 @@ public class RentService extends MotherOfServices {
         if (bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
             log.info("Ta książka jest zniszczona");
         }
-        return bookState.getBook();
+        return book;
     }
 
     /**
@@ -94,6 +96,6 @@ public class RentService extends MotherOfServices {
         actionService.prolongation(book, user);
         bookStateService.prolongation(actionService.prolongation(book, user));
         return "Przedłużyłeś wypożyczenie książki pt.\"" + book.getTitle() + "\"." +
-                "Termin zwrotu książki to: " + LocalDate.now().plusDays(30);
+                "Termin zwrotu książki to: " + LocalDate.now().plusDays(LOAN_PERIOD);
     }
 }

@@ -1,7 +1,9 @@
 package library.repositories;
 
 import library.TestUtils;
+import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
+import library.enums.Category;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
@@ -45,7 +47,7 @@ public class BookStateRepositoryTest {
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
-        //      jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("delete from book_states where status=1020304050");
     }
 
     //test passed!
@@ -57,11 +59,22 @@ public class BookStateRepositoryTest {
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
+        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        bookRepository.save(book2);
+
+        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
+        book3.setAgeCategory(AgeCategory.NASTOLATKOWIE);
+        book3.setCategory(Category.SCIENCE);
+        bookRepository.save(book3);
+
         User user = TestUtils.createUser();
         userRepository.save(user);
 
         User user2 = TestUtils.createUser();
         userRepository.save(user2);
+
+        User user3 = TestUtils.createUser();
+        userRepository.save(user3);
 
         Action action = TestUtils.createAction(book, user);
         actionRepository.save(action);
@@ -116,6 +129,20 @@ public class BookStateRepositoryTest {
         bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState5);
 
+        BookState bookState6 = TestUtils.createBookState(book2, action, BookStateEnum.ZWROCONA);
+        bookState6.setUser(user2);
+        bookState6.setBook(book2);
+        bookState6.setAction(action);
+        bookState6.setBookStateEnum(BookStateEnum.ZWROCONA);
+        bookStateRepository.save(bookState6);
+
+        BookState bookState7 = TestUtils.createBookState(book3, action, BookStateEnum.NOWA);
+        bookState7.setUser(user3);
+        bookState7.setBook(book3);
+        bookState7.setAction(action);
+        bookState7.setBookStateEnum(BookStateEnum.ZWROCONA);
+        bookStateRepository.save(bookState7);
+
         //lista wypożyczeń ze zwróconymi książkami
         List<BookState> bookStateList = new ArrayList<>();
         bookStateList.add(bookState2);
@@ -142,5 +169,11 @@ public class BookStateRepositoryTest {
 
         //test metody zwracającej listę wypożyczeń użytkownika uporzadkowaną według daty wypożyczenia (od najstarszej daty)
         assertEquals(bookStateList, bookStateRepository.findBookStateByUser(user));
+
+        //DISTINCT wybiera tylko unikalne obiekty (książki)
+        assertEquals(2, bookStateRepository.findBookByAgeCategory(AgeCategory.DOROSLI).size());
+
+        assertEquals(2, bookStateRepository.findBookByCategory(Category.ADVENTURE).size());
+        assertEquals(1, bookStateRepository.findBookByCategory(Category.SCIENCE).size());
     }
 }
