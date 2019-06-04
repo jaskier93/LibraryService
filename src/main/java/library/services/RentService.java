@@ -1,5 +1,7 @@
 package library.services;
 
+import com.google.common.collect.ImmutableList;
+import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.models.Action;
 import library.models.Book;
@@ -12,16 +14,21 @@ import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
 import library.users.User;
+import library.validators.AbstractValidator;
+import library.validators.PaymentAmountValidator;
+import library.validators.RentFifthBookValidator;
 import library.validators.ZbiorczyWalidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class RentService extends MotherOfServices {
 
     public static final Integer LOAN_PERIOD = 30;
@@ -29,24 +36,46 @@ public class RentService extends MotherOfServices {
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
     private final ActionRepository actionRepository;
-    private final ZbiorczyWalidator zbiorczyWalidator;
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final PaymentService paymentService;
+    private final PaymentAmountValidator paymentAmountValidator;
+    private final RentFifthBookValidator rentFifthBookValidator;
+
+    @Autowired
+    public RentService(ZbiorczyWalidator zbiorczyWalidator, BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, ActionService actionService, BookStateService bookStateService, PaymentService paymentService, PaymentAmountValidator paymentAmountValidator, RentFifthBookValidator rentFifthBookValidator) {
+        super(zbiorczyWalidator);
+        this.bookRepository = bookRepository;
+        this.bookStateRepository = bookStateRepository;
+        this.actionRepository = actionRepository;
+        this.actionService = actionService;
+        this.bookStateService = bookStateService;
+        this.paymentService = paymentService;
+        this.paymentAmountValidator = paymentAmountValidator;
+        this.rentFifthBookValidator = rentFifthBookValidator;
+    }
 
     @Override
     public void DoSomethingWithBook(User user, Book book) {
+
     }
 
     @Override
     public void cancel(User user, Book book) {
+
     }
 
     @Override
-    public void corection(User user, Book book) {
+    public List<AbstractValidator> getValidators() {
+        return ImmutableList.of(rentFifthBookValidator, paymentAmountValidator);
     }
 
-    //RM: 
+    @Override
+    public List<ActionDescription> allowedActions() {
+        return ImmutableList.of(ActionDescription.WYPOZYCZENIE);
+    }
+
+    //RM:
     // Problem: Nazwa metody wprowadza w błąd, dodatkowo złamana reguła SOLID -> osoba która chciała by użyć tej metody może być zdezorientowana - nazwa wskazuje na sprawdzenie
     //czy w bazie istnieje książka, natomiast metoda dodatkowo sprawdza stan książki. 
     //Solucja: W zależności od potrzeby biznesowej - jeśli książka, która jest zniszczona nie może zostać wypożyczona to rozbiłbym te metode na IsBookExisting oraz

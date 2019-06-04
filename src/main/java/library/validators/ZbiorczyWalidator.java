@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ZbiorczyWalidator {
 
-/*    public boolean checkIt(List<AbstractValidator> booleanList, User user) {
+   public boolean checkIt(List<AbstractValidator> booleanList, User user) {
         List<Integer> lista = new ArrayList();
         booleanList.forEach(c -> {
             if (!c.validator(user)) {
@@ -22,5 +22,5 @@ public class ZbiorczyWalidator {
             }
         });
         return lista.size() == booleanList.size();
-    }*/
+    }
 }
