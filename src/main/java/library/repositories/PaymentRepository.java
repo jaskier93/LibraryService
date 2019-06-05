@@ -20,7 +20,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     //metoda zwraca listę płatności danego użytkownika
     @Query("select p from Payment  p where p.user = ?1")
-    List<Payment> findByUser(User user);
+    List<Payment> findPaymentsByUser(User user);
 
     /* wyliczenie sumy płatności dla jednego użytkownika (niezapłaconych-p.active=true lub 1
      * przy próbie dodania warunku p.active=1 (lub true) wyskakuje błąd z BookService i problem utworzenia beana)*/

@@ -23,7 +23,7 @@ public class PaymentAmountValidator extends AbstractValidator {
     /*metoda zwraca booleana w zależności od tego czy użytkownik ma już maksymalną ilość płatności*/
     @Override
     public boolean validator(User user) {
-        List<Payment> paymentList = paymentRepository.findByUser(user);
+        List<Payment> paymentList = paymentRepository.findPaymentsByUser(user);
         return (paymentList.size() >= MAX_PAYMENTS_AMOUNT);
     }
 }

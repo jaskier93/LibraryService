@@ -25,7 +25,7 @@ public class ProlongationValidator extends AbstractValidator {
 
     @Override
     public boolean validator(User user) {
-        return (paymentRepository.findByUser(user).isEmpty()
+        return (paymentRepository.findPaymentsByUser(user).isEmpty()
                 && bookStateRepository.findLoanedBooksByUser(user).size() < 4);
     }
 }

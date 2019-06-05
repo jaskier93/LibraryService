@@ -88,7 +88,7 @@ public class PaymentRepositoryTest {
 
         assertEquals(payment.isActive(), payment1.isActive());
 
-        assertFalse(paymentRepository.findByUser(user).isEmpty());
+        assertFalse(paymentRepository.findPaymentsByUser(user).isEmpty());
         assertFalse(paymentRepository.findPaymentsAboveAmount(8, user.getId()).isEmpty());
         assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558, user.getId()).isEmpty());
         assertEquals(Integer.valueOf(200), paymentRepository.sumPaymentsForOneUser(user.getId()));
