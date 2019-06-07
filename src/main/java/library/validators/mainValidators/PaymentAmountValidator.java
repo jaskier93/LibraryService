@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.models.Payment;
 import library.repositories.PaymentRepository;

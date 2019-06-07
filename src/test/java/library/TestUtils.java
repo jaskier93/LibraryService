@@ -78,15 +78,14 @@ public class TestUtils {
         return action;
     }
 
-    public static Payment createPayment(Book book, User user) {
+    public static Payment createPayment(Action action) {
         Payment payment = new Payment();
         payment.setAmount(1020304050);
         payment.setActive(true);
-        payment.setBook(book);
+        payment.setBook(action.getBook());
         payment.setCreated(LocalDateTime.now());
         payment.setStatusRekordu(StatusRekordu.TEST);
         payment.setUpdated(LocalDateTime.now());
-        payment.setUser(user);
         payment.setStatus(1020304050);
         return payment;
     }

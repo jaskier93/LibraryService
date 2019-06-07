@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
@@ -77,23 +77,20 @@ public class PaymentAmountValidatorTest {
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
-        Payment payment = TestUtils.createPayment(book, user);
+        Payment payment = TestUtils.createPayment(action);
         payment.setBook(book);
-        payment.setUser(user);
         payment.setAction(action);
         payment.setBookState(bookState);
         paymentRepository.save(payment);
 
-        Payment payment2 = TestUtils.createPayment(book, user);
+        Payment payment2 = TestUtils.createPayment(action);
         payment2.setBook(book);
-        payment2.setUser(user);
         payment2.setAction(action);
         payment2.setBookState(bookState);
         paymentRepository.save(payment2);
 
-        Payment payment3 = TestUtils.createPayment(book, user);
+        Payment payment3 = TestUtils.createPayment(action);
         payment3.setBook(book);
-        payment3.setUser(user);
         payment3.setAction(action);
         payment3.setBookState(bookState);
         paymentRepository.save(payment3);

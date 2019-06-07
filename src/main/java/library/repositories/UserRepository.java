@@ -21,3 +21,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select  u from User u where u.dateOfBirth<:date")
     List<User> findAdultUsers(@Param("date") LocalDate localDate);
 }
+

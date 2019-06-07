@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
@@ -8,7 +8,7 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.*;
 import library.users.User;
-import lombok.extern.slf4j.Slf4j;
+import library.validators.mainValidators.ProlongationValidator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,13 +19,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
-@Slf4j
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class PaymentSumValidatorTest {
+public class ProlongationValidatorTest {
 
     @Autowired
-    private final PaymentSumValidator paymentSumValidator = null;
+    private final ProlongationValidator prolongationValidator = null;
 
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
@@ -52,17 +51,17 @@ public class PaymentSumValidatorTest {
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
-        jdbcTemplate.update("delete from payments where status=1020304050");
     }
 
-    @Test
-    //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
-    public void isUserPaymentsSumAbove100() {
+    @Test //test passed! prawidłowo usuwa obiekty
+    public void isUserAbleToExtendLoan() {
+
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
         userRepository.save(user);
+
         User user2 = TestUtils.createUser();
         userRepository.save(user2);
 
@@ -71,38 +70,39 @@ public class PaymentSumValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
+        Action action2 = TestUtils.createAction(book, user);
+        action2.setBook(book);
+        action2.setUser(user);
+        actionRepository.save(action);
+
         BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
-        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
+        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        Payment payment = TestUtils.createPayment(book, user);
-        payment.setAmount(70);
+        Payment payment = TestUtils.createPayment(action2);
         payment.setBook(book);
-        payment.setUser(user);
-        payment.setAction(action);
+        payment.setAmount(50);
+        payment.setAction(action2);
         payment.setBookState(bookState);
         paymentRepository.save(payment);
 
-        Payment payment2 = TestUtils.createPayment(book, user);
-        payment2.setAmount(50);
-        payment2.setBook(book);
-        payment2.setUser(user);
-        payment2.setAction(action);
-        payment2.setBookState(bookState);
-        paymentRepository.save(payment2);
+        /*
+         *test określa, czy user może przedłużyć wypożyczenie książki
+         *tutaj może, bo ma tylko jedną wypożyczoną książkę oraz nie ma żadnej naliczonej płatności
+         */
+        assertTrue(prolongationValidator.validator(user));
 
-        Payment payment3 = TestUtils.createPayment(book, user2);
-        payment3.setAmount(55);
-        payment3.setBook(book);
-        payment3.setUser(user2);
-        payment3.setAction(action);
-        payment3.setBookState(bookState);
-        paymentRepository.save(payment3);
-
-        assertTrue(paymentSumValidator.validator(user));
-        assertFalse(paymentSumValidator.validator(user2));
+        /**
+         *test określa, czy user może przedłużyć wypożyczenie książki
+         * tutaj nie może, ponieważ ma naliczoną płatność
+         */
+        assertFalse(prolongationValidator.validator(user2));
     }
 }
+
+
+
+

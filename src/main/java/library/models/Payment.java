@@ -2,6 +2,7 @@ package library.models;
 
 import library.users.User;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,10 +16,6 @@ public class Payment extends StateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @NotNull
-    @ManyToOne
-    private User user;
 
     @NotNull
     @OneToOne

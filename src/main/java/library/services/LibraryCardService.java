@@ -1,4 +1,4 @@
-package library.services.modelservices;
+package library.services;
 
 import library.models.LibraryCard;
 import library.repositories.ActionRepository;
@@ -22,15 +22,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LibraryCardService {
 
-    private static final BookStateRepository bookStateRepository = null;
-    private static final ActionRepository actionRepository = null;
-    private static final PaymentRepository paymentRepository = null;
+    private final BookStateRepository bookStateRepository;
+    private final ActionRepository actionRepository;
+    private final PaymentRepository paymentRepository;
 
     private LibraryCard showLibraryCard(User user) {
         LibraryCard libraryCard = new LibraryCard();
         libraryCard.setLoanedBooks(bookStateRepository.findLoanedBooksByUser(user).size());
         libraryCard.setAllPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size());
-        libraryCard.setAllPaymentsSum(paymentRepository.sumPaymentsForOneUser(user.getId()));
+        libraryCard.setAllPaymentsSum(paymentRepository.sumPaymentsForOneUser(user));
         libraryCard.setDestroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size());
         libraryCard.setExpiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size());
         //TODO; unpaidPaymentsQuantity/unpaidPaymentsSum -trzeba dopracować metody w repozytorium Payments,

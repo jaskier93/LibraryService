@@ -46,14 +46,16 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
     List<Book> findBookByCategory(@Param("Category") Category Category);
 
     //metoda zwraca listę aktualnych wypożyczonych książek użytkownika
-    @Query("select distinct bs.book from BookState bs where bs.user =?1  and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
+    @Query("select distinct bs.book from BookState bs where bs.action.user =?1  and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
     List<Book> findLoanedBooksByUser(User user);
 
     //metoda zwraca aktualną listę wypożyczeń użytkownika
-    @Query("select bs from BookState bs where bs.user =?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
+    //TODO: metoda zwraca listę wypożyczeń (nawet w przypadku oddanych książęk)-
+    // trzeba dopisać warunek, którzy wyklucza oddane książki, tak żeby pokazywało tylko aktualnie wypożyczone (niezwrócone)
+    @Query("select bs from BookState bs where bs.action.user =?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
     List<BookState> findCurrentBookStateByUser(User user);
 
     //metoda zwraca listę wypożyczeń użytkownika-całą historię
-    @Query("select bs from BookState bs where bs.user =?1 order by bs.dateOfLoan desc ")
+    @Query("select bs from BookState bs where bs.action.user =?1 order by bs.dateOfLoan desc ")
     List<BookState> findBookStateByUser(User user);
 }

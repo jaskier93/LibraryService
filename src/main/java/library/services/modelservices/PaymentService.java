@@ -32,7 +32,6 @@ public class PaymentService {
         payment.setAction(bookState.getAction());
         payment.setBookState(bookState);
         payment.setAmount(PENALTY_AMOUNT);
-        payment.setUser(bookState.getUser());
         payment.setStatus(0);
         payment.setActive(true);
         payment.setBook(bookState.getBook());
@@ -46,7 +45,6 @@ public class PaymentService {
         payment.setStatusRekordu(StatusRekordu.ACTIVE);
         payment.setAction(bookState.getAction());
         payment.setBookState(bookState);
-        payment.setUser(bookState.getUser());
         payment.setStatus(0);
         payment.setActive(true);
         payment.setBook(bookState.getBook());

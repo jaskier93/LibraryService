@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
@@ -17,6 +17,8 @@ public class ProlongationValidator extends AbstractValidator {
     private final PaymentRepository paymentRepository;
     private final BookStateRepository bookStateRepository;
 
+    private static final Integer MAX_AMOUNT_OF_BOOKS = 4;
+
     @Autowired
     public ProlongationValidator(PaymentRepository paymentRepository, BookStateRepository bookStateRepository) {
         this.paymentRepository = paymentRepository;
@@ -26,6 +28,6 @@ public class ProlongationValidator extends AbstractValidator {
     @Override
     public boolean validator(User user) {
         return (paymentRepository.findPaymentsByUser(user).isEmpty()
-                && bookStateRepository.findLoanedBooksByUser(user).size() < 4);
+                && bookStateRepository.findLoanedBooksByUser(user).size() < MAX_AMOUNT_OF_BOOKS);
     }
 }

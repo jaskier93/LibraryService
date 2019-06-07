@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.models.Book;
 import library.repositories.BookStateRepository;

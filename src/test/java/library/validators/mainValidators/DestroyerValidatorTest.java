@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.enums.ActionDescription;
@@ -8,6 +8,7 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
 import library.users.User;
+import library.validators.mainValidators.DestroyerValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;

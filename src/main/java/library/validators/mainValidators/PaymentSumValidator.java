@@ -1,4 +1,4 @@
-package library.validators;
+package library.validators.mainValidators;
 
 import library.repositories.PaymentRepository;
 import library.users.User;
@@ -22,7 +22,7 @@ public class PaymentSumValidator extends AbstractValidator {
      */
     @Override
     public boolean validator(User user) {
-        Integer amount = paymentRepository.sumPaymentsForOneUser(user.getId());
+        Integer amount = paymentRepository.sumPaymentsForOneUser(user);
         return amount >= MAX_PAYMENTS_SUM;
     }
 }

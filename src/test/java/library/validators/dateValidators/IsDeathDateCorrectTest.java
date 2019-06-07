@@ -1,9 +1,10 @@
 
-package library.validators;
+package library.validators.dateValidators;
 
 import library.TestUtils;
 import library.models.Author;
 import library.repositories.AuthorRepository;
+import library.validators.dateValidators.IsDeathDateCorrect;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

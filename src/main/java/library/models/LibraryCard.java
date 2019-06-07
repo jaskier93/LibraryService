@@ -1,11 +1,12 @@
 package library.models;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class LibraryCard{
+public class LibraryCard {
     private Integer loanedBooks;
     private Integer destroyedBooks;
     private Integer unpaidPaymentsQuantity;

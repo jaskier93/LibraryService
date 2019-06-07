@@ -23,9 +23,9 @@ public class BookState extends StateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
+
     @ManyToOne(targetEntity = User.class)
-    private User user; // zmienić na bibliotekarz
+    private User user; // zmienić na bibliotekarza
 
     private LocalDate dateOfLoan = LocalDate.now();
 
