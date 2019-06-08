@@ -8,7 +8,6 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.*;
 import library.users.User;
-import library.validators.mainValidators.PaymentSumValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
@@ -46,7 +45,7 @@ public class PaymentSumValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
-/*    @After
+    @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
@@ -54,7 +53,7 @@ public class PaymentSumValidatorTest {
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
         jdbcTemplate.update("delete from payments where status=1020304050");
-    }*/
+    }
 
     @Test
     //test passed! TODO: poprawić w paymentRepo metodę sumowanią, tak sumowała tylko aktywne (niezapłacone) płatnośći
@@ -76,9 +75,9 @@ public class PaymentSumValidatorTest {
         Action action2 = TestUtils.createAction(book, user);
         action2.setBook(book);
         action2.setUser(user2);
-        actionRepository.save(action);
+        actionRepository.save(action2);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);

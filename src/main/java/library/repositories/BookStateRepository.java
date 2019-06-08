@@ -49,6 +49,10 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
     @Query("select distinct bs.book from BookState bs where bs.action.user =?1  and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
     List<Book> findLoanedBooksByUser(User user);
 
+    //metoda sumuje ilość stron wszystkich książek, jak wypożyczył użytkownik
+    @Query("select sum (bs.book.pages) from BookState bs where bs.action.user= ?1 and bs.bookStateEnum= 'WYPOZYCZONA'")
+    Integer sumPagesForUser(User user);
+
     //metoda zwraca aktualną listę wypożyczeń użytkownika
     //TODO: metoda zwraca listę wypożyczeń (nawet w przypadku oddanych książęk)-
     // trzeba dopisać warunek, którzy wyklucza oddane książki, tak żeby pokazywało tylko aktualnie wypożyczone (niezwrócone)

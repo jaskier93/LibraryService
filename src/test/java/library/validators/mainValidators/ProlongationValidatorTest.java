@@ -8,7 +8,6 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.*;
 import library.users.User;
-import library.validators.mainValidators.ProlongationValidator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,12 +69,12 @@ public class ProlongationValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        Action action2 = TestUtils.createAction(book, user);
+        Action action2 = TestUtils.createAction(book, user2);
         action2.setBook(book);
-        action2.setUser(user);
-        actionRepository.save(action);
+        action2.setUser(user2);
+        actionRepository.save(action2);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);

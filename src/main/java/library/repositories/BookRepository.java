@@ -3,6 +3,7 @@ package library.repositories;
 import library.enums.AgeCategory;
 import library.enums.Category;
 import library.models.Book;
+import library.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,6 +29,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b from Book b where b.ageCategory =?1 order by b.ageCategory")
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
+
+
     /**
      * wyświetlanie książek w kolejności dodania do biblioteki
      * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
@@ -36,11 +39,11 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> sortedBooksByAddingData();
 
     //lista książek wydana w danym okresie, np w przeciągu roku
-    @Query("select b from Book b where b.releaseDate>:date order by b.title")
+    @Query("select b from Book b where b.releaseDate > :date order by b.title")
     List<Book> booksAddedInPeriod(@Param("date") LocalDate localDate);
 
     //lista książek dodana w danym okresie, np w przeciągu miesiąca
-    @Query("select b from Book b where b.created>:date order by b.title ")
+    @Query("select b from Book b where b.created > :date order by b.title ")
     List<Book> booksReleasedInPeriod(@Param("date") LocalDateTime localDateTime);
 
     /**

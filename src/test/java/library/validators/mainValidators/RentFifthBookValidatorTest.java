@@ -10,7 +10,6 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.mainValidators.RentFifthBookValidator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,28 +82,28 @@ public class RentFifthBookValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book1, action, BookStateEnum.ZWROCONA);
+        BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState1.setBook(book1);
         bookState1.setAction(action);
         bookState1.setUser(user);
         bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book2, action, BookStateEnum.ZWROCONA);
+        BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState2.setBook(book2);
         bookState2.setAction(action);
         bookState2.setUser(user);
         bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(book3, action, BookStateEnum.ZWROCONA);
+        BookState bookState3 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState3.setBook(book3);
         bookState3.setAction(action);
         bookState3.setUser(user);

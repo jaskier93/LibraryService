@@ -38,5 +38,8 @@ public class Book extends StateEntity {
     private Author author;
 
     @NotNull
+    private Integer pages;
+
+    @NotNull
     private Integer status;
 }

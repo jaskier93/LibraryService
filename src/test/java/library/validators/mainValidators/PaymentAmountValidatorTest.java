@@ -62,6 +62,7 @@ public class PaymentAmountValidatorTest {
 
         User user = TestUtils.createUser();
         userRepository.save(user);
+
         User user2 = TestUtils.createUser();
         userRepository.save(user2);
 
@@ -70,7 +71,7 @@ public class PaymentAmountValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);

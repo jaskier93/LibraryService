@@ -2,7 +2,6 @@ package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.users.User;
-import library.validators.mainValidators.IsUserAdmin;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -33,10 +33,9 @@ public class LibraryCardService {
         libraryCard.setAllPaymentsSum(paymentRepository.sumPaymentsForOneUser(user));
         libraryCard.setDestroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size());
         libraryCard.setExpiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size());
-        //TODO; unpaidPaymentsQuantity/unpaidPaymentsSum -trzeba dopracować metody w repozytorium Payments,
-        // problemem jest wyszukiwanie aktywnych płatności (boolean isActive=true)
-        // zwykle w repo wyskakuje błąd ze składnią SQL/problem z beanem w zupełnie innym miejscu
-        // można zamiast metody w repozytorium wyszukiwać wszystkie, a później w serwisie wybierać tylko ze statusem aktywnym
+        libraryCard.setUnpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size());
+        libraryCard.setUnpaidPaymentsSum(paymentRepository.sumActivePaymentsForOneUser(user));
+        libraryCard.setSumAllBooksPages(bookStateRepository.sumPagesForUser(user));
         return libraryCard;
     }
 }

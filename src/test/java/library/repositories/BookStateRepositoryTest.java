@@ -85,14 +85,14 @@ public class BookStateRepositoryTest {
         Action action5 = TestUtils.createAction(book, user3);
         actionRepository.save(action5);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setUser(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState1.setUser(user);
         bookState1.setBook(book);
         bookState1.setDateOfLoan(today.plusDays(10));
@@ -101,7 +101,7 @@ public class BookStateRepositoryTest {
         bookState1.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState2.setUser(user);
         bookState2.setBook(book);
         bookState2.setDateOfReturn(today.plusDays(40));
@@ -112,14 +112,14 @@ public class BookStateRepositoryTest {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState3 = TestUtils.createBookState(book, action4, BookStateEnum.WYPOZYCZONA);
+        BookState bookState3 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
         bookState3.setUser(user2);
         bookState3.setBook(book);
         bookState3.setAction(action4);
         bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
-        BookState bookState4 = TestUtils.createBookState(book, action4, BookStateEnum.WYPOZYCZONA);
+        BookState bookState4 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
         bookState4.setUser(user2);
         bookState4.setBook(book);
         bookState4.setDateOfLoan(today.plusDays(130));
@@ -127,7 +127,7 @@ public class BookStateRepositoryTest {
         bookState4.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState4);
 
-        BookState bookState5 = TestUtils.createBookState(book, action4, BookStateEnum.WYPOZYCZONA);
+        BookState bookState5 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
         bookState5.setUser(user2);
         bookState5.setBook(book);
         bookState5.setDateOfLoan(today.plusDays(50));
@@ -135,14 +135,14 @@ public class BookStateRepositoryTest {
         bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState5);
 
-        BookState bookState6 = TestUtils.createBookState(book2, action5, BookStateEnum.ZWROCONA);
+        BookState bookState6 = TestUtils.createBookState(action5, BookStateEnum.ZWROCONA);
         bookState6.setUser(user2);
         bookState6.setBook(book2);
         bookState6.setAction(action5);
         bookState6.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState6);
 
-        BookState bookState7 = TestUtils.createBookState(book3, action5, BookStateEnum.NOWA);
+        BookState bookState7 = TestUtils.createBookState(action5, BookStateEnum.NOWA);
         bookState7.setUser(user3);
         bookState7.setBook(book3);
         bookState7.setAction(action5);
@@ -181,5 +181,7 @@ public class BookStateRepositoryTest {
 
         assertEquals(2, bookStateRepository.findBookByCategory(Category.ADVENTURE).size());
         assertEquals(1, bookStateRepository.findBookByCategory(Category.SCIENCE).size());
+
+        assertEquals(Integer.valueOf(1500), bookStateRepository.sumPagesForUser(user2));
     }
 }

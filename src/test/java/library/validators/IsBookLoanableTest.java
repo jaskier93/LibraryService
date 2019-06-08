@@ -10,7 +10,6 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.IsBookLoanable;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,8 +58,10 @@ public class IsBookLoanableTest {
 
         Book book = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book);
+
         Book book1 = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book1);
+
         Book book2 = TestUtils.createBook(TestUtils.createAuthor());
         bookRepository.save(book2);
 
@@ -87,7 +88,7 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setDateOfReturn(LocalDate.now().plusDays(1));
         bookState.setDateOfLoan(LocalDate.now().plusDays(1));
         bookState.setUser(user);
@@ -95,7 +96,7 @@ public class IsBookLoanableTest {
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
-        BookState bookState2 = TestUtils.createBookState(book1, action2, BookStateEnum.WYPOZYCZONA);
+        BookState bookState2 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);
         bookState2.setUser(user);
         bookState2.setBook(book1);
         bookState2.setAction(action2);
@@ -103,7 +104,7 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState3 = TestUtils.createBookState(book2, action1, BookStateEnum.WYPOZYCZONA);
+        BookState bookState3 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
         bookState3.setDateOfReturn(LocalDate.now().plusDays(11));
         bookState3.setDateOfLoan(LocalDate.now().plusDays(11));
         bookState3.setUser(user);
@@ -111,7 +112,7 @@ public class IsBookLoanableTest {
         bookState3.setAction(action1);
         bookStateRepository.save(bookState3);
 
-        BookState bookState4 = TestUtils.createBookState(book2, action2, BookStateEnum.ZWROCONA);
+        BookState bookState4 = TestUtils.createBookState(action2, BookStateEnum.ZWROCONA);
         bookState4.setUser(user);
         /*** //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2*/
         bookState4.setDateOfReturn(LocalDate.now().minusDays(1));
@@ -121,13 +122,13 @@ public class IsBookLoanableTest {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        BookState bookState1 = TestUtils.createBookState(book1, action1, BookStateEnum.WYPOZYCZONA);
+        BookState bookState1 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
         bookState1.setUser(user);
         bookState1.setBook(book1);
         bookState1.setAction(action1);
         bookStateRepository.save(bookState1);
 
-        BookState bookState5 = TestUtils.createBookState(book1, action1, BookStateEnum.ZNISZCZONA);
+        BookState bookState5 = TestUtils.createBookState(action1, BookStateEnum.ZNISZCZONA);
         bookState5.setDateOfReturn(LocalDate.now().plusDays(1));
         bookState5.setUser(user);
         bookState5.setBook(book1);

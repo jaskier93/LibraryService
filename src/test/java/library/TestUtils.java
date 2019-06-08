@@ -25,9 +25,8 @@ public class TestUtils {
         return user;
     }
 
-    public static BookState createBookState(Book book, Action action, BookStateEnum bookStateEnum) {
+    public static BookState createBookState(Action action, BookStateEnum bookStateEnum) {
         BookState bookState = new BookState();
-        bookState.setBook(book);
         bookState.setBookStateEnum(bookStateEnum);
         bookState.setDateOfReturn(LocalDate.now());
         bookState.setCreated(LocalDateTime.now());
@@ -35,6 +34,8 @@ public class TestUtils {
         bookState.setStatusRekordu(StatusRekordu.TEST);
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
+        bookState.setBook(action.getBook());
+        bookState.setUser(action.getUser());
         bookState.setStatus(1020304050);
         return bookState;
     }
@@ -62,6 +63,7 @@ public class TestUtils {
         book.setStatusRekordu(StatusRekordu.TEST);
         book.setAgeCategory(AgeCategory.DOROSLI);
         book.setUpdated(null);
+        book.setPages(500);
         book.setCategory(Category.ADVENTURE);
         book.setStatus(5);
         return book;

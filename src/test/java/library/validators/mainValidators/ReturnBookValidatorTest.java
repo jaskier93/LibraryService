@@ -10,7 +10,6 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
 import library.users.User;
-import library.validators.mainValidators.ReturnBookVaildator;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,14 +45,13 @@ public class ReturnBookValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
-
     @After
     public void after() {
-        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
-        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
-        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
-        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
+        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
+        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
+        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
     }
 
     @Test
@@ -73,37 +71,26 @@ public class ReturnBookValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
-        bookState.setBook(book);
-        bookState.setAction(action);
-        bookState.setUser(user);
-        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        Action action2 = TestUtils.createAction(book, user2);
+        action2.setBook(book);
+        action2.setUser(user2);
+        actionRepository.save(action2);
+
+        BookState bookState = TestUtils.createBookState( action, BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
-        bookState1.setBook(book);
-        bookState1.setAction(action);
-        bookState1.setUser(user);
-        bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+        BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
-        bookState2.setBook(book);
+        BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState2.setAction(action);
-        bookState2.setUser(user);
-        bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(book, action, BookStateEnum.WYPOZYCZONA);
+        BookState bookState3 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);
         bookState3.setDateOfReturn(LocalDate.now().plusDays(15));
-        bookState3.setBook(book);
-        bookState3.setAction(action);
-        bookState3.setUser(user2);
-        bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
-        assertTrue(returnBookVaildator.validator(user));
+        assertEquals(true, returnBookVaildator.validator(user));
         assertFalse(returnBookVaildator.validator(user2));
-
     }
 }

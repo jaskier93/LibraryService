@@ -60,7 +60,7 @@ public class PaymentRepositoryTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(book, action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setUser(user);
@@ -81,6 +81,14 @@ public class PaymentRepositoryTest {
         payment2.setBookState(bookState);
         paymentRepository.save(payment2);
 
+        Payment payment3 = TestUtils.createPayment(action);
+        payment3.setAmount(150);
+        payment3.setBook(book);
+        payment3.setAction(action);
+        payment3.setBookState(bookState);
+        payment3.setActive(false);
+        paymentRepository.save(payment3);
+
         Payment payment1 = paymentRepository.getOne(payment.getId());
         paymentRepository.save(payment1);
 
@@ -89,8 +97,9 @@ public class PaymentRepositoryTest {
         assertFalse(paymentRepository.findPaymentsByUser(user).isEmpty());
         assertFalse(paymentRepository.findPaymentsAboveAmount(8, user).isEmpty());
         assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558, user).isEmpty());
-        assertEquals(Integer.valueOf(200), paymentRepository.sumPaymentsForOneUser(user));
-        //   assertEquals(Integer.valueOf(200), paymentRepository.sumActivePaymentsForOneUser(user.getId())); //TODO:do poprawy metoda w repo
-
+        assertEquals(Integer.valueOf(350), paymentRepository.sumPaymentsForOneUser(user));
+        assertEquals(Integer.valueOf(200), paymentRepository.sumActivePaymentsForOneUser(user));
+        assertEquals(3, paymentRepository.findPaymentsByUser(user).size());
+        assertEquals(2, paymentRepository.findActivePaymentsByUser(user).size());
     }
 }

@@ -6,7 +6,6 @@ import library.models.Action;
 import library.models.Book;
 import library.repositories.*;
 import library.users.User;
-import library.validators.mainValidators.OverdueReturnBookAmountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
