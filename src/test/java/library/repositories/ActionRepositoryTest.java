@@ -4,6 +4,8 @@ import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
 import library.models.Book;
+import library.services.modelservices.ActionService;
+import library.services.modelservices.BookStateService;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -33,9 +35,12 @@ public class ActionRepositoryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
+    private final ActionService actionService = null;
+    private final BookStateService bookStateService = null;
+
     @After
     public void after() {
-        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
+     //   jdbcTemplate.update("Delete from actions where action_description ='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
@@ -59,6 +64,7 @@ public class ActionRepositoryTest {
         assertEquals(action1.getId(), action.getId());
 
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
+
 
         assertFalse(actionRepository.findActionByActionDescription(ActionDescription.TEST).isEmpty());
         assertTrue(actionRepository.findActionByActionDescription(ActionDescription.ZWROT).isEmpty());

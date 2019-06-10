@@ -50,7 +50,7 @@ public class UserRepositoryTest {
         assertNotEquals(user2.getId(), userFromBase.getId());
         assertFalse(userRepository.findUserByLastName("XXXYYYZZZ").isEmpty());
         assertTrue(userRepository.findUserByLastName("sdfsdfsdffsd").isEmpty());
-        //   assertEquals(2, userRepository.findAdultUsers(today.minusYears(18)).size()); //user i user1 są dorośli
+        //   assertEquals(2, userRepository.findAdultUsers(today.minusYears(18)).size()); //libranian i user1 są dorośli
         assertEquals(user, userRepository.findUserById(user.getId()));
     }
 }

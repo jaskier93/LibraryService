@@ -34,7 +34,7 @@ public class IsUserAdultTest {
     public void isUsedAdult() {
 
         User user = TestUtils.createUser();
-        user.setDateOfBirth(LocalDate.now().plusYears(17)); //w tym przypadku user ma ~3 lata
+        user.setDateOfBirth(LocalDate.now().plusYears(17)); //w tym przypadku libranian ma ~3 lata
 
         User user2 = TestUtils.createUser();
 

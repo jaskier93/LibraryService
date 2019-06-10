@@ -91,13 +91,13 @@ public class IsBookLoanableTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setDateOfReturn(LocalDate.now().plusDays(1));
         bookState.setDateOfLoan(LocalDate.now().plusDays(1));
-        bookState.setUser(user);
+        bookState.setLibranian(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
         BookState bookState2 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);
-        bookState2.setUser(user);
+        bookState2.setLibranian(user);
         bookState2.setBook(book1);
         bookState2.setAction(action2);
         bookStateRepository.save(bookState2);
@@ -107,13 +107,13 @@ public class IsBookLoanableTest {
         BookState bookState3 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
         bookState3.setDateOfReturn(LocalDate.now().plusDays(11));
         bookState3.setDateOfLoan(LocalDate.now().plusDays(11));
-        bookState3.setUser(user);
+        bookState3.setLibranian(user);
         bookState3.setBook(book2);
         bookState3.setAction(action1);
         bookStateRepository.save(bookState3);
 
         BookState bookState4 = TestUtils.createBookState(action2, BookStateEnum.ZWROCONA);
-        bookState4.setUser(user);
+        bookState4.setLibranian(user);
         /*** //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2*/
         bookState4.setDateOfReturn(LocalDate.now().minusDays(1));
         bookState4.setBook(book2);
@@ -123,14 +123,14 @@ public class IsBookLoanableTest {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState1 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
-        bookState1.setUser(user);
+        bookState1.setLibranian(user);
         bookState1.setBook(book1);
         bookState1.setAction(action1);
         bookStateRepository.save(bookState1);
 
         BookState bookState5 = TestUtils.createBookState(action1, BookStateEnum.ZNISZCZONA);
         bookState5.setDateOfReturn(LocalDate.now().plusDays(1));
-        bookState5.setUser(user);
+        bookState5.setLibranian(user);
         bookState5.setBook(book1);
         bookState5.setAction(action1);
         bookStateRepository.save(bookState5);

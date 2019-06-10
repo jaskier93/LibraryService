@@ -19,12 +19,12 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
     List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
     ///metoda zwracająca listę zniszczeń jednego użytkownika
-    @Query("select a from Action  a where  a.actionDescription='ZNISZCZENIE' and a.user=:value")
-    List<Action> findActionsWithDestroyedBooksByUser(@Param("value") User user);
+    @Query("select a from Action  a where  a.actionDescription='ZNISZCZENIE' and a.user =:user")
+    List<Action> findActionsWithDestroyedBooksByUser(@Param("user") User user);
 
     //lista przeterminowanych zwrotów jednego użytkownika
-    @Query("select a from Action a where a.actionDescription='PRZETERMINOWANIE' and a.user=:value")
-    List<Action> findActionsWithOverdueReturnsByUser(@Param("value") User user);
+    @Query("select a from Action a where a.actionDescription='PRZETERMINOWANIE' and a.user =:user")
+    List<Action> findActionsWithOverdueReturnsByUser(@Param("user") User user);
 
     //zwraca listę akcji danej książki
     @Query("select a from Action a where a.book=?1")

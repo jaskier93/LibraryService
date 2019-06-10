@@ -77,7 +77,7 @@ public class ProlongationValidatorTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setUser(user);
+        bookState.setLibranian(user);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
@@ -89,13 +89,13 @@ public class ProlongationValidatorTest {
         paymentRepository.save(payment);
 
         /*
-         *test określa, czy user może przedłużyć wypożyczenie książki
+         *test określa, czy libranian może przedłużyć wypożyczenie książki
          *tutaj może, bo ma tylko jedną wypożyczoną książkę oraz nie ma żadnej naliczonej płatności
          */
         assertTrue(prolongationValidator.validator(user));
 
         /**
-         *test określa, czy user może przedłużyć wypożyczenie książki
+         *test określa, czy libranian może przedłużyć wypożyczenie książki
          * tutaj nie może, ponieważ ma naliczoną płatność
          */
         assertFalse(prolongationValidator.validator(user2));

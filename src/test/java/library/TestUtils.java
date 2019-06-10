@@ -35,7 +35,7 @@ public class TestUtils {
         bookState.setDateOfLoan(LocalDate.now());
         bookState.setAction(action);
         bookState.setBook(action.getBook());
-        bookState.setUser(action.getUser());
+        bookState.setLibranian(null);
         bookState.setStatus(1020304050);
         return bookState;
     }

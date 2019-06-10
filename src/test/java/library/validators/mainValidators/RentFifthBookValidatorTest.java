@@ -85,32 +85,32 @@ public class RentFifthBookValidatorTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setUser(user);
+        bookState.setLibranian(user);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
         BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState1.setBook(book1);
         bookState1.setAction(action);
-        bookState1.setUser(user);
+        bookState1.setLibranian(user);
         bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState2.setBook(book2);
         bookState2.setAction(action);
-        bookState2.setUser(user);
+        bookState2.setLibranian(user);
         bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
         BookState bookState3 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState3.setBook(book3);
         bookState3.setAction(action);
-        bookState3.setUser(user);
+        bookState3.setLibranian(user);
         bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
-        //metoda zwraca false, bo user nie ma żadnego wypożyczenia na koncie, na dodatek jest zarejestrowany dopiero 3 miesiące
+        //metoda zwraca false, bo libranian nie ma żadnego wypożyczenia na koncie, na dodatek jest zarejestrowany dopiero 3 miesiące
         assertFalse(rentFifthBookValidator.validator(user2));
 
         //metoda zwraca true, bo użytkownik ma dokładnie 4 wypożyczenia oraz jest zarejestrowany przynajmniej rok

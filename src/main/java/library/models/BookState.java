@@ -25,7 +25,7 @@ public class BookState extends StateEntity {
 
 
     @ManyToOne(targetEntity = User.class)
-    private User user; // zmienić na bibliotekarza
+    private User libranian; // zmienić na bibliotekarza
 
     private LocalDate dateOfLoan = LocalDate.now();
 

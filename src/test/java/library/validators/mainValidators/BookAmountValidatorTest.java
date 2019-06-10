@@ -103,37 +103,37 @@ public class BookAmountValidatorTest {
         actionRepository.save(action5);
 
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
-        bookState.setUser(user);
+        bookState.setLibranian(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
 
         BookState bookState1 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
-        bookState1.setUser(user);
+        bookState1.setLibranian(user);
         bookState1.setBook(book1);
         bookState1.setAction(action1);
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);
-        bookState2.setUser(user);
+        bookState2.setLibranian(user);
         bookState2.setBook(book2);
         bookState2.setAction(action2);
         bookStateRepository.save(bookState2);
 
         BookState bookState3 = TestUtils.createBookState(action3, BookStateEnum.WYPOZYCZONA);
-        bookState3.setUser(user);
+        bookState3.setLibranian(user);
         bookState3.setBook(book3);
         bookState3.setAction(action3);
         bookStateRepository.save(bookState3);
 
         BookState bookState4 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState4.setUser(user);
+        bookState4.setLibranian(user);
         bookState4.setBook(book4);
         bookState4.setAction(action4);
         bookStateRepository.save(bookState4);
 
         BookState bookState5 = TestUtils.createBookState(action5, BookStateEnum.WYPOZYCZONA);
-        bookState5.setUser(user2);
+        bookState5.setLibranian(user2);
         bookState5.setBook(book5);
         bookState5.setAction(action5);
         bookStateRepository.save(bookState5);

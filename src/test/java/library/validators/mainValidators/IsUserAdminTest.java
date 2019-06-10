@@ -34,7 +34,7 @@ public class IsUserAdminTest {
         user.setAdmin(true);
 
         User user2 = TestUtils.createUser();
-        // domyślnie user.getAdmin =false
+        // domyślnie libranian.getAdmin =false
 
         assertTrue(isUserAdmin.validator(user));
         assertFalse(isUserAdmin.validator(user2));
