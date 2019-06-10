@@ -1,5 +1,6 @@
 package library.validators.mainValidators;
 
+import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
 import library.users.User;
@@ -14,20 +15,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProlongationValidator extends AbstractValidator {
-    private final PaymentRepository paymentRepository;
-    private final BookStateRepository bookStateRepository;
 
+    private final PaymentRepository paymentRepository;
+    private final BookRepository bookRepository;
     private static final Integer MAX_AMOUNT_OF_BOOKS = 4;
 
     @Autowired
-    public ProlongationValidator(PaymentRepository paymentRepository, BookStateRepository bookStateRepository) {
+    public ProlongationValidator(PaymentRepository paymentRepository, BookRepository bookRepository) {
         this.paymentRepository = paymentRepository;
-        this.bookStateRepository = bookStateRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
     public boolean validator(User user) {
         return (paymentRepository.findPaymentsByUser(user).isEmpty()
-                && bookStateRepository.findLoanedBooksByUser(user).size() < MAX_AMOUNT_OF_BOOKS);
+                && bookRepository.findLoanedBooksByUser(user).size() < MAX_AMOUNT_OF_BOOKS);
     }
 }

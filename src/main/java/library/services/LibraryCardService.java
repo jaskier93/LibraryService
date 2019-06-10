@@ -2,7 +2,7 @@ package library.services;
 
 import library.models.LibraryCard;
 import library.repositories.ActionRepository;
-import library.repositories.BookStateRepository;
+import library.repositories.BookRepository;
 import library.repositories.PaymentRepository;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +22,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LibraryCardService {
 
-    private final BookStateRepository bookStateRepository;
     private final ActionRepository actionRepository;
     private final PaymentRepository paymentRepository;
+    private final BookRepository bookRepository;
 
     private LibraryCard showLibraryCard(User user) {
         LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setLoanedBooks(bookStateRepository.findLoanedBooksByUser(user).size());
+        libraryCard.setLoanedBooks(bookRepository.findLoanedBooksByUser(user).size());
         libraryCard.setAllPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size());
         libraryCard.setAllPaymentsSum(paymentRepository.sumPaymentsForOneUser(user));
         libraryCard.setDestroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size());
         libraryCard.setExpiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size());
         libraryCard.setUnpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size());
         libraryCard.setUnpaidPaymentsSum(paymentRepository.sumActivePaymentsForOneUser(user));
-        libraryCard.setSumAllBooksPages(bookStateRepository.sumPagesForUser(user));
+        libraryCard.setSumAllBooksPages(bookRepository.sumPagesForUser(user));
         return libraryCard;
     }
 }

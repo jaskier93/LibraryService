@@ -1,6 +1,7 @@
 package library.validators.mainValidators;
 
 import library.models.Book;
+import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,11 @@ import java.util.List;
 @Component
 public class BookAmountValidator extends AbstractValidator {
 
-    private final BookStateRepository bookStateRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public BookAmountValidator(BookStateRepository bookStateRepository) {
-        this.bookStateRepository = bookStateRepository;
+    public BookAmountValidator(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     /**
@@ -24,7 +25,7 @@ public class BookAmountValidator extends AbstractValidator {
      */
     @Override
     public boolean validator(User user) {
-        List<Book> bookList = bookStateRepository.findLoanedBooksByUser(user);
+        List<Book> bookList = bookRepository.findLoanedBooksByUser(user);
         return bookList.size() <= 3;
     }
 

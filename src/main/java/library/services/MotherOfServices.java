@@ -18,7 +18,7 @@ public abstract class MotherOfServices {
 
     public abstract void DoSomethingWithBook(User user, Book book);
 
-    public abstract void cancel(User user, Book book);
+    public abstract void cancel(User user, Book book); //ewentualnie id -dla różnych serwisów mogą być potrzebne różne parametry, a można je zawsze wyciągnąć za pomocą ID
 
     public abstract List<AbstractValidator> getValidators();
 

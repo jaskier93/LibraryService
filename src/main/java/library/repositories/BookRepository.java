@@ -23,13 +23,34 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     //czy parametr powinien być typu String czy Category?
     @Query("select b from Book b where b.category =?1 order by b.title")
-    List<Book> findBookByCategory(@Param("category") Category category);
+    List<Book> findAllBooksByCategory(@Param("category") Category category);
 
     //czy parametr powinien być typu String czy AgeCategory?
     @Query("select b from Book b where b.ageCategory =?1 order by b.ageCategory")
+    List<Book> findAllBooksByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
+
+
+    //zwraca listę książek gotowych do wypożyczenia w danej kategorii wiekowej
+    @Query("select distinct bs.book from BookState bs inner join Book b on bs.book.id = b.id " +
+            "and b.ageCategory = ?1 and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
+    //zwraca listę książek gotowych do wypożyczenia w danej kategorii
+    @Query("select distinct bs.book from BookState bs inner join Book b on bs.book.id = b.id " +
+            "and b.category = ?1 and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
+    List<Book> findBookByCategory(@Param("Category") Category Category);
 
+    //metoda zwraca listę aktualnych wypożyczonych książek użytkownika
+    // TODO:do dopracowania-dodać jakiś warunek, żeby sprawdzał, czy książka nie jest oddana (np brak daty zwrotu/data zwrotu=9999
+    @Query("select distinct bs.book from BookState bs inner join Action a on bs.action.id = a.id " +
+            "where a.user = ?1 and bs.bookStateEnum= 'WYPOZYCZONA' order by bs.dateOfLoan desc ")
+    List<Book> findLoanedBooksByUser(User user);
+
+    //metoda sumuje ilość stron wszystkich książek, jak wypożyczył użytkownik
+    //@Query("select sum (bs.book.pages) from BookState bs where bs.action.user= ?1 and bs.bookStateEnum = 'WYPOZYCZONA'")
+    @Query("select sum(b.pages) from Book b inner join BookState bs on bs.book.id = b.id " +
+            "inner join Action a on bs.action.id = a.id where a.user = ?1 and bs.bookStateEnum= 'WYPOZYCZONA'")
+    Integer sumPagesForUser(User user);
 
     /**
      * wyświetlanie książek w kolejności dodania do biblioteki
@@ -54,9 +75,11 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> sortedBooksByReleaseData();
 
 
+
 /*    @Query("select b from Author a " +
             "inner join Book b on a.book.id=b.id where a.lastName=:author")
         //sprawdzić czy działa
     List<Book> findBookByAuthor(@Param("author") String author);*/
+
 
 }

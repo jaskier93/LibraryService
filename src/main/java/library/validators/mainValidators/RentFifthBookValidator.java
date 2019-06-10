@@ -1,6 +1,7 @@
 package library.validators.mainValidators;
 
 import library.models.Book;
+import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,12 @@ import java.util.List;
 
 @Component
 public class RentFifthBookValidator extends AbstractValidator {
-    private final BookStateRepository bookStateRepository;
+
+    private final BookRepository bookRepository;
 
     @Autowired
-    public RentFifthBookValidator(BookStateRepository bookStateRepository) {
-        this.bookStateRepository = bookStateRepository;
+    public RentFifthBookValidator(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     /**
@@ -26,7 +28,7 @@ public class RentFifthBookValidator extends AbstractValidator {
      */
     @Override
     public boolean validator(User user) {
-        List<Book> bookListLoanedByUser = bookStateRepository.findLoanedBooksByUser(user);
+        List<Book> bookListLoanedByUser = bookRepository.findLoanedBooksByUser(user);
         Period period = Period.between(user.getCreated().toLocalDate(), LocalDate.now());
         return (bookListLoanedByUser.size() == 4
                 && (period.getYears() >= 1));

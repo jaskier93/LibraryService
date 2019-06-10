@@ -161,13 +161,8 @@ public class BookStateRepositoryTest {
         bookStateList2.add(bookState5);
         bookStateList2.add(bookState3);
 
-        List<Book> loanedBookList = new ArrayList<>();
-        loanedBookList.add(book);
-
         BookState bookStateFromBase = bookStateRepository.getOne(bookState5.getId());
         assertEquals(bookState5.getId(), bookStateFromBase.getId());
-
-        assertEquals(loanedBookList, bookStateRepository.findLoanedBooksByUser(user2));
 
         //  assertEquals(bookState2, bookStateRepository.findBookStateByBook(book.getId())); TODO: nie działa, prawdopodobnie metoda też nie jest poprawna
 
@@ -176,12 +171,5 @@ public class BookStateRepositoryTest {
         //test metody zwracającej listę wypożyczeń użytkownika uporzadkowaną według daty wypożyczenia (od najstarszej daty)
         assertEquals(bookStateList, bookStateRepository.findBookStateByUser(user));
 
-        //DISTINCT wybiera tylko unikalne obiekty (książki)
-        assertEquals(2, bookStateRepository.findBookByAgeCategory(AgeCategory.DOROSLI).size());
 
-        assertEquals(2, bookStateRepository.findBookByCategory(Category.ADVENTURE).size());
-        assertEquals(1, bookStateRepository.findBookByCategory(Category.SCIENCE).size());
-
-        assertEquals(Integer.valueOf(1500), bookStateRepository.sumPagesForUser(user2));
-    }
-}
+}}
