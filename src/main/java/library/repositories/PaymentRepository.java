@@ -47,7 +47,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             "   from Payment p " +
             "       inner join Action a on p.action = a.id " +
             "where p.isActive = true " +
-            "   and a.user = :user")
+            "   and a.user = :user") // example for a pull request
     Integer sumActivePaymentsForOneUser(@Param("user") User user);
 
 
