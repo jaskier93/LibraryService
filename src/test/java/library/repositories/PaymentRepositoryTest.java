@@ -34,7 +34,7 @@ public class PaymentRepositoryTest {
     private BookStateRepository bookStateRepository = null;
 
     @Autowired
-    private ActionRepository actionRepository = null;
+    private final ActionRepository actionRepository = null;
 
     @After
     public void after() {

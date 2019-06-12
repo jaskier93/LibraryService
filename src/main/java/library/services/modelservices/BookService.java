@@ -9,7 +9,9 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.PaymentRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.services.exceptions.ExceptionFactory;
+import library.services.exceptions.TooManyResultsException;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -115,4 +117,30 @@ public class BookService {
         BookState bookState = bookStateService.destroyBook(action);
         paymentService.destroyedBookPayment(bookState);
     }
+
+    //TODO: metoda z exceptione x
+    // x
+    // x
+/*
+    public Book method(User user){ // PRZYKLAD
+        List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
+
+        if(CollectionUtils.isEmpty(booksLoandedByUser)){
+            throw new ExceptionEmptyList("Nie znaleziono książek");
+        } else if (booksLoandedByUser.size() > 1 ){
+            throw new TooManyResultsException("Zostało znalezionych więcej wyników niż powinno.");
+        }
+        return booksLoandedByUser.stream().findFirst().get();
+    }
+
+    public Integer numberOfLoanedBooks(User user){
+        List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
+
+        if(CollectionUtils.isEmpty(booksLoandedByUser)){
+            return 0;
+        }
+        return booksLoandedByUser.size();
+    }*/
+
+
 }

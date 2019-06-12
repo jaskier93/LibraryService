@@ -183,6 +183,7 @@ public class BookRepositoryTest {
 
         assertEquals(1, bookRepository.findBookByCategory(Category.ADVENTURE).size());
         assertTrue(bookRepository.findBookByCategory(Category.SCIENCE).isEmpty());
+        assertEquals(0, bookRepository.findBookByCategory(Category.DRAMA).size());
 
         assertEquals(Integer.valueOf(1500), bookRepository.sumPagesForUser(user2));
     }

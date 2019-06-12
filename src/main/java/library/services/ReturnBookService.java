@@ -20,7 +20,7 @@ public class ReturnBookService {
     private final PaymentService paymentService;
 
     //czy jest sens wysyłać maila w przypadku zwrotu książki?
-    public void returnBook(Book book, User user /*czy tutaj libranian będzie potrzebny?*/) {
+    public void returnBook(Book book, User user) {
 
         //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
         actionService.expiredLoan(book, user);

@@ -35,8 +35,6 @@ public class ActionRepositoryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
-    private final ActionService actionService = null;
-    private final BookStateService bookStateService = null;
 
     @After
     public void after() {

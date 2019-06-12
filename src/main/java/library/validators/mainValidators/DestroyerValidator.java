@@ -21,7 +21,7 @@ public class DestroyerValidator extends AbstractValidator {
     /**
      * metoda sprawdzająca, czy użytkownik ma zniszczenia książki na koncie
      * w przypadku, gdyby metoda miała sprawdzać, czy zdarzyło się to np w ostatnim miesiącu-należy dodać pole z datą akcji w klasie Action
-     * zamiast tego można sprawdzić ile zniszczeń ma użytkownik, jeśli ma np 10-może dostać bana, czyli libranian.setActive(false)-konto zbanowane
+     * zamiast tego można sprawdzić ile zniszczeń ma użytkownik, jeśli ma np 10-może dostać bana, czyli user.setActive(false)-konto zbanowane
      */
     @Override
     public boolean validator(User user) {

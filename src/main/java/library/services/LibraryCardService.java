@@ -37,5 +37,7 @@ public class LibraryCardService {
         libraryCard.setUnpaidPaymentsSum(paymentRepository.sumActivePaymentsForOneUser(user));
         libraryCard.setSumAllBooksPages(bookRepository.sumPagesForUser(user));
         return libraryCard;
+
+        //TODO: dodać exceptiony (emptyList/za duży wynik-np przy ilości aktualnie wypożyczonych książek)
     }
 }
