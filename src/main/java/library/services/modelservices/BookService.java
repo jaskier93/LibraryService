@@ -121,26 +121,33 @@ public class BookService {
     //TODO: metoda z exceptione x
     // x
     // x
-/*
-    public Book method(User user){ // PRZYKLAD
+    public Book latestLoanedBook(User user) { // PRZYKLAD
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
 
-        if(CollectionUtils.isEmpty(booksLoandedByUser)){
-            throw new ExceptionEmptyList("Nie znaleziono książek");
-        } else if (booksLoandedByUser.size() > 1 ){
-            throw new TooManyResultsException("Zostało znalezionych więcej wyników niż powinno.");
+        if (CollectionUtils.isEmpty(booksLoandedByUser)) {
+            throw new ExceptionEmptyList("Aktualnie użytkownik nie ma wypożyczonych książek");
         }
         return booksLoandedByUser.stream().findFirst().get();
     }
 
-    public Integer numberOfLoanedBooks(User user){
+    public Integer numberOfLoanedBooks(User user) {
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
-
-        if(CollectionUtils.isEmpty(booksLoandedByUser)){
+        final Integer MAX_LOANED_BOOK = 5;
+        if (CollectionUtils.isEmpty(booksLoandedByUser)) {
             return 0;
+        } else if (booksLoandedByUser.size() >= MAX_LOANED_BOOK) {
+            throw new TooManyResultsException("Została przekroczona maksymalna ilość jednocześnie wypożyczonych książek ( "
+                    + MAX_LOANED_BOOK + " sztuk).\nAktualnie posiadasz " + MAX_LOANED_BOOK + " wypożyczonych książek");
         }
         return booksLoandedByUser.size();
-    }*/
+    }
 
-
+    public Integer sumPagesForUser(User user) {
+        Integer sumPagesForUser = bookRepository.sumPagesForUser(user);
+        if (sumPagesForUser == null) {
+            sumPagesForUser = 0;
+            //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
+        }
+        return sumPagesForUser;
+    }
 }

@@ -55,6 +55,9 @@ public class PaymentRepositoryTest {
         User user = TestUtils.createUser();
         userRepository.save(user);
 
+        User user2 = TestUtils.createUser();
+        userRepository.save(user2);
+
         Action action = TestUtils.createAction(book, user);
         action.setBook(book);
         action.setUser(user);
@@ -99,7 +102,9 @@ public class PaymentRepositoryTest {
         assertTrue(paymentRepository.findPaymentsAboveAmount(1555454558, user).isEmpty());
         assertEquals(Integer.valueOf(350), paymentRepository.sumPaymentsForOneUser(user));
         assertEquals(Integer.valueOf(200), paymentRepository.sumActivePaymentsForOneUser(user));
+        assertNull(paymentRepository.sumActivePaymentsForOneUser(user2));
         assertEquals(3, paymentRepository.findPaymentsByUser(user).size());
         assertEquals(2, paymentRepository.findActivePaymentsByUser(user).size());
+        assertEquals(0, paymentRepository.findActivePaymentsByUser(user2).size());
     }
 }

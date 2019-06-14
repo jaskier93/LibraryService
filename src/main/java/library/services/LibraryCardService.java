@@ -4,6 +4,8 @@ import library.models.LibraryCard;
 import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.PaymentRepository;
+import library.services.modelservices.BookService;
+import library.services.modelservices.PaymentService;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,17 +27,20 @@ public class LibraryCardService {
     private final ActionRepository actionRepository;
     private final PaymentRepository paymentRepository;
     private final BookRepository bookRepository;
+    private final BookService bookService;
+    private final PaymentService paymentService;
 
     private LibraryCard showLibraryCard(User user) {
         LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setLoanedBooks(bookRepository.findLoanedBooksByUser(user).size());
+        libraryCard.setLoanedBooks(bookService.numberOfLoanedBooks(user));
         libraryCard.setAllPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size());
-        libraryCard.setAllPaymentsSum(paymentRepository.sumPaymentsForOneUser(user));
+        libraryCard.setAllPaymentsSum(paymentService.sumPaymentsForOneUser(user));
         libraryCard.setDestroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size());
         libraryCard.setExpiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size());
         libraryCard.setUnpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size());
-        libraryCard.setUnpaidPaymentsSum(paymentRepository.sumActivePaymentsForOneUser(user));
-        libraryCard.setSumAllBooksPages(bookRepository.sumPagesForUser(user));
+        libraryCard.setUnpaidPaymentsSum(paymentService.sumActivePaymentsForOneUser(user));
+        libraryCard.setSumAllBooksPages(bookService.sumPagesForUser(user));
+        libraryCard.setLatestLoanedBook(bookService.latestLoanedBook(user));
         return libraryCard;
 
         //TODO: dodać exceptiony (emptyList/za duży wynik-np przy ilości aktualnie wypożyczonych książek)

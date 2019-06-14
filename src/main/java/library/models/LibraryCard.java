@@ -15,6 +15,7 @@ public class LibraryCard {
     private Integer allPaymentsSum;
     private Integer expiredReturnsOfBooks;
     private Integer sumAllBooksPages;
+    private Book latestLoanedBook;
     //TODO: można tutaj umieścić jeszcze aktualne wypożyczenia czy inne potrzebne dla bibliotekarza/usera informacje
     // łączna ilość wypożyczeń, suma zwrotów po terminie, ulubiona kategoria książek, ulubiony autor etc
 }

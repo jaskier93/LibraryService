@@ -6,14 +6,17 @@ import library.models.Book;
 import library.models.BookState;
 import library.models.Payment;
 import library.repositories.PaymentRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -61,5 +64,23 @@ public class PaymentService {
         payment.setUpdated(LocalDateTime.now());
         payment.setActive(false); // =płatność opłacona
         return paymentRepository.save(payment);
+    }
+
+    public Integer sumActivePaymentsForOneUser(User user) {
+        Integer sumActivePaymentsForOneUser = paymentRepository.sumActivePaymentsForOneUser(user);
+        if (sumActivePaymentsForOneUser == null) {
+            sumActivePaymentsForOneUser = 0;
+            //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
+        }
+        return sumActivePaymentsForOneUser;
+    }
+
+    public Integer sumPaymentsForOneUser(User user) {
+        Integer sumPaymentsForOneUser = paymentRepository.sumPaymentsForOneUser(user);
+        if (sumPaymentsForOneUser == null) {
+            sumPaymentsForOneUser = 0;
+            //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
+        }
+        return sumPaymentsForOneUser;
     }
 }
