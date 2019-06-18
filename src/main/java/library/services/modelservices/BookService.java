@@ -21,12 +21,14 @@ import org.springframework.util.CollectionUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
+    private static final Integer MAX_LOANED_BOOK = 5;
 
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
@@ -132,7 +134,7 @@ public class BookService {
 
     public Integer numberOfLoanedBooks(User user) {
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
-        final Integer MAX_LOANED_BOOK = 5;
+
         if (CollectionUtils.isEmpty(booksLoandedByUser)) {
             return 0;
         } else if (booksLoandedByUser.size() >= MAX_LOANED_BOOK) {
@@ -144,7 +146,7 @@ public class BookService {
 
     public Integer sumPagesForUser(User user) {
         Integer sumPagesForUser = bookRepository.sumPagesForUser(user);
-        if (sumPagesForUser == null) {
+        if (Objects.isNull(sumPagesForUser)) {
             sumPagesForUser = 0;
             //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
         }

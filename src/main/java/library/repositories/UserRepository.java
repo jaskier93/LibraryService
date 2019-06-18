@@ -18,7 +18,28 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where u.id=:userId")
     User findUserById(@Param("userId") Integer userId);
 
-    @Query("select  u from User u where u.dateOfBirth<:date")
+    @Query("select u from User u where u.dateOfBirth<:date")
     List<User> findAdultUsers(@Param("date") LocalDate localDate);
+
+    @Query("select u " +
+            "from User u " +
+            "inner join BookState bs on bs.user.id = u.id " +
+            "inner join Action a " +
+            "on bs.action.id = a.id  " +
+            "where a.user= ?1" +
+            " and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "order by count (bookStateEnum) desc, u.lastName asc")
+    List<User> topUsersByLoansQuantity(User user);
+
+    @Query("select u " +
+            "from User u " +
+            "inner join BookState bs on bs.user.id = u.id " +
+            "inner join Book b on bs.book.id = b.id " +
+            "inner join Action a " +
+            "on bs.action.id = a.id  " +
+            "where a.user= ?1" +
+            " and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "order by sum (b.pages) desc, u.lastName asc")
+    List<User> topUsersBySumOfBooksPages(User user);
 }
 

@@ -21,18 +21,39 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "where b.title=?1")
     List<Book> findBookByTitle(String title);
 
-    //czy parametr powinien być typu String czy Category?
     @Query("select b from Book b " +
             "where b.category =?1 " +
             "order by b.title")
     List<Book> findAllBooksByCategory(@Param("category") Category category);
 
-    //czy parametr powinien być typu String czy AgeCategory?
     @Query("select b " +
             "from Book b " +
             "where b.ageCategory =?1 " +
             "order by b.ageCategory")
     List<Book> findAllBooksByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
+
+    @Query("select distinct b " +
+            "from BookState bs " +
+            "inner join  Book b on bs.book.id = b.id " +
+            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "order by count (bookStateEnum) desc, b.title asc")
+    List<Book> topLoanedBooks();
+
+    @Query("select distinct b " +
+            "from BookState bs " +
+            "inner join  Book b on bs.book.id = b.id " +
+            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "and b.category = ?1" +
+            "order by count (bookStateEnum) desc, b.title asc")
+    List<Book> topLoanedBooksByCategory (Category category);
+
+    @Query("select distinct b " +
+            "from BookState bs " +
+            "inner join  Book b on bs.book.id = b.id " +
+            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "and b.ageCategory = ?1" +
+            "order by count (bookStateEnum) desc, b.title asc")
+    List<Book> topLoanedBooksByAgeCategory (AgeCategory ageCategory);
 
 
     //zwraca listę książek gotowych do wypożyczenia w danej kategorii wiekowej
@@ -104,7 +125,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> sortedBooksByReleaseData();
 
 
-
+//TODO:dopracować
 /*    @Query("select b from Author a " +
             "inner join Book b on a.book.id=b.id where a.lastName=:author")
         //sprawdzić czy działa

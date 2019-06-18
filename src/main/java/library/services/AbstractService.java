@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public abstract class MotherOfServices {
+public abstract class AbstractService {
 
     private final ZbiorczyWalidator zbiorczyWalidator;
 
