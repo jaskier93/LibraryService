@@ -31,11 +31,11 @@ public class CategoryRankingService {
         List<Book> topLoanedBooksByCategory = bookRepository.topLoanedBooksByCategory(category);
         Integer sizeOfList = topLoanedBooksByCategory.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
-            List<Book> topLoanedBooksByCategory2 = new ArrayList<>();
-            for (int i = 0; i < sizeOfList; i++) {
-                topLoanedBooksByCategory2.add(topLoanedBooksByCategory.get(i));
+            List<Book> top10LoanedBooksByCategory = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10LoanedBooksByCategory.add(topLoanedBooksByCategory.get(i));
             }
-            return topLoanedBooksByCategory2;
+            return top10LoanedBooksByCategory;
         } else if
         (Objects.isNull(topLoanedBooksByCategory)) {
             log.info("Lista jest pusta.");

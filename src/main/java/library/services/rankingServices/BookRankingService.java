@@ -33,11 +33,11 @@ public class BookRankingService {
         List<Book> topLoanedBooks = bookRepository.topLoanedBooks();
         Integer sizeOfList = topLoanedBooks.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
-            List<Book> topLoanedBooks2 = new ArrayList<>();
-            for (int i = 0; i < sizeOfList; i++) {
-                topLoanedBooks2.add(topLoanedBooks.get(i));
+            List<Book> top10LoanedBooks = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10LoanedBooks.add(topLoanedBooks.get(i));
             }
-            return topLoanedBooks2;
+            return top10LoanedBooks;
         } else if (Objects.isNull(topLoanedBooks)) {
             log.info("Lista jest pusta.");
             return null;

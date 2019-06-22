@@ -8,7 +8,6 @@ import library.users.User;
 import library.validators.ZbiorczyWalidator;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.mainValidators.ProlongationValidator;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,19 +25,16 @@ public class ProlongationService extends AbstractService {
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final ProlongationValidator prolongationValidator;
-    private final ProlongationService prolongationService;
-    private final AbstractService abstractService;
 
     @Autowired
-    public ProlongationService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, ProlongationValidator prolongationValidator,
-                               ProlongationService prolongationService, AbstractService abstractService) {
+    public ProlongationService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, ProlongationValidator prolongationValidator) {
         super(zbiorczyWalidator);
         this.actionService = actionService;
         this.bookStateService = bookStateService;
         this.prolongationValidator = prolongationValidator;
-        this.prolongationService = prolongationService;
-        this.abstractService = abstractService;
     }
+
+
 
 
     /**

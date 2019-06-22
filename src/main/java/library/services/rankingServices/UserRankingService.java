@@ -30,11 +30,11 @@ public class UserRankingService {
         List<User> topUsersByLoansQuantity = userRepository.topUsersByLoansQuantity(user);
         Integer sizeOfList = topUsersByLoansQuantity.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
-            List<User> topUsersByLoansQuantity2 = new ArrayList<>();
-            for (int i = 0; i < sizeOfList; i++) {
-                topUsersByLoansQuantity2.add(topUsersByLoansQuantity.get(i));
+            List<User> top10UsersByLoansQuantity = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10UsersByLoansQuantity.add(topUsersByLoansQuantity.get(i));
             }
-            return topUsersByLoansQuantity2;
+            return top10UsersByLoansQuantity;
         } else if (Objects.isNull(topUsersByLoansQuantity)) {
             log.info("Lista jest pusta.");
             return null;
@@ -46,11 +46,11 @@ public class UserRankingService {
         List<User> topUsersBySumOfBooksPages = userRepository.topUsersBySumOfBooksPages(user);
         Integer sizeOfList = topUsersBySumOfBooksPages.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
-            List<User> topUsersBySumOfBooksPages2 = new ArrayList<>();
-            for (int i = 0; i < sizeOfList; i++) {
-                topUsersBySumOfBooksPages2.add(topUsersBySumOfBooksPages.get(i));
+            List<User> top10UsersBySumOfBooksPages = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10UsersBySumOfBooksPages.add(topUsersBySumOfBooksPages.get(i));
             }
-            return topUsersBySumOfBooksPages2;
+            return top10UsersBySumOfBooksPages;
         } else if (Objects.isNull(topUsersBySumOfBooksPages)) {
             log.info("Lista jest pusta.");
             return null;

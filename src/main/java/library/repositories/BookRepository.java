@@ -33,15 +33,15 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findAllBooksByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     @Query("select distinct b " +
-            "from BookState bs " +
-            "inner join  Book b on bs.book.id = b.id " +
+            "from Book b " +
+            "inner join BookState bs on bs.book.id = b.id " +
             "and bs.bookStateEnum= 'WYPOZYCZONA' " +
             "order by count (bookStateEnum) desc, b.title asc")
     List<Book> topLoanedBooks();
 
     @Query("select distinct b " +
-            "from BookState bs " +
-            "inner join  Book b on bs.book.id = b.id " +
+            "from Book b " +
+            "inner join BookState bs on bs.book.id = b.id " +
             "and bs.bookStateEnum= 'WYPOZYCZONA' " +
             "and b.category = ?1" +
             "order by count (bookStateEnum) desc, b.title asc")
@@ -58,16 +58,16 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     //zwraca listę książek gotowych do wypożyczenia w danej kategorii wiekowej
     @Query("select distinct b " +
-            "from BookState bs " +
-            "inner join Book b on bs.book.id = b.id " +
+            "from Book b " +
+            "inner join BookState bs on bs.book.id = b.id " +
             "and b.ageCategory = ?1 " +
             "and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     //zwraca listę książek gotowych do wypożyczenia w danej kategorii
-    @Query("select distinct bs.book " +
-            "from BookState bs " +
-            "inner join Book b on bs.book.id = b.id " +
+    @Query("select distinct b " +
+            "from Book b " +
+            "inner join BookState bs on bs.book.id = b.id " +
             "and b.category = ?1 " +
             "and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByCategory(@Param("Category") Category Category);

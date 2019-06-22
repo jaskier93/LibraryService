@@ -31,11 +31,11 @@ public class AgeCategoryService {
         List<Book> topLoanedBooksByAgeCategory = bookRepository.topLoanedBooksByAgeCategory(ageCategory);
         Integer sizeOfList = topLoanedBooksByAgeCategory.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
-            List<Book> topLoanedBooksByAgeCategory2 = new ArrayList<>();
-            for (int i = 0; i < sizeOfList; i++) {
-                topLoanedBooksByAgeCategory2.add(topLoanedBooksByAgeCategory.get(i));
+            List<Book> top10LoanedBooksByAgeCategory = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10LoanedBooksByAgeCategory.add(topLoanedBooksByAgeCategory.get(i));
             }
-            return topLoanedBooksByAgeCategory2;
+            return top10LoanedBooksByAgeCategory;
         } else if (Objects.isNull(topLoanedBooksByAgeCategory)) {
             log.info("Lista jest pusta.");
             return null;
