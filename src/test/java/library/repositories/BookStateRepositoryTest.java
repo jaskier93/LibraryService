@@ -5,6 +5,7 @@ import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
 import library.enums.Category;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.users.User;
@@ -41,6 +42,9 @@ public class BookStateRepositoryTest {
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -56,13 +60,16 @@ public class BookStateRepositoryTest {
 
         LocalDate today = LocalDate.now();
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
-        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book2 = TestUtils.createBook(author);
         bookRepository.save(book2);
 
-        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book3 = TestUtils.createBook(author);
         book3.setAgeCategory(AgeCategory.NASTOLATKOWIE);
         book3.setCategory(Category.SCIENCE);
         bookRepository.save(book3);
@@ -86,14 +93,12 @@ public class BookStateRepositoryTest {
         actionRepository.save(action5);
 
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState.setLibranian(user);
         bookState.setBook(book);
         bookState.setAction(action);
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
         BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState1.setLibranian(user);
         bookState1.setBook(book);
         bookState1.setDateOfLoan(today.plusDays(10));
         bookState1.setDateOfReturn(today.plusDays(30));
@@ -102,7 +107,6 @@ public class BookStateRepositoryTest {
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState2.setLibranian(user);
         bookState2.setBook(book);
         bookState2.setDateOfReturn(today.plusDays(40));
         bookState2.setDateOfLoan(today.plusDays(50));
@@ -113,14 +117,12 @@ public class BookStateRepositoryTest {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState3 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState3.setLibranian(user2);
         bookState3.setBook(book);
         bookState3.setAction(action4);
         bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
         BookState bookState4 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState4.setLibranian(user2);
         bookState4.setBook(book);
         bookState4.setDateOfLoan(today.plusDays(130));
         bookState4.setAction(action4);
@@ -128,7 +130,6 @@ public class BookStateRepositoryTest {
         bookStateRepository.save(bookState4);
 
         BookState bookState5 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState5.setLibranian(user2);
         bookState5.setBook(book);
         bookState5.setDateOfLoan(today.plusDays(50));
         bookState5.setAction(action4);
@@ -136,14 +137,12 @@ public class BookStateRepositoryTest {
         bookStateRepository.save(bookState5);
 
         BookState bookState6 = TestUtils.createBookState(action5, BookStateEnum.ZWROCONA);
-        bookState6.setLibranian(user2);
         bookState6.setBook(book2);
         bookState6.setAction(action5);
         bookState6.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState6);
 
         BookState bookState7 = TestUtils.createBookState(action5, BookStateEnum.NOWA);
-        bookState7.setLibranian(user3);
         bookState7.setBook(book3);
         bookState7.setAction(action5);
         bookState7.setBookStateEnum(BookStateEnum.ZWROCONA);
@@ -172,4 +171,5 @@ public class BookStateRepositoryTest {
         assertEquals(bookStateList, bookStateRepository.findBookStateByUser(user));
 
 
-}}
+    }
+}

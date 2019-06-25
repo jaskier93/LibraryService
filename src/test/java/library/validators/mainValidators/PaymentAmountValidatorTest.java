@@ -2,10 +2,7 @@ package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
-import library.models.Action;
-import library.models.Book;
-import library.models.BookState;
-import library.models.Payment;
+import library.models.*;
 import library.repositories.*;
 import library.users.User;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +42,9 @@ public class PaymentAmountValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -57,7 +57,11 @@ public class PaymentAmountValidatorTest {
 
     @Test //test passed! prawidłowo usuwa obiekty
     public void hasUserAtLeastThan3Payments() {
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
@@ -74,8 +78,6 @@ public class PaymentAmountValidatorTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setLibranian(user);
-        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
         Payment payment = TestUtils.createPayment(action);

@@ -3,6 +3,7 @@ package library.repositories;
 import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
@@ -35,6 +36,9 @@ public class ActionRepositoryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
 
     @After
     public void after() {
@@ -47,7 +51,11 @@ public class ActionRepositoryTest {
     //test passed!
     @Test
     public void actionRepositoryTest() {
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();

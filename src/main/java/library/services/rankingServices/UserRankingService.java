@@ -1,6 +1,7 @@
 package library.services.rankingServices;
 
 import library.repositories.UserRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +27,8 @@ public class UserRankingService {
         this.userRepository = userRepository;
     }
 
-    public List<User> topUsersByLoansQuantity(User user) {
-        List<User> topUsersByLoansQuantity = userRepository.topUsersByLoansQuantity(user);
+    public List<User> topUsersByLoansQuantity() {
+        List<User> topUsersByLoansQuantity = userRepository.topUsersByLoansQuantity();
         Integer sizeOfList = topUsersByLoansQuantity.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
             List<User> top10UsersByLoansQuantity = new ArrayList<>();
@@ -37,13 +38,13 @@ public class UserRankingService {
             return top10UsersByLoansQuantity;
         } else if (Objects.isNull(topUsersByLoansQuantity)) {
             log.info("Lista jest pusta.");
-            return null;
+            throw new ExceptionEmptyList("Brak wyników");
         }
         return topUsersByLoansQuantity;
     }
 
     public List<User> topUsersBySumOfBooksPages(User user) {
-        List<User> topUsersBySumOfBooksPages = userRepository.topUsersBySumOfBooksPages(user);
+        List<User> topUsersBySumOfBooksPages = userRepository.topUsersBySumOfBooksPages();
         Integer sizeOfList = topUsersBySumOfBooksPages.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
             List<User> top10UsersBySumOfBooksPages = new ArrayList<>();
@@ -53,7 +54,7 @@ public class UserRankingService {
             return top10UsersBySumOfBooksPages;
         } else if (Objects.isNull(topUsersBySumOfBooksPages)) {
             log.info("Lista jest pusta.");
-            return null;
+            throw new ExceptionEmptyList("Brak wyników");
         }
         return topUsersBySumOfBooksPages;
     }

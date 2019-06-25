@@ -12,32 +12,46 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("select u from User u where u.lastName = ?1")
+    @Query("select u" +
+            "   from User u " +
+            "where u.lastName = ?1")
     List<User> findUserByLastName(String lastName);
 
-    @Query("select u from User u where u.id = :userId")
+    @Query("select u " +
+            "   from User u " +
+            "where u.id = :userId")
     User findUserById(@Param("userId") Integer userId);
 
-    @Query("select u from User u where u.dateOfBirth <: date")
+    @Query("select u " +
+            "   from User u " +
+            "where u.dateOfBirth <: date")
     List<User> findAdultUsers(@Param("date") LocalDate localDate);
 
-    @Query("select u " +
-            "from User u " +
-            "inner join Action a on a.user.id = u.id  " +
-            "inner join BookState bs on bs.action.id = a.id " +
-            "where a.user= ?1" +
-            "and bs.bookStateEnum = 'WYPOZYCZONA' " +
-            "order by count (bookStateEnum) desc, u.lastName asc")
-    List<User> topUsersByLoansQuantity(User user);
+
+    //TODO: dwie metody poniżej do poprawy!
 
     @Query("select u " +
-            "from User u " +
-            "inner join Action a on a.user.id = u.id  " +
-            "inner join BookState bs on bs.action.id = a.id " +
-            "inner join Book b on bs.book.id = b.id " +
-            "where a.user= ?1" +
-            "and bs.bookStateEnum = 'WYPOZYCZONA' " +
+            "   from User u " +
+            "inner join Action a " +
+            "on a.user.id = u.id  " +
+            "inner join BookState bs " +
+            "on bs.action.id = a.id " +
+            "where bs.bookStateEnum = 'WYPOZYCZONA' " +
+            "   and a.statusRekordu='ACTIVE'" +
+            "order by count (a.id) desc , u.lastName asc")
+    List<User> topUsersByLoansQuantity();
+
+    @Query("select u " +
+            "   from User u " +
+            "inner join Action a " +
+            "on a.user.id = u.id  " +
+            "inner join BookState bs " +
+            "on bs.action.id = a.id " +
+            "inner join Book b " +
+            "on bs.book.id = b.id " +
+            "where bs.bookStateEnum = 'WYPOZYCZONA' " +
+            "   and a.statusRekordu='ACTIVE'" +
             "order by sum (b.pages) desc, u.lastName asc")
-    List<User> topUsersBySumOfBooksPages(User user);
+    List<User> topUsersBySumOfBooksPages();
 }
 

@@ -34,7 +34,7 @@ public class Book extends StateEntity {
 
     @NotNull
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     private Author author;
 
     @NotNull

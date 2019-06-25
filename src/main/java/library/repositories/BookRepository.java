@@ -17,65 +17,66 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("select b " +
-            "from Book b " +
+            "   from Book b " +
             "where b.title=?1")
     List<Book> findBookByTitle(String title);
 
-    @Query("select b from Book b " +
+    @Query("select b " +
+            "   from Book b " +
             "where b.category =?1 " +
             "order by b.title")
     List<Book> findAllBooksByCategory(@Param("category") Category category);
 
     @Query("select b " +
-            "from Book b " +
+            "   from Book b " +
             "where b.ageCategory =?1 " +
             "order by b.ageCategory")
     List<Book> findAllBooksByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     @Query("select distinct b " +
-            "from Book b " +
+            "   from Book b " +
             "inner join BookState bs on bs.book.id = b.id " +
-            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "   and bs.bookStateEnum= 'WYPOZYCZONA' " +
             "order by count (bookStateEnum) desc, b.title asc")
     List<Book> topLoanedBooks();
 
     @Query("select distinct b " +
-            "from Book b " +
+            "   from Book b " +
             "inner join BookState bs on bs.book.id = b.id " +
-            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
-            "and b.category = ?1" +
+            "   and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "   and b.category = ?1" +
             "order by count (bookStateEnum) desc, b.title asc")
     List<Book> topLoanedBooksByCategory (Category category);
 
     @Query("select distinct b " +
-            "from BookState bs " +
+            "   from BookState bs " +
             "inner join  Book b on bs.book.id = b.id " +
-            "and bs.bookStateEnum= 'WYPOZYCZONA' " +
-            "and b.ageCategory = ?1" +
+            "   and bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "   and b.ageCategory = ?1" +
             "order by count (bookStateEnum) desc, b.title asc")
     List<Book> topLoanedBooksByAgeCategory (AgeCategory ageCategory);
 
 
     //zwraca listę książek gotowych do wypożyczenia w danej kategorii wiekowej
     @Query("select distinct b " +
-            "from Book b " +
+            "   from Book b " +
             "inner join BookState bs on bs.book.id = b.id " +
-            "and b.ageCategory = ?1 " +
-            "and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
+            "   and b.ageCategory = ?1 " +
+            "   and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     //zwraca listę książek gotowych do wypożyczenia w danej kategorii
     @Query("select distinct b " +
-            "from Book b " +
+            "   from Book b " +
             "inner join BookState bs on bs.book.id = b.id " +
-            "and b.category = ?1 " +
-            "and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
+            "   and b.category = ?1 " +
+            "   and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByCategory(@Param("Category") Category Category);
 
     //metoda zwraca listę aktualnych wypożyczonych książek użytkownika
     // TODO:do dopracowania-dodać jakiś warunek, żeby sprawdzał, czy książka nie jest oddana (np brak daty zwrotu/data zwrotu=9999
     @Query("select distinct bs.book " +
-            "from BookState bs " +
+            "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id " +
             "where a.user = ?1 and bs.bookStateEnum= 'WYPOZYCZONA' " +
             "order by bs.dateOfLoan desc ")
@@ -97,13 +98,13 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
      * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
      */
     @Query("select b " +
-            "from Book b " +
+            "   from Book b " +
             "order by b.created")
     List<Book> sortedBooksByAddingData();
 
     //lista książek wydana w danym okresie, np w przeciągu roku
     @Query("select b " +
-            "from Book b " +
+            "   from Book b " +
             "where b.releaseDate > :date " +
             "order by b.title")
     List<Book> booksAddedInPeriod(@Param("date") LocalDate localDate);

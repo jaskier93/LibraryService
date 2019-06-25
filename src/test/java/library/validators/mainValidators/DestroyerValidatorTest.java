@@ -3,8 +3,10 @@ package library.validators.mainValidators;
 import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.repositories.ActionRepository;
+import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
 import library.users.User;
@@ -39,6 +41,10 @@ public class DestroyerValidatorTest {
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -50,11 +56,14 @@ public class DestroyerValidatorTest {
     @Test //test passed! prawidłowo usuwa obiekty (akcje z enumem=TEST również)
     public void didUserDestroyBook() {
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
-        Book book1 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book1 = TestUtils.createBook(author);
         bookRepository.save(book1);
-        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book2 = TestUtils.createBook(author);
         bookRepository.save(book2);
 
         User user = TestUtils.createUser();

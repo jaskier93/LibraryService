@@ -3,6 +3,7 @@ package library.services.rankingServices;
 import library.enums.Category;
 import library.models.Book;
 import library.repositories.BookRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class CategoryRankingService {
         } else if
         (Objects.isNull(topLoanedBooksByCategory)) {
             log.info("Lista jest pusta.");
-            return null;
+            throw new ExceptionEmptyList("Brak wyników");
         }
         return topLoanedBooksByCategory;
     }

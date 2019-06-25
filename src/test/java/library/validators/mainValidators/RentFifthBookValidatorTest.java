@@ -3,12 +3,10 @@ package library.validators.mainValidators;
 import library.TestUtils;
 import library.enums.BookStateEnum;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
-import library.repositories.ActionRepository;
-import library.repositories.BookRepository;
-import library.repositories.BookStateRepository;
-import library.repositories.UserRepository;
+import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -44,6 +42,9 @@ public class RentFifthBookValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
 
     @After
     public void after() {
@@ -57,16 +58,19 @@ public class RentFifthBookValidatorTest {
     @Test
     public void isUserAbleToLoan5thBook() {
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
-        Book book1 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book1 = TestUtils.createBook(author);
         bookRepository.save(book1);
 
-        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book2 = TestUtils.createBook(author);
         bookRepository.save(book2);
 
-        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book3 = TestUtils.createBook(author);
         bookRepository.save(book3);
 
         User user = TestUtils.createUser();
@@ -82,35 +86,27 @@ public class RentFifthBookValidatorTest {
         action.setUser(user);
         actionRepository.save(action);
 
-        BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
+        BookState bookState = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setLibranian(user);
-        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
-        BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
+        BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState1.setBook(book1);
         bookState1.setAction(action);
-        bookState1.setLibranian(user);
-        bookState1.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState1);
 
-        BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
+        BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState2.setBook(book2);
         bookState2.setAction(action);
-        bookState2.setLibranian(user);
-        bookState2.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState2);
 
-        BookState bookState3 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
+        BookState bookState3 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState3.setBook(book3);
         bookState3.setAction(action);
-        bookState3.setLibranian(user);
-        bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
-        //metoda zwraca false, bo libranian nie ma żadnego wypożyczenia na koncie, na dodatek jest zarejestrowany dopiero 3 miesiące
+        //metoda zwraca false, bo user nie ma żadnego wypożyczenia na koncie, na dodatek jest zarejestrowany dopiero 3 miesiące
         assertFalse(rentFifthBookValidator.validator(user2));
 
         //metoda zwraca true, bo użytkownik ma dokładnie 4 wypożyczenia oraz jest zarejestrowany przynajmniej rok

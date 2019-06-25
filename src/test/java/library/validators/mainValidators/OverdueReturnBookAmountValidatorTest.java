@@ -3,6 +3,7 @@ package library.validators.mainValidators;
 import library.TestUtils;
 import library.enums.ActionDescription;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.repositories.*;
 import library.users.User;
@@ -37,6 +38,10 @@ public class OverdueReturnBookAmountValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -47,7 +52,11 @@ public class OverdueReturnBookAmountValidatorTest {
 
     @Test
     public void hasUserMoreThan5OverdueReturns() {
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();

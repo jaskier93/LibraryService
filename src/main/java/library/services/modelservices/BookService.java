@@ -4,13 +4,9 @@ import library.enums.*;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
-import library.models.Payment;
-import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
-import library.repositories.PaymentRepository;
 import library.services.exceptions.ExceptionEmptyList;
-import library.services.exceptions.ExceptionFactory;
 import library.services.exceptions.TooManyResultsException;
 import library.users.User;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +28,6 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
-    private final ActionRepository actionRepository;
-    private final PaymentRepository paymentRepository;
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final PaymentService paymentService;

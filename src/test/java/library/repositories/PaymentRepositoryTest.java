@@ -36,6 +36,9 @@ public class PaymentRepositoryTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -49,7 +52,11 @@ public class PaymentRepositoryTest {
     //test passed!
     @Test
     public void paymentRepositoryTest() {
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
@@ -66,7 +73,6 @@ public class PaymentRepositoryTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setLibranian(user);
         bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 

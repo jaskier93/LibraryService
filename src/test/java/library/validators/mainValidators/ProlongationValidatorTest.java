@@ -2,10 +2,7 @@ package library.validators.mainValidators;
 
 import library.TestUtils;
 import library.enums.BookStateEnum;
-import library.models.Action;
-import library.models.Book;
-import library.models.BookState;
-import library.models.Payment;
+import library.models.*;
 import library.repositories.*;
 import library.users.User;
 import org.junit.After;
@@ -43,6 +40,10 @@ public class ProlongationValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -55,7 +56,10 @@ public class ProlongationValidatorTest {
     @Test //test passed! prawidłowo usuwa obiekty
     public void isUserAbleToExtendLoan() {
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
@@ -77,7 +81,6 @@ public class ProlongationValidatorTest {
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setLibranian(user);
         bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState);
 
@@ -89,13 +92,13 @@ public class ProlongationValidatorTest {
         paymentRepository.save(payment);
 
         /*
-         *test określa, czy libranian może przedłużyć wypożyczenie książki
+         *test określa, czy user może przedłużyć wypożyczenie książki
          *tutaj może, bo ma tylko jedną wypożyczoną książkę oraz nie ma żadnej naliczonej płatności
          */
         assertTrue(prolongationValidator.validator(user));
 
         /**
-         *test określa, czy libranian może przedłużyć wypożyczenie książki
+         *test określa, czy user może przedłużyć wypożyczenie książki
          * tutaj nie może, ponieważ ma naliczoną płatność
          */
         assertFalse(prolongationValidator.validator(user2));

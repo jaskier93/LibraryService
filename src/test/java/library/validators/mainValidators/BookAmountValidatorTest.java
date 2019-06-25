@@ -3,12 +3,10 @@ package library.validators.mainValidators;
 import library.TestUtils;
 import library.enums.BookStateEnum;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
-import library.repositories.ActionRepository;
-import library.repositories.BookRepository;
-import library.repositories.BookStateRepository;
-import library.repositories.UserRepository;
+import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -42,6 +40,9 @@ public class BookAmountValidatorTest {
     @Autowired
     public final JdbcTemplate jdbcTemplate = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -53,18 +54,22 @@ public class BookAmountValidatorTest {
 
     @Test //test passed! obiekty prawidłowo usuwane z bazy
     public void isUserAbleToLoan4thBook() {
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book);
-        Book book1 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book1);
-        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book2);
-        Book book3 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book3);
-        Book book4 = TestUtils.createBook(TestUtils.createAuthor());
-        bookRepository.save(book4);
 
-        Book book5 = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+
+        Book book = TestUtils.createBook(author);
+        bookRepository.save(book);
+        Book book1 = TestUtils.createBook(author);
+        bookRepository.save(book1);
+        Book book2 =  TestUtils.createBook(author);
+        bookRepository.save(book2);
+        Book book3 =  TestUtils.createBook(author);
+        bookRepository.save(book3);
+        Book book4 =  TestUtils.createBook(author);
+        bookRepository.save(book4);
+        Book book5 =  TestUtils.createBook(author);
         bookRepository.save(book5);
 
         User user = TestUtils.createUser();

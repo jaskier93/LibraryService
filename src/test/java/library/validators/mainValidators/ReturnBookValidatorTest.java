@@ -3,12 +3,10 @@ package library.validators.mainValidators;
 import library.TestUtils;
 import library.enums.BookStateEnum;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
-import library.repositories.ActionRepository;
-import library.repositories.BookRepository;
-import library.repositories.BookStateRepository;
-import library.repositories.UserRepository;
+import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -24,7 +22,6 @@ import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-
 public class ReturnBookValidatorTest {
 
     @Autowired
@@ -45,6 +42,9 @@ public class ReturnBookValidatorTest {
     @Autowired
     private final ActionRepository actionRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("delete from book_states where status=1020304050");
@@ -57,7 +57,10 @@ public class ReturnBookValidatorTest {
     @Test
     public void wasBookReturnedInTime() {
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         bookRepository.save(book);
 
         User user = TestUtils.createUser();
@@ -83,7 +86,6 @@ public class ReturnBookValidatorTest {
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.WYPOZYCZONA);
-        bookState2.setAction(action);
         bookStateRepository.save(bookState2);
 
         BookState bookState3 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);

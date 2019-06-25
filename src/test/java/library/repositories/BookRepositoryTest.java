@@ -5,6 +5,7 @@ import library.enums.AgeCategory;
 import library.enums.BookStateEnum;
 import library.enums.Category;
 import library.models.Action;
+import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.users.User;
@@ -42,6 +43,9 @@ public class BookRepositoryTest {
     @Autowired
     private final UserRepository userRepository = null;
 
+    @Autowired
+    private final AuthorRepository authorRepository = null;
+
     @After
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
@@ -58,16 +62,19 @@ public class BookRepositoryTest {
         LocalDate today = LocalDate.now();
         LocalDateTime todayTime = LocalDateTime.now();
 
-        Book book = TestUtils.createBook(TestUtils.createAuthor());
+        Author author = TestUtils.createAuthor();
+        authorRepository.save(author);
+
+        Book book = TestUtils.createBook(author);
         book.setReleaseDate(book.getReleaseDate().minusDays(50));
         book.setCreated(book.getCreated().plusDays(50));
         bookRepository.save(book);
 
-        Book book1 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book1 = TestUtils.createBook(author);
         book1.setReleaseDate(LocalDate.now());
         bookRepository.save(book1);
 
-        Book book2 = TestUtils.createBook(TestUtils.createAuthor());
+        Book book2 = TestUtils.createBook(author);
         book2.setReleaseDate(book2.getReleaseDate().minusDays(30));
         book2.setCreated(book2.getCreated().plusDays(30));
         bookRepository.save(book2);
@@ -98,53 +105,41 @@ public class BookRepositoryTest {
         actionRepository.save(action4);
 
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState.setLibranian(user);
         bookState.setBook(book);
         bookState.setAction(action);
-        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState);
 
         BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState1.setLibranian(user);
         bookState1.setBook(book);
         bookState1.setDateOfLoan(today.plusDays(10));
         bookState1.setDateOfReturn(today.plusDays(30));
         bookState1.setAction(action);
-        bookState1.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState2.setLibranian(user);
         bookState2.setBook(book);
         bookState2.setDateOfReturn(today.plusDays(40));
         bookState2.setDateOfLoan(today.plusDays(50));
         bookState2.setAction(action);
-        bookState2.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState2);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState3 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState3.setLibranian(user2);
         bookState3.setBook(book);
         bookState3.setAction(action4);
-        bookState3.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState3);
 
         BookState bookState4 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState4.setLibranian(user2);
         bookState4.setBook(book);
         bookState4.setDateOfLoan(today.plusDays(130));
         bookState4.setAction(action4);
-        bookState4.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState4);
 
         BookState bookState5 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
-        bookState5.setLibranian(user2);
         bookState5.setBook(book);
         bookState5.setDateOfLoan(today.plusDays(50));
         bookState5.setAction(action4);
-        bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState5);
 
         List<Book> loanedBookList = new ArrayList<>();
