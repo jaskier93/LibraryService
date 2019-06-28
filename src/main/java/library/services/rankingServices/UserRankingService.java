@@ -43,7 +43,7 @@ public class UserRankingService {
         return topUsersByLoansQuantity;
     }
 
-/*    public List<User> topUsersBySumOfBooksPages(User user) {
+    public List<User> topUsersBySumOfBooksPages() {
         List<User> topUsersBySumOfBooksPages = userRepository.topUsersBySumOfBooksPages();
         Integer sizeOfList = topUsersBySumOfBooksPages.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
@@ -57,5 +57,5 @@ public class UserRankingService {
             throw new ExceptionEmptyList("Brak wyników");
         }
         return topUsersBySumOfBooksPages;
-    }*/
+    }
 }

@@ -57,9 +57,11 @@ public class UserRankingServiceTest {
         jdbcTemplate.update("delete from books where status_rekordu='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+
     }
+
     @Test
-    public void topUsersByLoansQuantityTest() {
+    public void userRankingMethodsTest() {
         LocalDate today = LocalDate.now();
 
         Author author = TestUtils.createAuthor();
@@ -99,7 +101,6 @@ public class UserRankingServiceTest {
             actionRepository.save(action);
 
             BookState bookState = TestUtils.createBookState(actionList.get(i), BookStateEnum.WYPOZYCZONA);
-            bookState.setDateOfReturn(today.plusDays(i));
             bookStateList.add(bookState);
             bookStateRepository.save(bookState);
         }
@@ -163,22 +164,35 @@ public class UserRankingServiceTest {
             bookStateRepository.save(bookState);
         }
 
-        List<User> predictedUserRankingList = new ArrayList<>();
-        predictedUserRankingList.add(userList.get(0));
-        predictedUserRankingList.add(userList.get(1));
-        predictedUserRankingList.add(userList.get(5));
-        predictedUserRankingList.add(userList.get(2));
-        predictedUserRankingList.add(userList.get(3));
-        predictedUserRankingList.add(userList.get(4));
-        predictedUserRankingList.add(userList.get(6));
-        predictedUserRankingList.add(userList.get(7));
-        predictedUserRankingList.add(userList.get(8));
-        predictedUserRankingList.add(userList.get(9));
+        List<User> predictedTopLoansQuantityByUserRankingList = new ArrayList<>();
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(0));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(1));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(5));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(2));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(3));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(4));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(6));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(7));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(8));
+        predictedTopLoansQuantityByUserRankingList.add(userList.get(9));
+
+        List<User> predictedTopSumPagesByUserRankingList = new ArrayList<>();
+        predictedTopSumPagesByUserRankingList.add(userList.get(0));
+        predictedTopSumPagesByUserRankingList.add(userList.get(5));
+        predictedTopSumPagesByUserRankingList.add(userList.get(1));
+        predictedTopSumPagesByUserRankingList.add(userList.get(4));
+        predictedTopSumPagesByUserRankingList.add(userList.get(3));
+        predictedTopSumPagesByUserRankingList.add(userList.get(2));
+        predictedTopSumPagesByUserRankingList.add(userList.get(9));
+        predictedTopSumPagesByUserRankingList.add(userList.get(8));
+        predictedTopSumPagesByUserRankingList.add(userList.get(7));
+        predictedTopSumPagesByUserRankingList.add(userList.get(6));
 
         assertEquals(50, bookList.size());
         assertEquals(50, actionList.size());
         assertEquals(50, bookStateList.size());
-        assertEquals(predictedUserRankingList, userRankingService.topUsersByLoansQuantity());
+        assertEquals(predictedTopLoansQuantityByUserRankingList, userRankingService.topUsersByLoansQuantity());
+        assertEquals(predictedTopSumPagesByUserRankingList, userRankingService.topUsersBySumOfBooksPages());
 
         for (int i = 0; i < 50; i++) {
             actionList.get(i).setStatusRekordu(StatusRekordu.TEST);
