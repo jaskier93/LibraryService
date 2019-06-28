@@ -50,8 +50,8 @@ public class BookRepositoryTest {
     public void after() {
         jdbcTemplate.update("Delete from actions where action_description ='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
-        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
-        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+        jdbcTemplate.update("delete from books where status_rekordu='TEST'");
+        jdbcTemplate.update("delete from user where status_rekordu='TEST'");
         jdbcTemplate.update("delete from book_states where status=1020304050");
     }
 

@@ -79,6 +79,16 @@ public class TestUtils {
         action.setUpdated(LocalDateTime.now());
         return action;
     }
+    public static Action createAction(ActionDescription actionDescription, Book book, User user) {
+        Action action = new Action();
+        action.setActionDescription(actionDescription);
+        action.setBook(book);
+        action.setUser(user);
+        action.setCreated(LocalDateTime.now());
+        action.setStatusRekordu(StatusRekordu.TEST);
+        action.setUpdated(LocalDateTime.now());
+        return action;
+    }
 
     public static Payment createPayment(Action action) {
         Payment payment = new Payment();

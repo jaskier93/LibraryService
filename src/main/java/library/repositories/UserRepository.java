@@ -30,7 +30,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     //TODO: dwie metody poniżej do poprawy!
 
-    @Query("select u " +
+   /* @Query("select u " +
             "   from User u " +
             "inner join Action a " +
             "on a.user.id = u.id  " +
@@ -52,6 +52,24 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "where bs.bookStateEnum = 'WYPOZYCZONA' " +
             "   and a.statusRekordu='ACTIVE'" +
             "order by sum (b.pages) desc, u.lastName asc")
-    List<User> topUsersBySumOfBooksPages();
+    List<User> topUsersBySumOfBooksPages();*/
+
+/*
+    select count(a.action_description) liczba_wypozyczen, user_id
+    from actions as a where a.action_description = 'WYPOZYCZENIE' and a.status_rekordu='TEST'
+    group by a.user_id
+    order by  liczba_wypozyczen desc , a.user_id*/
+
+    //TODO:do sprawdzenia, dodać sortowanie po nazwisku (asc) i liczbie wypożyczeń (desc)
+    @Query("select u from User u " +
+            "inner join Action a on a.user = u.id " +
+            "where a.actionDescription = 'WYPOZYCZENIE'"+
+            "   and a.statusRekordu='ACTIVE'" +
+            "group by u  " +
+            "order by count (a.actionDescription) desc, u.lastName, u.name, u.id ")
+    List<User> topUsersByLoansQuantity();
+
+
+
 }
 

@@ -49,18 +49,16 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
     //@Query("select bs from BookState bs where bs.action.user =?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
     @Query("select bs " +
             "   from BookState bs " +
-            "inner join Action a " +
-            "on bs.action.id = a.id  " +
-            "   and a.user= :user" +
-            " where bs.bookStateEnum= 'WYPOZYCZONA' " +
+            "inner join Action a on bs.action.id = a.id  " +
+            "   and a.user= :user " +
+            "where bs.bookStateEnum= 'WYPOZYCZONA' " +
             "order by bs.dateOfLoan desc ")
     List<BookState> findCurrentBookStateByUser(@Param("user") User user);
 
     //metoda zwraca listę wypożyczeń użytkownika-całą historię
     @Query("select bs " +
             "   from BookState bs " +
-            "inner join Action a " +
-            "on bs.action.id = a.id  " +
+            "inner join Action a on bs.action.id = a.id  " +
             "where a.user= :user " +
             "order by bs.dateOfLoan desc ")
     List<BookState> findBookStateByUser(@Param("user") User user);

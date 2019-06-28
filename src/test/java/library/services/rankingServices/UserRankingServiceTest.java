@@ -53,12 +53,11 @@ public class UserRankingServiceTest {
     @After
     public void after() {
         jdbcTemplate.update("delete from book_states where status=1020304050");
-        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
-        jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
+        jdbcTemplate.update("Delete from actions where action_description ='TEST' or status_rekordu='TEST'");
+        jdbcTemplate.update("delete from books where status_rekordu='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
     }
-
     @Test
     public void topUsersByLoansQuantityTest() {
         LocalDate today = LocalDate.now();
@@ -74,6 +73,7 @@ public class UserRankingServiceTest {
         for (int i = 0; i < 10; i++) {
             User user = TestUtils.createUser();
             user.setLastName("Kowalski" + i);
+            user.setAdmin(true);
             userList.add(user);
             userRepository.save(user);
 
@@ -83,6 +83,7 @@ public class UserRankingServiceTest {
             bookList.add(book);
             bookRepository.save(book);
         }
+
         for (int i = 0; i < 40; i++) {
 
             Book book = TestUtils.createBook(author);
@@ -93,6 +94,7 @@ public class UserRankingServiceTest {
 
             Action action = TestUtils.createAction(bookList.get(i), userList.get(i % 10));
             action.setActionDescription(ActionDescription.WYPOZYCZENIE);
+            action.setStatusRekordu(StatusRekordu.ACTIVE);
             actionList.add(action);
             actionRepository.save(action);
 
@@ -103,37 +105,54 @@ public class UserRankingServiceTest {
         }
 
 
-        for (int i = 0; i < 40; i++) {
-        }
-
         Action action = TestUtils.createAction(bookList.get(40), userList.get(0));
+        action.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action);
         actionRepository.save(action);
         Action action1 = TestUtils.createAction(bookList.get(41), userList.get(0));
+        action1.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action1.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action1);
         actionRepository.save(action1);
         Action action2 = TestUtils.createAction(bookList.get(42), userList.get(0));
+        action2.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action2.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action2);
         actionRepository.save(action2);
         Action action3 = TestUtils.createAction(bookList.get(43), userList.get(1));
+        action3.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action3.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action3);
         actionRepository.save(action3);
         Action action4 = TestUtils.createAction(bookList.get(44), userList.get(1));
+        action4.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action4.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action4);
         actionRepository.save(action4);
         Action action5 = TestUtils.createAction(bookList.get(45), userList.get(2));
+        action5.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action5.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action5);
         actionRepository.save(action5);
         Action action6 = TestUtils.createAction(bookList.get(46), userList.get(3));
+        action6.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action6.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action6);
         actionRepository.save(action6);
         Action action7 = TestUtils.createAction(bookList.get(47), userList.get(4));
+        action7.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action7.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action7);
         actionRepository.save(action7);
         Action action8 = TestUtils.createAction(bookList.get(48), userList.get(5));
+        action8.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action8.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action8);
         actionRepository.save(action8);
         Action action9 = TestUtils.createAction(bookList.get(49), userList.get(5));
+        action9.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        action9.setStatusRekordu(StatusRekordu.ACTIVE);
         actionList.add(action9);
         actionRepository.save(action9);
 
@@ -159,7 +178,13 @@ public class UserRankingServiceTest {
         assertEquals(50, bookList.size());
         assertEquals(50, actionList.size());
         assertEquals(50, bookStateList.size());
-        assertEquals(predictedUserRankingList,userRankingService.topUsersByLoansQuantity());
+        assertEquals(predictedUserRankingList, userRankingService.topUsersByLoansQuantity());
+
+        for (int i = 0; i < 50; i++) {
+            actionList.get(i).setStatusRekordu(StatusRekordu.TEST);
+            actionList.get(i).setActionDescription(ActionDescription.TEST);
+            actionRepository.save(actionList.get(i));
+        }
     }
 }
 
