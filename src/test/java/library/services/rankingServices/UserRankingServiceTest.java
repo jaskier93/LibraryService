@@ -2,7 +2,6 @@ package library.services.rankingServices;
 
 import library.TestUtils;
 import library.enums.ActionDescription;
-import library.enums.BookStateEnum;
 import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Author;
@@ -19,7 +18,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,13 +54,11 @@ public class UserRankingServiceTest {
         jdbcTemplate.update("Delete from actions where action_description ='TEST' or status_rekordu='TEST'");
         jdbcTemplate.update("delete from books where status_rekordu='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
-        jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
-
+        jdbcTemplate.update("delete from user where email='example@gmail.com'");
     }
 
     @Test
     public void userRankingMethodsTest() {
-        LocalDate today = LocalDate.now();
 
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);
@@ -70,7 +66,6 @@ public class UserRankingServiceTest {
         List<Book> bookList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
         List<Action> actionList = new ArrayList<>();
-        List<BookState> bookStateList = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             User user = TestUtils.createUser();
@@ -99,12 +94,7 @@ public class UserRankingServiceTest {
             action.setStatusRekordu(StatusRekordu.ACTIVE);
             actionList.add(action);
             actionRepository.save(action);
-
-            BookState bookState = TestUtils.createBookState(actionList.get(i), BookStateEnum.WYPOZYCZONA);
-            bookStateList.add(bookState);
-            bookStateRepository.save(bookState);
         }
-
 
         Action action = TestUtils.createAction(bookList.get(40), userList.get(0));
         action.setActionDescription(ActionDescription.WYPOZYCZENIE);
@@ -157,12 +147,6 @@ public class UserRankingServiceTest {
         actionList.add(action9);
         actionRepository.save(action9);
 
-        for (int i = 0; i < 10; i++) {
-            BookState bookState = TestUtils.createBookState(actionList.get(i + 40), BookStateEnum.WYPOZYCZONA);
-            bookState.setDateOfReturn(today.plusDays(i));
-            bookStateList.add(bookState);
-            bookStateRepository.save(bookState);
-        }
 
         List<User> predictedTopLoansQuantityByUserRankingList = new ArrayList<>();
         predictedTopLoansQuantityByUserRankingList.add(userList.get(0));
@@ -190,17 +174,18 @@ public class UserRankingServiceTest {
 
         assertEquals(50, bookList.size());
         assertEquals(50, actionList.size());
-        assertEquals(50, bookStateList.size());
+
         assertEquals(predictedTopLoansQuantityByUserRankingList, userRankingService.topUsersByLoansQuantity());
         assertEquals(predictedTopSumPagesByUserRankingList, userRankingService.topUsersBySumOfBooksPages());
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < actionList.size(); i++) {
             actionList.get(i).setStatusRekordu(StatusRekordu.TEST);
             actionList.get(i).setActionDescription(ActionDescription.TEST);
             actionRepository.save(actionList.get(i));
         }
     }
 }
+
 
 
 

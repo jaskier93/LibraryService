@@ -30,7 +30,7 @@ public class BookRankingService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> topLoanedBooksByAgeCategory(AgeCategory ageCategory) {
+    public List<Book> topLoanedBooksByAgeCategory() {
         List<Book> topLoanedBooks = bookRepository.topLoanedBooks();
         Integer sizeOfList = topLoanedBooks.size();
         if (sizeOfList > NUMBER_OF_RESULTS) {
