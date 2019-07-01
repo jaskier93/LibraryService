@@ -2,16 +2,12 @@ package library.services.rankingServices;
 
 import library.TestUtils;
 import library.enums.ActionDescription;
-import library.enums.AgeCategory;
 import library.enums.Category;
 import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Author;
 import library.models.Book;
-import library.repositories.ActionRepository;
-import library.repositories.AuthorRepository;
-import library.repositories.BookRepository;
-import library.repositories.UserRepository;
+import library.repositories.*;
 import library.users.User;
 import org.junit.After;
 import org.junit.Test;
@@ -26,9 +22,11 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AgeCategoryServiceTest {
+public class CategoryServiceTest {
+
     @Autowired
     private final JdbcTemplate jdbcTemplate = null;
 
@@ -45,7 +43,7 @@ public class AgeCategoryServiceTest {
     private final AuthorRepository authorRepository = null;
 
     @Autowired
-    private final AgeCategoryService ageCategoryService = null;
+    private final CategoryRankingService categoryRankingService = null;
 
     @After
     public void after() {
@@ -79,7 +77,7 @@ public class AgeCategoryServiceTest {
             book.setTitle("Wiedźmin" + i);
             book.setPages(500 + i);
             bookList.add(book);
-            bookList.get(i % 10).setAgeCategory(AgeCategory.NAJMLODSI);
+            bookList.get(i % 10).setCategory(Category.THRILLER);
             bookRepository.save(book);
         }
         for (int i = 0; i < 60; i++) {
@@ -88,11 +86,6 @@ public class AgeCategoryServiceTest {
             action.setStatusRekordu(StatusRekordu.ACTIVE);
             actionList.add(action);
             actionRepository.save(action);
-        }
-
-        for (Action action : actionList) {
-            action.setActionDescription(ActionDescription.TEST);
-            action.setStatusRekordu(StatusRekordu.TEST);
         }
 
         Action action = TestUtils.createAction(bookList.get(10), userList.get(0));
@@ -198,38 +191,39 @@ public class AgeCategoryServiceTest {
         actionList.add(action19);
         actionRepository.save(action19);
 
-        List<Book> topBooksForKids = new ArrayList<>();
-        topBooksForKids.add(bookList.get(2));
-        topBooksForKids.add(bookList.get(3));
-        topBooksForKids.add(bookList.get(1));
-        topBooksForKids.add(bookList.get(5));
-        topBooksForKids.add(bookList.get(0));
-        topBooksForKids.add(bookList.get(4));
-        topBooksForKids.add(bookList.get(6));
-        topBooksForKids.add(bookList.get(7));
-        topBooksForKids.add(bookList.get(8));
-        topBooksForKids.add(bookList.get(9));
+        List<Book> topThrillers = new ArrayList<>();
+        topThrillers.add(bookList.get(2));
+        topThrillers.add(bookList.get(3));
+        topThrillers.add(bookList.get(1));
+        topThrillers.add(bookList.get(5));
+        topThrillers.add(bookList.get(0));
+        topThrillers.add(bookList.get(4));
+        topThrillers.add(bookList.get(6));
+        topThrillers.add(bookList.get(7));
+        topThrillers.add(bookList.get(8));
+        topThrillers.add(bookList.get(9));
 
-        List<Book> topBooksForAdults = new ArrayList<>();
-        topBooksForAdults.add(bookList.get(11));
-        topBooksForAdults.add(bookList.get(10));
-        topBooksForAdults.add(bookList.get(16));
-        topBooksForAdults.add(bookList.get(13));
-        topBooksForAdults.add(bookList.get(12));
-        topBooksForAdults.add(bookList.get(14));
-        topBooksForAdults.add(bookList.get(15));
-        topBooksForAdults.add(bookList.get(17));
-        topBooksForAdults.add(bookList.get(18));
-        topBooksForAdults.add(bookList.get(19));
+        List<Book> topAdventures = new ArrayList<>();
+        topAdventures.add(bookList.get(11));
+        topAdventures.add(bookList.get(10));
+        topAdventures.add(bookList.get(16));
+        topAdventures.add(bookList.get(13));
+        topAdventures.add(bookList.get(12));
+        topAdventures.add(bookList.get(14));
+        topAdventures.add(bookList.get(15));
+        topAdventures.add(bookList.get(17));
+        topAdventures.add(bookList.get(18));
+        topAdventures.add(bookList.get(19));
 
 
-        assertEquals(topBooksForKids, ageCategoryService.topLoanedBooksByAgeCategory(AgeCategory.NAJMLODSI));
-        assertEquals(topBooksForAdults, ageCategoryService.topLoanedBooksByAgeCategory(AgeCategory.DOROSLI));
+        assertEquals(topAdventures, categoryRankingService.topLoanedBooksByCategory(Category.ADVENTURE));
+        assertEquals(topThrillers, categoryRankingService.topLoanedBooksByCategory(Category.THRILLER));
+        assertTrue(categoryRankingService.topLoanedBooksByCategory(Category.GUIDE).isEmpty());
 
-        for (int i = 0; i < actionList.size(); i++) {
-            actionList.get(i).setStatusRekordu(StatusRekordu.TEST);
+        for (int i = 0; i <actionList.size() ; i++) {
             actionList.get(i).setActionDescription(ActionDescription.TEST);
-            actionRepository.save(actionList.get(i));
+            actionList.get(i).setStatusRekordu(StatusRekordu.TEST);
         }
     }
+
 }
