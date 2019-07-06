@@ -32,7 +32,7 @@ public class BookService {
     private final BookStateService bookStateService;
     private final PaymentService paymentService;
 
-    private Book addBook(Book book, User user) {
+    public Book addBook(Book book, User user) {
         Action newBookAction = actionService.addBook(book, user);
         bookStateService.newBook(newBookAction);
         return bookRepository.save(book);
@@ -41,11 +41,11 @@ public class BookService {
     /**
      * metoda zwraca BSEnuma-info o statusie ksiązki, czy jest wypożyczona/zwrócona/nowa/zniszczona etc
      */
-    private BookStateEnum getBookStateEnum(Integer bookId) {
+    public BookStateEnum getBookStateEnum(Integer bookId) {
         return bookStateRepository.findBookStateByBook(bookId).getBookStateEnum();
     }
 
-    private Book updateBook(Book book, Integer bookId, User user) {
+    public Book updateBook(Book book, Integer bookId, User user) {
         Book bookFromBase = bookRepository.getOne(bookId);
         if (bookFromBase == null) {
             log.info("Nie znaleziono takiej książki");
@@ -96,6 +96,10 @@ public class BookService {
         return bookRepository.findBookByAgeCategory(ageCategory);
     }
 
+    public List<Book> booksByCategory(Category category) {
+        return bookRepository.findBookByCategory(category);
+    }
+
     /**
      * metoda zwraca pełną listę wypożyczeń użytkownika posortowaną według daty wypożczenia
      * można ewentualnie zmienić typ na listę książek
@@ -114,9 +118,6 @@ public class BookService {
         paymentService.destroyedBookPayment(bookState);
     }
 
-    //TODO: metoda z exceptione x
-    // x
-    // x
     public Book latestLoanedBook(User user) { // PRZYKLAD
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
 

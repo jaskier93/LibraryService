@@ -70,7 +70,6 @@ public class PaymentService {
         Integer sumActivePaymentsForOneUser = paymentRepository.sumActivePaymentsForOneUser(user);
         if (sumActivePaymentsForOneUser == null) {
             sumActivePaymentsForOneUser = 0;
-            //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
         }
         return sumActivePaymentsForOneUser;
     }

@@ -30,7 +30,7 @@ public class LibraryCardService {
     private final BookService bookService;
     private final PaymentService paymentService;
 
-    private LibraryCard showLibraryCard(User user) {
+    public LibraryCard showLibraryCard(User user) {
         LibraryCard libraryCard = new LibraryCard();
         libraryCard.setLoanedBooks(bookService.numberOfLoanedBooks(user));
         libraryCard.setAllPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size());
@@ -49,9 +49,10 @@ public class LibraryCardService {
          * w danym serwisie metoda abstrakcyjna odziedziczona z klasy abstrakcyjnej, zwraca liste walidacji
          * public List<AbstractValidator> abstractValidationList(){
          *  add. któryśwalidator(parametr z encji) np:
-         * isWordOneString (author.lastName);
-         * }
+         * isWordOneString (author.lastName);}
          *
          */
     }
+
+
 }
