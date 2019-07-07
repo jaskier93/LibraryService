@@ -22,6 +22,8 @@ public class BookController {
 
     }
 
+    //Adnotacje przy parametrach: RequestBody, RequestParam, @ModelAttribute
+
     @RequestMapping("/addbook")
     public String addBook(@RequestBody Book book, User user) {
         bookService.addBook(book, user); //user-login bibliotekarza
