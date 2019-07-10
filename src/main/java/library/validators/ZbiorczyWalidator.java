@@ -12,11 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ZbiorczyWalidator {
 
-   public boolean checkIt(List<AbstractValidator> booleanList, User user) {
+    public boolean checkIt(List<AbstractValidator> booleanList, User user) {
         List<Integer> lista = new ArrayList();
-        booleanList.forEach(c -> {
-            if (!c.validator(user)) {
-//                        c.exception
+        booleanList.forEach(klasaValidatora -> {
+            if (!klasaValidatora.validator(user)) {
+                throw klasaValidatora.createException();
             } else {
                 lista.add(1);
             }

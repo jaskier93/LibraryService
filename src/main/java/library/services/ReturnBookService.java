@@ -55,7 +55,7 @@ public class ReturnBookService  extends AbstractService{
     }
 
     @Override
-    public void DoSomethingWithBook(User user, Book book) {
+    public void doSomethingWithBook(User user, Book book) {
 
     }
 
