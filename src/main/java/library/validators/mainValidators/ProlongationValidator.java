@@ -6,6 +6,7 @@ import library.repositories.PaymentRepository;
 import library.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 /**
  * metoda ma sprawdzić, czy użytkownik spełnia warunki do przedłużenia wypożyczenia książki warunek będzie spełniony jeśli:
@@ -28,7 +29,7 @@ public class ProlongationValidator extends AbstractValidator {
 
     @Override
     public boolean validator(User user) {
-        return (paymentRepository.findPaymentsByUser(user).isEmpty()
+        return (CollectionUtils.isEmpty(paymentRepository.findPaymentsByUser(user))
                 && bookRepository.findLoanedBooksByUser(user).size() < MAX_AMOUNT_OF_BOOKS);
     }
 }

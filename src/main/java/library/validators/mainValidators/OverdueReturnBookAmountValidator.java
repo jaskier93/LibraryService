@@ -17,15 +17,15 @@ import java.util.List;
 
 public class OverdueReturnBookAmountValidator extends AbstractValidator {
 
+    //maksymalna ilość przeterminowanych zwrotów
+    private final static Integer MAX_AMOUNT_OF_OVERDUE_RETURN = 5;
+
     private ActionRepository actionRepository;
 
     @Autowired
     public OverdueReturnBookAmountValidator(ActionRepository actionRepository) {
         this.actionRepository = actionRepository;
     }
-
-    //maksymalna ilość przeterminowanych zwrotów
-    private final Integer MAX_AMOUNT_OF_OVERDUE_RETURN = 5;
 
     @Override
     public boolean validator(User user) {
