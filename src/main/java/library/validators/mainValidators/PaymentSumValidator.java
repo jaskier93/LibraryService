@@ -1,7 +1,7 @@
 package library.validators.mainValidators;
 
 import library.repositories.PaymentRepository;
-import library.users.User;
+import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

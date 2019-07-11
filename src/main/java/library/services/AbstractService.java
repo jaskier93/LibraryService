@@ -2,7 +2,7 @@ package library.services;
 
 import library.enums.ActionDescription;
 import library.models.Book;
-import library.users.User;
+import library.models.User;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.ZbiorczyWalidator;
 import lombok.RequiredArgsConstructor;

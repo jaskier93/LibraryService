@@ -1,8 +1,6 @@
 package library.models;
 
-import library.users.User;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

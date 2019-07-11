@@ -1,7 +1,6 @@
 package library.validators.mainValidators;
 
-import library.services.exceptions.ValidatorException;
-import library.users.User;
+import library.models.User;
 import org.springframework.stereotype.Component;
 
 @Component //sprawdzić czy powinno być @Comp

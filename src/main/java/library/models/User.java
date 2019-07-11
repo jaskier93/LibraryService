@@ -1,4 +1,4 @@
-package library.users;
+package library.models;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,8 +33,6 @@ public class User extends StateEntity {
 
     @NotNull
     private LocalDate dateOfBirth;
-
-    //DateOfRegistration=created (StateEntity)
 
     private Integer adminDegree;
 

@@ -6,7 +6,7 @@ import library.repositories.BookRepository;
 import library.repositories.PaymentRepository;
 import library.services.modelservices.BookService;
 import library.services.modelservices.PaymentService;
-import library.users.User;
+import library.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

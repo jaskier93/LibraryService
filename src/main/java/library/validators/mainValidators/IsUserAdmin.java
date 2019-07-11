@@ -1,6 +1,6 @@
 package library.validators.mainValidators;
 
-import library.users.User;
+import library.models.User;
 import org.springframework.stereotype.Component;
 
 @Component

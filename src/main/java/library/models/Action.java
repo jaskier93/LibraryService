@@ -1,7 +1,6 @@
 package library.models;
 
 import library.enums.ActionDescription;
-import library.users.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -4,7 +4,7 @@ import library.TestUtils;
 import library.enums.BookStateEnum;
 import library.models.*;
 import library.repositories.*;
-import library.users.User;
+import library.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;

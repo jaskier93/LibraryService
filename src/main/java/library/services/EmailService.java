@@ -7,7 +7,7 @@ import library.models.Book;
 import library.models.Payment;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
-import library.users.User;
+import library.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

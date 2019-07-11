@@ -1,12 +1,11 @@
 package library.controllers;
 
-import library.models.Book;
 import library.models.BookState;
 import library.models.LibraryCard;
 import library.services.LibraryCardService;
 import library.services.modelservices.BookService;
 import library.services.modelservices.UserService;
-import library.users.User;
+import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

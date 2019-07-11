@@ -6,9 +6,8 @@ import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Author;
 import library.models.Book;
-import library.models.BookState;
 import library.repositories.*;
-import library.users.User;
+import library.models.User;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,8 +2,7 @@ package library.validators.dateValidators;
 
 import library.TestUtils;
 import library.repositories.UserRepository;
-import library.users.User;
-import library.validators.dateValidators.IsDateCorrect;
+import library.models.User;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

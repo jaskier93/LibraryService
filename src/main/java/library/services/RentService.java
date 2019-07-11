@@ -11,7 +11,7 @@ import library.repositories.BookStateRepository;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
-import library.users.User;
+import library.models.User;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.mainValidators.BookAmountValidator;
 import library.validators.mainValidators.PaymentAmountValidator;

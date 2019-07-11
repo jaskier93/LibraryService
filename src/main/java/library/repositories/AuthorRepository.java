@@ -18,7 +18,7 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             "where a.lastName =?1")
     List<Author> findAuthorsByLastName(String lastName);
 
-    @Query("select  a" +
+    @Query("select distinct a" +
             "   from Author  a " +
             "inner join Book b on b.author = a.id " +
             "inner join Action x on x.book = b.id  " +
@@ -28,7 +28,17 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             "order by  count (x.actionDescription) desc , a.lastName, a.id")
     List<Author> topAuthorsByLoansQuantity();
 
-    @Query("select  a" +
+    @Query("select distinct  a" +
+            "   from Author  a " +
+            "inner join Book b on b.author = a.id " +
+            "inner join Action x on x.book = b.id  " +
+            "where x.actionDescription = 'WYPOZYCZENIE'" +
+            "   and x.statusRekordu='ACTIVE'" +
+            "group by a  " +
+            "order by  sum (b.pages) desc , a.lastName, a.id")
+    List<Author> topAuthorsBySumOfBookPages();
+
+    @Query("select distinct a" +
             "   from Author  a " +
             "inner join Book b on b.author = a.id " +
             "inner join Action x on x.book = b.id  " +
@@ -49,6 +59,8 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             "group by a  " +
             "order by  count (x.actionDescription) desc , a.lastName, a.id")
     List<Author> topCategoryAuthorsByLoansQuantity(@Param("category") Category category);
+
+
 
 
     //TODO: querry do rankingu autora

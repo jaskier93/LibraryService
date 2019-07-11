@@ -1,6 +1,6 @@
 package library.validators;
 
-import library.users.User;
+import library.models.User;
 import library.validators.mainValidators.AbstractValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

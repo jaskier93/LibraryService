@@ -2,7 +2,7 @@ package library;
 
 import library.enums.*;
 import library.models.*;
-import library.users.User;
+import library.models.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

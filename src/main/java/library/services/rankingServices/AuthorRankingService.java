@@ -78,4 +78,20 @@ public class AuthorRankingService {
         }
         return topAuthorsByLoansQuantity;
     }
+
+    public List<Author> topAuthorsBySumOfBookPages() {
+        List<Author> topAuthorsBySumOfBookPages = authorRepository.topAuthorsBySumOfBookPages();
+        Integer sizeOfList = topAuthorsBySumOfBookPages.size();
+        if (sizeOfList > NUMBER_OF_RESULTS) {
+            List<Author> top10LoanedBooksByAgeCategory = new ArrayList<>();
+            for (int i = 0; i < NUMBER_OF_RESULTS; i++) {
+                top10LoanedBooksByAgeCategory.add(topAuthorsBySumOfBookPages.get(i));
+            }
+            return top10LoanedBooksByAgeCategory;
+        } else if (Objects.isNull(topAuthorsBySumOfBookPages)) {
+            log.info("Lista jest pusta.");
+            throw new ExceptionEmptyList("Brak wyników");
+        }
+        return topAuthorsBySumOfBookPages;
+    }
 }

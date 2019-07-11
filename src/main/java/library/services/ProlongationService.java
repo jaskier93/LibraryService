@@ -4,7 +4,7 @@ import library.enums.ActionDescription;
 import library.models.Book;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
-import library.users.User;
+import library.models.User;
 import library.validators.ZbiorczyWalidator;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.mainValidators.ProlongationValidator;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

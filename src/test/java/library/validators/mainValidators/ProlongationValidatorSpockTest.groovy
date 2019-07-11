@@ -4,7 +4,7 @@ import library.models.Book
 import library.models.Payment
 import library.repositories.BookRepository
 import library.repositories.PaymentRepository
-import library.users.User
+import library.models.User
 import spock.lang.Specification
 import spock.lang.Unroll
 

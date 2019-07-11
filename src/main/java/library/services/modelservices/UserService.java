@@ -1,7 +1,7 @@
 package library.services.modelservices;
 
 import library.repositories.UserRepository;
-import library.users.User;
+import library.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

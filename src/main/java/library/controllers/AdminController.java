@@ -1,7 +1,7 @@
 package library.controllers;
 
 import library.services.modelservices.UserService;
-import library.users.User;
+import library.models.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 

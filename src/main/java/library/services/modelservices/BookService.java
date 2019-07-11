@@ -8,7 +8,7 @@ import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.services.exceptions.ExceptionEmptyList;
 import library.services.exceptions.TooManyResultsException;
-import library.users.User;
+import library.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,7 @@ import library.models.Author;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.*;
-import library.users.User;
+import library.models.User;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

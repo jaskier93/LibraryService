@@ -6,7 +6,7 @@ import library.models.Action;
 import library.models.Author;
 import library.models.Book;
 import library.repositories.*;
-import library.users.User;
+import library.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;

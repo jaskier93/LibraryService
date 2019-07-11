@@ -12,7 +12,7 @@ import library.repositories.ActionRepository;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
-import library.users.User;
+import library.models.User;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -187,7 +187,7 @@ public class AuthorRankingServiceTest {
         actionList.add(action19);
         actionRepository.save(action19);
 
-        List<Author> expectedTopAuthorsByLoansQuantity =new ArrayList<>();
+        List<Author> expectedTopAuthorsByLoansQuantity = new ArrayList<>();
         expectedTopAuthorsByLoansQuantity.add(authorList.get(2));
         expectedTopAuthorsByLoansQuantity.add(authorList.get(0));
         expectedTopAuthorsByLoansQuantity.add(authorList.get(1));
@@ -199,10 +199,25 @@ public class AuthorRankingServiceTest {
         expectedTopAuthorsByLoansQuantity.add(authorList.get(8));
         expectedTopAuthorsByLoansQuantity.add(authorList.get(10));
 
+        List<Author> expectedTopAuthorsBySumOfBookPages = new ArrayList<>();
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(2));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(0));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(1));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(5));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(4));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(8));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(7));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(6));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(11));
+        expectedTopAuthorsBySumOfBookPages.add(authorList.get(10));
+
         assertEquals(80, actionList.size());
         assertEquals(expectedTopAuthorsByLoansQuantity, authorRankingService.topAuthorsByLoansQuantity());
         assertEquals(expectedTopAuthorsByLoansQuantity, authorRankingService.topAgeCategoryAuthorsByLoansQuantity(AgeCategory.DOROSLI));
         assertEquals(expectedTopAuthorsByLoansQuantity, authorRankingService.topCategoryAuthorsByLoansQuantity(Category.ADVENTURE));
+        assertEquals(0, authorRankingService.topCategoryAuthorsByLoansQuantity(Category.THRILLER).size());
+        assertEquals(0, authorRankingService.topAgeCategoryAuthorsByLoansQuantity(AgeCategory.NAJMLODSI).size());
+        assertEquals(expectedTopAuthorsBySumOfBookPages, authorRankingService.topAuthorsBySumOfBookPages());
 
         for (int i = 0; i < actionList.size(); i++) {
             actionList.get(i).setActionDescription(ActionDescription.TEST);

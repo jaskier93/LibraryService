@@ -5,7 +5,7 @@ import library.models.Book;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
-import library.users.User;
+import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

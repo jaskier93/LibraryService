@@ -1,10 +1,7 @@
 package library.repositories;
 
-import library.enums.AgeCategory;
-import library.enums.Category;
-import library.models.Book;
 import library.models.BookState;
-import library.users.User;
+import library.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
