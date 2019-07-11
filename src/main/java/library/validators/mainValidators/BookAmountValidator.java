@@ -31,7 +31,7 @@ public class BookAmountValidator extends AbstractValidator {
         return bookList.size() <= 3;
     }
 
-    @Override
+ //   @Override
     public ValidatorException createException() {
         return new ValidatorException("Użytkownik posiada 3 książki wypożyczone - oddaj przynajmniej jedną aby wypożyczyć drugą");
     }

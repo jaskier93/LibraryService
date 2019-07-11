@@ -30,7 +30,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("select b " +
             "   from Book b " +
             "where b.ageCategory =?1 " +
-            "order by b.ageCategory")
+            "order by b.title")
     List<Book> findAllBooksByAgeCategory(@Param("ageCategory") AgeCategory ageCategory);
 
     @Query("select distinct b " +

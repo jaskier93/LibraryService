@@ -9,5 +9,5 @@ public abstract class AbstractValidator {
 
     public abstract boolean validator(User user);
 
-    public abstract ValidatorException createException();
+  //  public abstract ValidatorException createException();
 }

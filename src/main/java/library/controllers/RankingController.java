@@ -45,7 +45,7 @@ public class RankingController {
         return "ranking";
     }
 
-    @RequestMapping("/topLoanedBooksBy")
+    @RequestMapping("/topLoanedBooks")
     public String topLoanedBooks(ModelMap modelMap) {
         List<Book> topLoanedBooks = bookRankingService.topLoanedBooks();
         modelMap.put("topLoanedBooks", topLoanedBooks);
