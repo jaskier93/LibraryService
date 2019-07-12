@@ -10,10 +10,10 @@ class OverdueReturnBookAmountValidatorSpockTest extends Specification {
     ActionRepository mockActionRepository = Mock(ActionRepository)
     private User user = new User();
 
-    OverdueReturnBookAmountValidator validator = new OverdueReturnBookAmountValidator()
+    OverdueReturnBookAmountValidator validator = new OverdueReturnBookAmountValidator(mockActionRepository)
 
     @Unroll
-    def "test"() {
+    def "test #actionList"() {
         setup:
         mockActionRepository.findActionsWithOverdueReturnsByUser(user) >> actionList
 

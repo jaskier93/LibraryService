@@ -13,28 +13,23 @@ class PaymentSumValidatorSpockTest extends Specification {
     PaymentSumValidator validator = new PaymentSumValidator(mockPaymentRepository)
 
     @Unroll
-    def "PaymentSumTest"() {
+    def "PaymentSumTest #liczba"() {
         setup:
-        mockPaymentRepository.sumPaymentsForOneUser(user) >> paymentList
+        mockPaymentRepository.sumPaymentsForOneUser(user) >> liczba
 
         expect:
         expectedResult == validator.validator(user)
 
-/*
 
         where:
-        paymentList                                                                                          || expectedResult
-       [new Payment(amount: 35), new Payment(amount: 50), new Payment(amount: 25), new Payment(amount: 45)] || true
-       [new Payment(amount: 150)]                                                                           || true
-        []                                                                                                   || false
-        [new Payment(amount: 50)]
+//        paymentList                                                                                          || expectedResult
+//        [new Payment(amount: 50), new Payment(amount: 50), new Payment(amount: 25), new Payment(amount: 45)] || true
+//        [new Payment(amount: 150)]                                                                           || true
+//        []                                                                                                   || false
+//        [new Payment(amount: 50)]                                                                            || false
 
-*/
-
-        where:
-        paymentList                                                  || expectedResult
-        [new Payment(), new Payment(), new Payment(), new Payment()] || true
-        []                                                           || false
-
+        liczba      || expectedResult
+        1           || false
+        154        || true
     }
 }
