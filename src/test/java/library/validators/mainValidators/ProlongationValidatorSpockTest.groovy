@@ -28,9 +28,10 @@ class ProlongationValidatorSpockTest extends Specification {
         expectedResult == validator.validator(user)
 
         where:
-        paymentList   | bookList                                                         || expectedResult
-        [new Payment()] | [new Book()]                                                   || false
-        [] | [new Book(),new Book(),new Book()]                                          || true
+        paymentList     | bookList                                                                 || expectedResult
+        [new Payment()] | [new Book()]                                                             || false
+        []              | [new Book(), new Book(), new Book(), new Book(), new Book(), new Book()] || false
+        []              | [new Book(), new Book(), new Book()]                                     || true
 
     }
 }
