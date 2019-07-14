@@ -22,16 +22,16 @@ class IsUserAdultSpockTest extends Specification {
     def "Expected result"() {
 
         setup:
-        mockUserRepository.findAll()>> userList
-        user.setDateOfBirth(LocalDate.now().minusYears(25))  ;
-        user2.setDateOfBirth(LocalDate.now().minusYears(19))  ;
+        mockUserRepository.findAll() >> userList
+        user.setDateOfBirth(LocalDate.now().minusYears(25));
+        user2.setDateOfBirth(LocalDate.now().minusYears(12));
 
         expect:
-        expectedResult == validator.validator(user)
+        expectedResult == validator.validator(userList)
 
         where:
-        userList  || expectedResult
-        user  || true
-        user2 || true
+        userList || expectedResult
+        user     || true
+        user2    || false
     }
 }

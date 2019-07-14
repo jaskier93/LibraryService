@@ -23,15 +23,15 @@ class IsUserAdminSpockTest extends Specification {
     def "Expected result"() {
 
         setup:
-        mockUserRepository.findAll()>> userList
+        mockUserRepository.findAll() >> userList
         user.setAdmin(true)
-        user.setAdmin(false);
+        user2.setAdmin(false);
         expect:
-        expectedResult == validator.validator(user)
+        expectedResult == validator.validator(userList)
 
         where:
-        userList  || expectedResult
-        user  || true
-        user2 || false
+        userList || expectedResult
+        user     || true
+        user2    || false
     }
 }

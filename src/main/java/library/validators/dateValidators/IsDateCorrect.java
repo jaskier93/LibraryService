@@ -13,5 +13,6 @@ public class IsDateCorrect {
     public boolean validator(LocalDate localDate) {
         localDate = localDate.minusDays(1);
         return localDate.isBefore(LocalDate.now());
+
     }
 }
