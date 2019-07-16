@@ -1,6 +1,10 @@
 package library.controllers;
 
+import library.converters.ActionJson;
+import library.converters.JsonConverter;
 import library.models.Book;
+import library.repositories.BookRepository;
+import library.repositories.UserRepository;
 import library.services.modelservices.BookService;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +17,9 @@ import java.util.List;
 
 @Controller
 public class BookController {
-    private BookService bookService;
+    private final BookService bookService;
+    private BookRepository bookRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public BookController(BookService bookService) {
@@ -24,7 +30,11 @@ public class BookController {
     //Adnotacje przy parametrach: RequestBody, RequestParam, @ModelAttribute
 
     @RequestMapping("/addbook")
-    public String addBook(@RequestBody Book book, User user) {
+    public String addBook(@RequestBody String json) {
+        JsonConverter jsonConverter = new JsonConverter();
+        ActionJson actionJson = jsonConverter.convertJsonToObject(json);
+        Book book = bookRepository.getOne(actionJson.getBookId());
+        User user = userRepository.getOne(actionJson.getUserId());
         bookService.addBook(book, user); //user-login bibliotekarza
         return "book";
     }
