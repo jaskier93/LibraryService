@@ -1,30 +1,43 @@
 package library.controllers;
 
+import library.converters.JsonConverter;
+import library.repositories.UserRepository;
 import library.services.modelservices.UserService;
 import library.models.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminController {
 
     private UserService userService;
+    private UserRepository userRepository;
+    private JsonConverter jsonConverter;
 
-    @RequestMapping("/banuser")
-    public String banUser(User user) {
+    @RequestMapping("/ban")
+    public String banUser(String json) {
+        User user = jsonConverter.converJsonToUser(json);
         userService.banUser(user);
+        userRepository.save(user);
         return "admin";
     }
 
-    @RequestMapping("/unbanuser")
-    public String unBanUser(User user) {
+    @RequestMapping("/unban")
+    public String unBanUser(String json) {
+        User user = jsonConverter.converJsonToUser(json);
         userService.unbanUser(user);
+        userRepository.save(user);
         return "admin";
     }
 
-    @RequestMapping("/giveuseradmin")
-    public String giveUserAdmin(User user) {
+    @RequestMapping("/giveadmin")
+    public String giveUserAdmin(String json) {
+        User user = jsonConverter.converJsonToUser(json);
         userService.giveUserAdmin(user);
+        userRepository.save(user);
         return "admin";
     }
 }

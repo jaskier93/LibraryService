@@ -1,5 +1,6 @@
 package library.controllers;
 
+import library.converters.JsonConverter;
 import library.models.BookState;
 import library.models.LibraryCard;
 import library.services.LibraryCardService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
@@ -29,7 +31,9 @@ public class UserController {
     }
 
     @RequestMapping("/updateaccount")
-    public String updateAccount(@RequestBody User user, Integer userId) {
+    public String updateAccount(@RequestBody User user, String json) {
+        JsonConverter jsonConverter = new JsonConverter();
+        Integer userId = jsonConverter.converJsonToUser(json).getId();
         userService.updateUser(userId, user);
         return "account";
     }

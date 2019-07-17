@@ -143,7 +143,7 @@ public class BookService {
         Integer sumPagesForUser = bookRepository.sumPagesForUser(user);
         if (Objects.isNull(sumPagesForUser)) {
             sumPagesForUser = 0;
-            //ewentualnie można rzucić jakiegoś loga lub NullPointerException, ale czy jest sens?
+            //ewentualnie można rzucić jakiegoś loga lub NoObjectException, ale czy jest sens?
         }
         return sumPagesForUser;
     }

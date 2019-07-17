@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@RequestMapping("/ranking")
 public class RankingController {
     private AgeCategoryService ageCategoryService;
     private CategoryRankingService categoryRankingService;
@@ -32,14 +33,14 @@ public class RankingController {
         this.userRankingService = userRankingService;
     }
 
-    @RequestMapping("/ageCategoryBookRanking")
+    @RequestMapping("/ageCategoryBooks")
     public String ageCategoryBookRanking(@RequestParam AgeCategory ageCategory, ModelMap modelMap) {
         List<Book> topLoanedBooksByAgeCategory = ageCategoryService.topLoanedBooksByAgeCategory(ageCategory);
         modelMap.put("topLoanedBooks", topLoanedBooksByAgeCategory);
         return "ranking";
     }
 
-    @RequestMapping("/categoryBookRanking")
+    @RequestMapping("/categoryBooks")
     public String categoryBookRanking(@RequestParam Category category, ModelMap modelMap) {
         List<Book> topLoanedBooksByCategory = categoryRankingService.topLoanedBooksByCategory(category);
         modelMap.put("topLoanedBooksByCategory", topLoanedBooksByCategory);
