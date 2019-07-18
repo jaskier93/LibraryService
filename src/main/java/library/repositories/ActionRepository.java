@@ -14,33 +14,51 @@ import java.util.List;
 @Repository
 public interface ActionRepository extends JpaRepository<Action, Integer> {
 
-    //metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc, dodać ewentualnie jakiś warunek
+    /**
+     * metoda zwraca listę tego samego typu akcji  po jego opisie-np zwrotów książek, wypożyczeń, zniszczeń etc, dodać ewentualnie jakiś warunek
+     */
     @Query("select a " +
             "   from Action  a " +
             "where  a.actionDescription =:actionDescription")
     List<Action> findActionByActionDescription(@Param("actionDescription") ActionDescription actionDescription);
 
-    ///metoda zwracająca listę zniszczeń jednego użytkownika
+    /**
+     * metoda zwracająca listę zniszczeń jednego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select a " +
             "   from Action  a " +
             "where  a.actionDescription='ZNISZCZENIE' " +
             "   and a.user =:user")
     List<Action> findActionsWithDestroyedBooksByUser(@Param("user") User user);
 
-    //lista przeterminowanych zwrotów jednego użytkownika
+    /**
+     * lista przeterminowanych zwrotów jednego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select a " +
             "   from Action a " +
             "where a.actionDescription='PRZETERMINOWANIE' " +
             "   and a.user =:user")
     List<Action> findActionsWithOverdueReturnsByUser(@Param("user") User user);
 
-    //zwraca listę akcji danej książki
+    /**
+     * zwraca listę akcji danej książki
+     * @param book
+     * @return
+     */
     @Query("select a " +
             "   from Action a " +
             "where a.book=?1")
     List<Action> findActionByBook(Book book);
 
-    //zwraca listę akcji u danego użytkownika
+    /**
+     * zwraca listę akcji u danego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select a " +
             "   from Action  a " +
             "where  a.user=?1")

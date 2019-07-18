@@ -46,6 +46,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "group by u  " +
             "order by sum (b.pages) desc , u.lastName, u.name, u.id")
     List<User> topUsersBySumOfBooksPages();
-
 }
 

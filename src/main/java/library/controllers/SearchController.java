@@ -18,9 +18,9 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchController {
 
-    private BookRepository bookRepository;
-    private AuthorRepository authorRepository;
-    private UserRepository userRepository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public SearchController(BookRepository bookRepository, AuthorRepository authorRepository, UserRepository userRepository) {

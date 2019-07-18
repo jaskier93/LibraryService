@@ -1,6 +1,6 @@
 package library.enums;
 
-//TODO: dodawać zwroty bez polskich znaków
+//TO
 public enum  BookStateEnum {
     WYPOZYCZONA,
     ZWROCONA,

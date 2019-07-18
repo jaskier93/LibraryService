@@ -87,5 +87,4 @@ public class BookController {
         modelMap.put("booksAddedInPeriod", booksAddedInPeriod);
         return "book";
     }
-
 }

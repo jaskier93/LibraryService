@@ -17,11 +17,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/ranking")
 public class RankingController {
-    private AgeCategoryService ageCategoryService;
-    private CategoryRankingService categoryRankingService;
-    private AuthorRankingService authorRankingService;
-    private BookRankingService bookRankingService;
-    private UserRankingService userRankingService;
+    private final AgeCategoryService ageCategoryService;
+    private final CategoryRankingService categoryRankingService;
+    private final AuthorRankingService authorRankingService;
+    private final BookRankingService bookRankingService;
+    private final UserRankingService userRankingService;
 
     @Autowired
     public RankingController(AgeCategoryService ageCategoryService, CategoryRankingService categoryRankingService, AuthorRankingService authorRankingService,

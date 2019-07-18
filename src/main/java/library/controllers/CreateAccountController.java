@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CreateAccountController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public CreateAccountController(UserService userService) {
@@ -21,9 +21,9 @@ public class CreateAccountController {
      * return zwraca Stringa, który jest nazwą pliku html
      * do dodania ewentualnie jakaś autoryzacja poprzez zalogowanie się (przy update danych)
      */
-
     @RequestMapping("/createaccount")
     public String createAccount(@RequestBody User user) {
+        //json z wszystkimi informacjami o userze
         userService.addUser(user);
         //TODO wysłanie maila powitalnego z informacjami
         return "account";

@@ -13,7 +13,12 @@ import java.util.List;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
-    // metoda zwraca listę płatnośći powyżej danej kwoty dla jednego użytkownika
+    /**
+     * metoda zwraca listę płatnośći powyżej danej kwoty dla jednego użytkownika
+     * @param amount
+     * @param user
+     * @return
+     */
     @Query("select p " +
             "   from Payment p " +
             "inner join Action a on p.action = a.id " +
@@ -21,14 +26,22 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             "   and p.amount > :value")
     List<Payment> findPaymentsAboveAmount(@Param("value") Integer amount, @Param("user") User user);
 
-    //metoda zwraca listę wszystkich płatności danego użytkownika
+    /**
+     * metoda zwraca listę wszystkich płatności danego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select p " +
             "   from Payment p " +
             "inner join Action a on p.action = a.id " +
             "where a.user =?1")
     List<Payment> findPaymentsByUser(User user);
 
-    //metoda zwraca listę niezapłaconych płatności danego użytkownika
+    /**
+     * metoda zwraca listę niezapłaconych płatności danego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select p " +
             "   from Payment p " +
             "inner join Action a on p.action = a.id " +
@@ -36,21 +49,28 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             "   and a.user = ?1")
     List<Payment> findActivePaymentsByUser(User user);
 
-    /* wyliczenie sumy płatności dla jednego użytkownika (niezapłaconych-p.active=true lub 1
-     * przy próbie dodania warunku p.active=1 (lub true) wyskakuje błąd z BookService i problem utworzenia beana)*/
+
+    /**
+     * wyliczenie sumy płatności dla jednego użytkownika (niezapłaconych-p.active=true lub 1
+     * przy próbie dodania warunku p.active=1 (lub true) wyskakuje błąd z BookService i problem utworzenia beana)
+     * @param user
+     * @return
+     */
     @Query("select sum(p.amount) " +
             "   from Payment p " +
             "inner join Action a on p.action = a.id " +
             "where a.user = :user")
     Integer sumPaymentsForOneUser(@Param("user") User user);
 
-    //działa! suma aktywnych (niezapłaconych) płatności jednego użytkownika
+    /**
+     * działa! suma aktywnych (niezapłaconych) płatności jednego użytkownika
+     * @param user
+     * @return
+     */
     @Query("select sum(p.amount) " +
             "   from Payment p " +
             "inner join Action a on p.action = a.id " +
             "where p.isActive = true " +
             "   and a.user = :user") // example for a pull request
     Integer sumActivePaymentsForOneUser(@Param("user") User user);
-
-
 }

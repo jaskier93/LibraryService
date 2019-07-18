@@ -40,10 +40,13 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "where bs.book.id = :bookId)")
     BookState findBookStateByBook2(@Param("bookId") Integer bookId);
 
-    //metoda zwraca aktualną listę wypożyczeń użytkownika
-    //TODO: metoda zwraca listę wypożyczeń (nawet w przypadku oddanych książęk)-
-    // trzeba dopisać warunek, którzy wyklucza oddane książki, tak żeby pokazywało tylko aktualnie wypożyczone (niezwrócone)
-    //@Query("select bs from BookState bs where bs.action.user =?1 and bs.bookStateEnum='WYPOZYCZONA' order by bs.dateOfLoan desc ")
+    /**
+     * metoda zwraca aktualną listę wypożyczeń użytkownika
+     * TODO: metoda zwraca listę wypożyczeń (nawet w przypadku oddanych książęk)-
+     * trzeba dopisać warunek, którzy wyklucza oddane książki, tak żeby pokazywało tylko aktualnie wypożyczone (niezwrócone)
+     * @param user
+     * @return
+     */
     @Query("select bs " +
             "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id  " +
@@ -52,7 +55,11 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "order by bs.dateOfLoan desc ")
     List<BookState> findCurrentBookStateByUser(@Param("user") User user);
 
-    //metoda zwraca listę wypożyczeń użytkownika-całą historię
+    /**
+     * metoda zwraca listę wypożyczeń użytkownika-całą historię
+     * @param user
+     * @return
+     */
     @Query("select bs " +
             "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id  " +

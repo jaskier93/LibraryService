@@ -19,7 +19,23 @@ public class ActionService {
 
     private final ActionRepository actionRepository;
 
-    //czy ta metoda jest potrzebna?
+    /**
+     * Tworzenie akcji sparametryzowanej
+     * @param book
+     * @param user
+     * @param actionDescription
+     * @return
+     */
+    public Action createAction(Book book, User user, ActionDescription actionDescription){
+        Action action = new Action();
+        action.setUser(user);
+        action.setBook(book);
+        action.setCreated(LocalDateTime.now());
+        action.setStatusRekordu(StatusRekordu.ACTIVE);
+        action.setActionDescription(actionDescription);
+        return actionRepository.save(action);
+    }
+
     public Action addBook(Book book, User user) {
         Action action = new Action();
         action.setUser(user);

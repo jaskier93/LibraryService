@@ -19,20 +19,21 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
-    private LibraryCardService libraryCardService;
-    private BookService bookService;
+    private final UserService userService;
+    private final LibraryCardService libraryCardService;
+    private final BookService bookService;
+    private final JsonConverter jsonConverter;
 
     @Autowired
-    public UserController(UserService userService, LibraryCardService libraryCardService, BookService bookService) {
+    public UserController(UserService userService, LibraryCardService libraryCardService, BookService bookService, JsonConverter jsonConverter) {
         this.userService = userService;
         this.libraryCardService = libraryCardService;
         this.bookService = bookService;
+        this.jsonConverter = jsonConverter;
     }
 
     @RequestMapping("/updateaccount")
     public String updateAccount(@RequestBody User user, String json) {
-        JsonConverter jsonConverter = new JsonConverter();
         Integer userId = jsonConverter.converJsonToUser(json).getId();
         userService.updateUser(userId, user);
         return "account";

@@ -5,15 +5,17 @@ import library.models.Book;
 import library.models.User;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JsonConverter {
+
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+
     private Gson gson = new Gson();
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
 
     public ActionJson convertJsonToActionJson(String json) {
         Integer bookId = gson.fromJson(json, ActionJson.class).getBookId();
@@ -32,7 +34,7 @@ public class JsonConverter {
         Book book = bookRepository.getOne(bookId);
         if (json.equals("") || bookId == null) {
             throw new NullPointerException("Nie odnaleziono książki");
-        } else if (book.equals(null)) {
+        } else if (book == null) {
             throw new NullPointerException("Odnaleziony obiekt (książka) jest uszkodzony");
         }
         return book;

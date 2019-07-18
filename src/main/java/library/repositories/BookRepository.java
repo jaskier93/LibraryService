@@ -79,8 +79,12 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "   and ( bs.bookStateEnum = 'NOWA' or bs.bookStateEnum = 'ZWROCONA')")
     List<Book> findBookByCategory(@Param("Category") Category Category);
 
-    //metoda zwraca listę aktualnych wypożyczonych książek użytkownika
-    // TODO:do dopracowania-dodać jakiś warunek, żeby sprawdzał, czy książka nie jest oddana (np brak daty zwrotu/data zwrotu=9999
+    /**
+     * metoda zwraca listę aktualnych wypożyczonych książek użytkownika
+     * TODO:do dopracowania-dodać jakiś warunek, żeby sprawdzał, czy książka nie jest oddana (np brak daty zwrotu/data zwrotu=9999
+     * @param user
+     * @return
+     */
     @Query("select distinct bs.book " +
             "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id " +
@@ -88,8 +92,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "order by bs.dateOfLoan desc ")
     List<Book> findLoanedBooksByUser(User user);
 
-    //metoda sumuje ilość stron wszystkich książek, jak wypożyczył użytkownik
-    //@Query("select sum (bs.book.pages) from BookState bs where bs.action.user= ?1 and bs.bookStateEnum = 'WYPOZYCZONA'")
+    /**
+     * metoda sumuje ilość stron wszystkich książek, jak wypożyczył użytkownik
+     */
     @Query("select sum(b.pages) " +
             "   from Book b " +
             "inner join BookState bs on bs.book.id = b.id " +
@@ -108,14 +113,22 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "order by b.created")
     List<Book> sortedBooksByAddingData();
 
-    //lista książek wydana w danym okresie, np w przeciągu roku
+    /**
+     * lista książek wydana w danym okresie, np w przeciągu roku
+     * @param localDate
+     * @return
+     */
     @Query("select b " +
             "   from Book b " +
             "where b.releaseDate > :date " +
             "order by b.title")
     List<Book> booksAddedInPeriod(@Param("date") LocalDate localDate);
 
-    //lista książek dodana w danym okresie, np w przeciągu miesiąca
+    /**
+     * lista książek dodana w danym okresie, np w przeciągu miesiąca
+     * @param localDateTime
+     * @return
+     */
     @Query("select b " +
             "   from Book b " +
             "where b.created > :date " +
