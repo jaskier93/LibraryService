@@ -36,12 +36,9 @@ public class ReturnBookService  extends AbstractService{
         this.returnBookVaildator = returnBookVaildator;
     }
 
-
-    //czy jest sens wysyłać maila w przypadku zwrotu książki?
-    public void returnBook(Book book, User user) {
-
+    @Override
+    public void mainAction(User user, Book book) {
         //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
-
         actionService.expiredLoan(book, user);
         actionService.returnBook(book, user);
         bookStateService.returnBook(actionService.returnBook(book, user));
@@ -54,12 +51,7 @@ public class ReturnBookService  extends AbstractService{
     }
 
     @Override
-    public void doSomethingWithBook(User user, Book book) {
-
-    }
-
-    @Override
-    public void cancel(User user, Book book) {
+    public void cancelAction(User user, Book book) {
 
     }
 

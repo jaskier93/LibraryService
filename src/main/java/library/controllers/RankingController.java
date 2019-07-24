@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/ranking")
 public class RankingController {
+
     private final AgeCategoryService ageCategoryService;
     private final CategoryRankingService categoryRankingService;
     private final AuthorRankingService authorRankingService;

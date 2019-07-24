@@ -2,6 +2,7 @@ package library.services;
 
 import library.enums.ActionDescription;
 import library.models.Book;
+import library.repositories.ActionRepository;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.models.User;
@@ -24,6 +25,7 @@ public class ProlongationService extends AbstractService {
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final ProlongationValidator prolongationValidator;
+    private ActionRepository actionRepository;
 
     @Autowired
     public ProlongationService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, ProlongationValidator prolongationValidator) {
@@ -33,14 +35,7 @@ public class ProlongationService extends AbstractService {
         this.prolongationValidator = prolongationValidator;
     }
 
-
-
-
-    /**
-     * TODO: dorobić walidację, czy użytkownik już wcześniej przedłużał te wypożyczenie (będzie można przedłużyć tylko raz)
-     * oraz czy nie próbuje przedłużyć po dacie zwrotu
-     */
-    public String loanBookProlongation(Book book, User user) {
+/*    public String loanBookProlongation(Book book, User user) {
         //najpierw wywołać metodę walidującą z ProlongationValidator
         if (prolongationValidator.validator(user)) //lista walidacji
         {
@@ -50,22 +45,31 @@ public class ProlongationService extends AbstractService {
                     "Termin zwrotu książki to: " + LocalDate.now().plusDays(LOAN_PERIOD);
         }
         return "Nie udało się przedłużyć książki";
+    }*/
+
+
+    /**
+     * TODO: dorobić walidację, czy użytkownik już wcześniej przedłużał te wypożyczenie (będzie można przedłużyć tylko raz)
+     * oraz czy nie próbuje przedłużyć po dacie zwrotu
+     */
+    @Override
+    public void mainAction(User user, Book book) {
+        if (prolongationValidator.validator(user)) //lista walidacji
+        {
+            actionService.prolongation(book, user);
+            bookStateService.prolongation(actionService.prolongation(book, user));
+        }
     }
 
-
     @Override
-    public void doSomethingWithBook(User user, Book book) {
-
-    }
-
-    @Override
-    public void cancel(User user, Book book) {
-
+    public void cancelAction(User user, Book book) {
+//TODO:dopisać w repo Action i BS metodę, która zwraca najnowsze obiekty
+// przy anulowaniu należy znaleźć te obiekty, następnie nadać im status rekordu-HISTORY
     }
 
     @Override
     public List<AbstractValidator> getValidators() {
-    //    getValidators().add(prolongationValidator);
+        //    getValidators().add(prolongationValidator);
         return getValidators();
     }
 

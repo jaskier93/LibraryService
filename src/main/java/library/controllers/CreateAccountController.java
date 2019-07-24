@@ -23,7 +23,6 @@ public class CreateAccountController {
      */
     @RequestMapping("/createaccount")
     public String createAccount(@RequestBody User user) {
-        //json z wszystkimi informacjami o userze
         userService.addUser(user);
         //TODO wysłanie maila powitalnego z informacjami
         return "account";

@@ -66,7 +66,7 @@ public class RentService extends AbstractService {
     // ni ma, i cyk wsciekły Janusz dzwoni na infolinie i burdę robi bo już dzieciaczkowi obiecał i on nie będzie mu teraz tłumaczył że błędy w sofcie są.
 
     //wypożyczanie książek
-    String rentBook(Book book, User user) {
+/*    String rentBook(Book book, User user) {
         boolean fourthBook = bookAmountValidator.validator(user);
         boolean fifthBook = rentFifthBookValidator.validator(user);
 
@@ -78,15 +78,22 @@ public class RentService extends AbstractService {
                     bookState.getDateOfLoan() + ". \nTermin zwrotu to:" + bookState.getDateOfReturn();
         }
         return "Nie spełniłeś warunków, by wypożyczyć następną książkę";
+    }*/
+
+    @Override
+    public void mainAction(User user, Book book) {
+        boolean fourthBook = bookAmountValidator.validator(user);
+        boolean fifthBook = rentFifthBookValidator.validator(user);
+
+        if (fifthBook || fourthBook)  //po dodaniu listy walidacji może być if(fifthBook ||  zbiorczyWalidator.checkIt(getValidators(), user))
+        {
+            Action action = actionService.loanBook(book, user);
+            BookState bookState = bookStateService.prolongation(action);
+        }
     }
 
     @Override
-    public void doSomethingWithBook(User user, Book book) {
-
-    }
-
-    @Override
-    public void cancel(User user, Book book) {
+    public void cancelAction(User user, Book book) {
 
     }
 

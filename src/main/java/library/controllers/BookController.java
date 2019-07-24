@@ -50,7 +50,7 @@ public class BookController {
         return "book";
     }
 
-    //Book book - zaktualizowan książka, json-informacje o bookId -książce, którą będziemy aktualizować oraz ID bibliotekarza, który wprowadza aktualizacje
+    //Book book - zaktualizowana książka, json-informacje o bookId -książce, którą będziemy aktualizować oraz ID bibliotekarza, który wprowadza aktualizacje
     @RequestMapping("/update")
     public String updateBook(@RequestBody Book book, @RequestBody String json) {
         ActionJson actionJson = jsonConverter.convertJsonToActionJson(json);
