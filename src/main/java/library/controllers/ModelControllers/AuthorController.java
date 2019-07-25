@@ -1,0 +1,11 @@
+package library.controllers.ModelControllers;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/author")
+public class AuthorController {
+}

@@ -1,4 +1,4 @@
-package library.controllers;
+package library.controllers.ModelControllers;
 
 import library.converters.ActionJson;
 import library.converters.JsonConverter;
