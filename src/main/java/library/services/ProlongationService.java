@@ -1,8 +1,15 @@
 package library.services;
 
 import library.enums.ActionDescription;
+import library.enums.BookStateEnum;
+import library.enums.StatusRekordu;
+import library.models.Action;
 import library.models.Book;
+import library.models.BookState;
 import library.repositories.ActionRepository;
+import library.repositories.BookRepository;
+import library.repositories.BookStateRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.models.User;
@@ -25,14 +32,20 @@ public class ProlongationService extends AbstractService {
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final ProlongationValidator prolongationValidator;
-    private ActionRepository actionRepository;
+    private final ActionRepository actionRepository;
+    private final BookStateRepository bookStateRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public ProlongationService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, ProlongationValidator prolongationValidator) {
+    public ProlongationService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, ProlongationValidator prolongationValidator,
+                               ActionRepository actionRepository, BookStateRepository bookStateRepository, BookRepository bookRepository) {
         super(zbiorczyWalidator);
         this.actionService = actionService;
         this.bookStateService = bookStateService;
         this.prolongationValidator = prolongationValidator;
+        this.actionRepository = actionRepository;
+        this.bookStateRepository = bookStateRepository;
+        this.bookRepository = bookRepository;
     }
 
 /*    public String loanBookProlongation(Book book, User user) {
@@ -63,8 +76,16 @@ public class ProlongationService extends AbstractService {
 
     @Override
     public void cancelAction(User user, Book book) {
-//TODO:dopisać w repo Action i BS metodę, która zwraca najnowsze obiekty
-// przy anulowaniu należy znaleźć te obiekty, następnie nadać im status rekordu-HISTORY
+        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
+        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+            actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+            bookRepository.save(book);
+        } else {
+            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+        }
     }
 
     @Override

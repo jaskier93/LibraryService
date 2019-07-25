@@ -44,6 +44,7 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
      * metoda zwraca aktualną listę wypożyczeń użytkownika
      * TODO: metoda zwraca listę wypożyczeń (nawet w przypadku oddanych książęk)-
      * trzeba dopisać warunek, którzy wyklucza oddane książki, tak żeby pokazywało tylko aktualnie wypożyczone (niezwrócone)
+     *
      * @param user
      * @return
      */
@@ -57,6 +58,7 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
     /**
      * metoda zwraca listę wypożyczeń użytkownika-całą historię
+     *
      * @param user
      * @return
      */
@@ -66,4 +68,17 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "where a.user= :user " +
             "order by bs.dateOfLoan desc ")
     List<BookState> findBookStateByUser(@Param("user") User user);
+
+    /**
+     * zwraca listę wypożyczeń u danego użytkownika posortowaną od najnowszej (po dacie stworzenia)
+     *
+     * @param user
+     * @return
+     */
+    @Query("select bs " +
+            "from BookState bs " +
+            "inner join Action a on bs.action.id = a.id " +
+            "where a.user=?1 " +
+            "order by  bs.created desc ")
+    List<BookState> findNewestBookState(User user);
 }

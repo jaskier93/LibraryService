@@ -63,4 +63,15 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
             "   from Action  a " +
             "where  a.user=?1")
     List<Action> findActionByUser(User user);
+
+    /**
+     * zwraca listę akcji u danego użytkownika posortowaną od najnowszej (po dacie stworzenia)
+     * @param user
+     * @return
+     */
+    @Query ("select a " +
+            "from Action  a " +
+            "where  a.user=?1 " +
+            "order by  a.created desc ")
+    List<Action> findNewestAction(User user);
 }

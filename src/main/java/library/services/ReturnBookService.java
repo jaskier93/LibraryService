@@ -1,12 +1,16 @@
 package library.services;
 
 import library.enums.ActionDescription;
-import library.models.Book;
-import library.models.Payment;
+import library.enums.BookStateEnum;
+import library.enums.StatusRekordu;
+import library.models.*;
+import library.repositories.ActionRepository;
+import library.repositories.BookRepository;
+import library.repositories.BookStateRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
-import library.models.User;
 import library.validators.ZbiorczyWalidator;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.mainValidators.ReturnBookVaildator;
@@ -19,21 +23,27 @@ import java.util.List;
 @Slf4j
 @Service
 
-public class ReturnBookService  extends AbstractService{
+public class ReturnBookService extends AbstractService {
 
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final PaymentService paymentService;
     private final ReturnBookVaildator returnBookVaildator;
+    private final ActionRepository actionRepository;
+    private final BookStateRepository bookStateRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService,
-                             PaymentService paymentService, ReturnBookVaildator returnBookVaildator) {
+    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, ActionService actionService, BookStateService bookStateService, PaymentService paymentService,
+                             ReturnBookVaildator returnBookVaildator, ActionRepository actionRepository, BookStateRepository bookStateRepository, BookRepository bookRepository) {
         super(zbiorczyWalidator);
         this.actionService = actionService;
         this.bookStateService = bookStateService;
         this.paymentService = paymentService;
         this.returnBookVaildator = returnBookVaildator;
+        this.actionRepository = actionRepository;
+        this.bookStateRepository = bookStateRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -52,7 +62,16 @@ public class ReturnBookService  extends AbstractService{
 
     @Override
     public void cancelAction(User user, Book book) {
-
+        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
+        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+            actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+            bookRepository.save(book);
+        } else {
+            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+        }
     }
 
     @Override

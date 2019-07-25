@@ -2,12 +2,15 @@ package library.services;
 
 import com.google.common.collect.ImmutableList;
 import library.enums.ActionDescription;
+import library.enums.BookStateEnum;
+import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
+import library.services.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
@@ -94,7 +97,16 @@ public class RentService extends AbstractService {
 
     @Override
     public void cancelAction(User user, Book book) {
-
+        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
+        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+            actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
+            bookStateFromBase.setBookStateEnum(BookStateEnum.ZWROCONA);
+            bookRepository.save(book);
+        } else {
+            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+        }
     }
 
     @Override

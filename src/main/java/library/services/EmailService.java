@@ -36,7 +36,7 @@ public class EmailService {
     public void sendMailAboutRentBook(String title, Integer bookId, Integer userId) {
         Book book = bookRepository.getOne(bookId);
         User user = userRepository.getOne(userId);
-        String mailMessage = rentService.rentBook(book, user);
+        String mailMessage =  "";   //rentService.rentBook(book, user);
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
