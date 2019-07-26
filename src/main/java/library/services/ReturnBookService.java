@@ -46,31 +46,34 @@ public class ReturnBookService extends AbstractService {
         this.bookRepository = bookRepository;
     }
 
+
     @Override
     public void mainAction(User user, Book book) {
         //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
-        actionService.expiredLoan(book, user);
-        actionService.returnBook(book, user);
-        bookStateService.returnBook(actionService.returnBook(book, user));
+        Action expiredAction = actionService.expiredLoan(book, user);
+        Action returnBookAction = actionService.returnBook(book, user);
+        BookState returnBookState = bookStateService.returnBook(returnBookAction);
         /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
-        jeśli nie, to naliczyć karę*/
-        Payment expiredLoanPayment = paymentService.expiredLoan(bookStateService.returnBook(actionService.returnBook(book, user)));
+        jeśli nie, to naliczyć karę */
+        Payment expiredLoanPayment = paymentService.expiredLoan(returnBookState);
         //TODO:ewentualnie dodać walidację (jeśli potrzebna)-czy użytkownik od razu płaci karę
-        actionService.paymentInfo(book, user);
-        paymentService.updatePayment(expiredLoanPayment.getId());
+        Action paymentAction = actionService.paymentInfo(book, user);
+        Payment updatedExpiredLoanPayment = paymentService.updatePayment(expiredLoanPayment.getId());
     }
 
     @Override
     public void cancelAction(User user, Book book) {
-        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
-        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
-        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.ZWROT).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.ZWROT).get(0);
+        if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+            actionRepository.save(actionFromBase);
+            bookStateRepository.save(bookStateFromBase);
             bookRepository.save(book);
         } else {
-            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+            throw new ExceptionEmptyList(" Nie odnaleziono akcji/książki/użytkownika. ");
         }
     }
 

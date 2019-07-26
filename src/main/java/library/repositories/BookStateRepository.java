@@ -1,5 +1,6 @@
 package library.repositories;
 
+import library.enums.ActionDescription;
 import library.models.BookState;
 import library.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -76,9 +77,10 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
      * @return
      */
     @Query("select bs " +
-            "from BookState bs " +
+            "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id " +
             "where a.user=?1 " +
+            "   and a.actionDescription=?1 " +
             "order by  bs.created desc ")
-    List<BookState> findNewestBookState(User user);
+    List<BookState> findNewestBookState(User user, ActionDescription actionDescription);
 }

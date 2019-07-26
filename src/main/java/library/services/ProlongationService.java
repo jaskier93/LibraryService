@@ -67,31 +67,30 @@ public class ProlongationService extends AbstractService {
      */
     @Override
     public void mainAction(User user, Book book) {
-        if (prolongationValidator.validator(user)) //lista walidacji
-        {
-            actionService.prolongation(book, user);
-            bookStateService.prolongation(actionService.prolongation(book, user));
-        }
+            Action action = actionService.prolongation(book, user);
+            BookState bookState = bookStateService.prolongation(action);
     }
 
     @Override
     public void cancelAction(User user, Book book) {
-        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
-        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
-        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.PRZEDLUZENIE).get(0);
+        if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
+            actionRepository.save(actionFromBase);
+            bookStateRepository.save(bookStateFromBase);
             bookRepository.save(book);
         } else {
-            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+            throw new ExceptionEmptyList(" Nie odnaleziono akcji/książki/użytkownika. ");
         }
     }
 
     @Override
     public List<AbstractValidator> getValidators() {
         //    getValidators().add(prolongationValidator);
-        return getValidators();
+        return null;
     }
 
     @Override

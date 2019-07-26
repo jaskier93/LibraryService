@@ -97,21 +97,23 @@ public class RentService extends AbstractService {
 
     @Override
     public void cancelAction(User user, Book book) {
-        Action actionFromBase = actionRepository.findNewestAction(user).get(0);
-        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user).get(0);
-        if (user == actionFromBase.getUser() && book == bookStateFromBase.getBook()) {
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.WYPOZYCZENIE).get(0);
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.WYPOZYCZENIE).get(0);
+        if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setBookStateEnum(BookStateEnum.ZWROCONA);
+            actionRepository.save(actionFromBase);
+            bookStateRepository.save(bookStateFromBase);
             bookRepository.save(book);
         } else {
-            throw new ExceptionEmptyList("Wystąpił błąd"); //wstawić prezcyzyjny komunikat
+            throw new ExceptionEmptyList(" Nie odnaleziono akcji/książki/użytkownika. ");
         }
     }
 
     @Override
     public List<AbstractValidator> getValidators() {
-        return ImmutableList.of(rentFifthBookValidator, paymentAmountValidator);
+        return ImmutableList.of(bookAmountValidator, rentFifthBookValidator, paymentAmountValidator);
     }
 
     @Override

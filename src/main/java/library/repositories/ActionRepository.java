@@ -24,6 +24,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     /**
      * metoda zwracająca listę zniszczeń jednego użytkownika
+     *
      * @param user
      * @return
      */
@@ -35,6 +36,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     /**
      * lista przeterminowanych zwrotów jednego użytkownika
+     *
      * @param user
      * @return
      */
@@ -46,6 +48,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     /**
      * zwraca listę akcji danej książki
+     *
      * @param book
      * @return
      */
@@ -56,22 +59,25 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
 
     /**
      * zwraca listę akcji u danego użytkownika
+     *
      * @param user
      * @return
      */
     @Query("select a " +
             "   from Action  a " +
-            "where  a.user=?1")
+            "where a.user=?1")
     List<Action> findActionByUser(User user);
 
     /**
-     * zwraca listę akcji u danego użytkownika posortowaną od najnowszej (po dacie stworzenia)
+     * zwraca listę akcji danego typu u danego użytkownika posortowaną od najnowszej (po dacie stworzenia)
+     *
      * @param user
      * @return
      */
-    @Query ("select a " +
-            "from Action  a " +
-            "where  a.user=?1 " +
-            "order by  a.created desc ")
-    List<Action> findNewestAction(User user);
+    @Query("select a " +
+            "   from Action  a " +
+            "where a.user=?1" +
+            "   and a.actionDescription=?1 " +
+            "order by a.created desc ")
+    List<Action> findNewestAction(User user, ActionDescription actionDescription);
 }
