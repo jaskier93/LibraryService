@@ -22,7 +22,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class CategoryServiceTest {
@@ -55,7 +54,7 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void topLoanedBooksByAgeCategoryTest() {
+    public void topLoanedBooksByCategoryTest() {
 
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);

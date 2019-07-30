@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,16 +41,17 @@ public class ActionRepositoryTest {
 
     @After
     public void after() {
-     //   jdbcTemplate.update("Delete from actions where action_description ='TEST'");
+        jdbcTemplate.update("Delete from actions where action_description ='TEST'");
         jdbcTemplate.update("delete from author where last_name='SapkowskiAndrzej'");
         jdbcTemplate.update("delete from books where title='WiedźminWiedźmin'");
         jdbcTemplate.update("delete from user where last_name='XXXYYYZZZ'");
+        jdbcTemplate.update("delete from actions");
     }
 
     //test passed!
     @Test
     public void actionRepositoryTest() {
-
+        LocalDateTime testDate = LocalDateTime.now().minusDays(3);
         Author author = TestUtils.createAuthor();
         authorRepository.save(author);
 
@@ -60,12 +62,18 @@ public class ActionRepositoryTest {
         userRepository.save(user);
 
         Action action = TestUtils.createAction(book, user);
+        action.setCreated(LocalDateTime.now().minusDays(5));
         actionRepository.save(action);
 
-        Action action1 = actionRepository.getOne(action.getId());
+        Action action1 = TestUtils.createAction(book, user);
+        action1.setCreated(LocalDateTime.now().minusDays(1));
+        actionRepository.save(action1);
+       
+
+        Action action2 = actionRepository.getOne(action.getId());
 
         assertNotNull(action);
-        assertEquals(action1.getId(), action.getId());
+        assertEquals(action2.getId(), action.getId());
 
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
 
@@ -74,5 +82,7 @@ public class ActionRepositoryTest {
         assertTrue(actionRepository.findActionByActionDescription(ActionDescription.ZWROT).isEmpty());
         assertFalse(actionRepository.findActionByBook(book).isEmpty());
         assertTrue(actionList.isEmpty());
+        assertEquals(1, actionRepository.findNewestAction(user, ActionDescription.TEST, testDate).size());
+
     }
 }

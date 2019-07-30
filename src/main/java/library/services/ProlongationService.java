@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -73,7 +74,7 @@ public class ProlongationService extends AbstractService {
 
     @Override
     public void cancelAction(User user, Book book) {
-        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE).get(0);
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE, LocalDateTime.now().minusDays(3)).get(0);
         BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.PRZEDLUZENIE).get(0);
         if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);

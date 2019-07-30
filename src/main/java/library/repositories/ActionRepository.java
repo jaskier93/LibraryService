@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -54,7 +56,7 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
      */
     @Query("select a " +
             "   from Action a " +
-            "where a.book=?1")
+            "where a.book =?1")
     List<Action> findActionByBook(Book book);
 
     /**
@@ -77,7 +79,8 @@ public interface ActionRepository extends JpaRepository<Action, Integer> {
     @Query("select a " +
             "   from Action  a " +
             "where a.user=?1" +
-            "   and a.actionDescription=?1 " +
+            "   and a.actionDescription=?2 " +
+            "   and a.created > ?3 " +
             "order by a.created desc ")
-    List<Action> findNewestAction(User user, ActionDescription actionDescription);
+    List<Action> findNewestAction(User user, ActionDescription actionDescription, LocalDateTime localDateTime);
 }

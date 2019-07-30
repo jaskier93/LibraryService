@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -97,7 +98,7 @@ public class RentService extends AbstractService {
 
     @Override
     public void cancelAction(User user, Book book) {
-        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.WYPOZYCZENIE).get(0);
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.WYPOZYCZENIE, LocalDateTime.now().minusDays(3)).get(0);
         BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.WYPOZYCZENIE).get(0);
         if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
