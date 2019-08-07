@@ -1,6 +1,8 @@
 package library.services;
 
 import com.google.common.collect.ImmutableList;
+import library.converters.ActionJson;
+import library.converters.JsonConverter;
 import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.enums.StatusRekordu;
@@ -10,10 +12,10 @@ import library.models.BookState;
 import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
+import library.repositories.UserRepository;
 import library.services.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
-import library.services.modelservices.PaymentService;
 import library.models.User;
 import library.validators.mainValidators.AbstractValidator;
 import library.validators.mainValidators.BookAmountValidator;
@@ -31,61 +33,37 @@ import java.util.List;
 @Service
 public class RentService extends AbstractService {
 
-    public static final Integer LOAN_PERIOD = 30;
-
     private final BookRepository bookRepository;
     private final BookStateRepository bookStateRepository;
     private final ActionRepository actionRepository;
     private final ActionService actionService;
     private final BookStateService bookStateService;
-    private final PaymentService paymentService;
+    private final JsonConverter jsonConverter;
     private final PaymentAmountValidator paymentAmountValidator;
     private final RentFifthBookValidator rentFifthBookValidator;
     private final BookAmountValidator bookAmountValidator;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RentService(ZbiorczyWalidator zbiorczyWalidator, BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository,
-                       ActionService actionService, BookStateService bookStateService, PaymentService paymentService, PaymentAmountValidator paymentAmountValidator,
-                       RentFifthBookValidator rentFifthBookValidator, BookAmountValidator bookAmountValidator) {
-        super(zbiorczyWalidator);
+    public RentService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, ActionService actionService, BookStateService bookStateService, JsonConverter jsonConverter1, PaymentAmountValidator paymentAmountValidator, RentFifthBookValidator rentFifthBookValidator, BookAmountValidator bookAmountValidator, UserRepository userRepository1) {
+        super(zbiorczyWalidator, jsonConverter, userRepository);
         this.bookRepository = bookRepository;
         this.bookStateRepository = bookStateRepository;
         this.actionRepository = actionRepository;
         this.actionService = actionService;
         this.bookStateService = bookStateService;
-        this.paymentService = paymentService;
+        this.jsonConverter = jsonConverter1;
         this.paymentAmountValidator = paymentAmountValidator;
         this.rentFifthBookValidator = rentFifthBookValidator;
         this.bookAmountValidator = bookAmountValidator;
+        this.userRepository = userRepository1;
     }
 
-    //RM
-    // Problem: Wydaje mi się że tutaj mamy design smell.
-    // Solucja: Wydaje mi się że BookService powinen mieć metode Borrow, która ustalała by akcje na loanBook oraz robiła prolongation. Klient wołający
-    // taką metodę nie chce "wiedzieć" co trzeba zrobić aby książkę wypożyczyć (czyli jaki zestaw metod musi zostać wykonany w tym celu). Władowanie tego do Book,
-    // rozwiązało by problem. - mogę się tu jednak mylić bo jeszcze nie ogarnąłem całej architektury i aplikacji i piszę na gorąco co widzę :D.
-
-    //Dodatkowo metoda jest użyta w [EmailService] -> tam też jest mój komentarz bo przeróbka tam też będzie potrzebna. Zwróć uwagę na niebezpieczeństwo takiego wywołania
-    // EmailService.sendMailAboutRentBook woła RentService.rentBook i ze zwróconą wiadomościa wysyła maila - co jeśli nie uda się wypożyczyć książki? Mail pójdzie a książki
-    // ni ma, i cyk wsciekły Janusz dzwoni na infolinie i burdę robi bo już dzieciaczkowi obiecał i on nie będzie mu teraz tłumaczył że błędy w sofcie są.
-
-    //wypożyczanie książek
-/*    String rentBook(Book book, User user) {
-        boolean fourthBook = bookAmountValidator.validator(user);
-        boolean fifthBook = rentFifthBookValidator.validator(user);
-
-        if (fifthBook || fourthBook)  //po dodaniu listy walidacji może być if(fifthBook ||  zbiorczyWalidator.checkIt(getValidators(), user))
-        {
-            Action action = actionService.loanBook(book, user);
-            BookState bookState = bookStateService.prolongation(action);
-            return "Wypożyczyłeś książkę pt. \"" + book.getTitle() + "\", dnia: " +
-                    bookState.getDateOfLoan() + ". \nTermin zwrotu to:" + bookState.getDateOfReturn();
-        }
-        return "Nie spełniłeś warunków, by wypożyczyć następną książkę";
-    }*/
-
     @Override
-    public void mainAction(User user, Book book) {
+    public void mainAction(String json) {
+        ActionJson actionJson = jsonConverter.convertJsonToAction(json);
+        Book book = bookRepository.getOne(actionJson.getBookId());
+        User user = userRepository.getOne(actionJson.getBookId());
         boolean fourthBook = bookAmountValidator.validator(user);
         boolean fifthBook = rentFifthBookValidator.validator(user);
 
@@ -97,7 +75,10 @@ public class RentService extends AbstractService {
     }
 
     @Override
-    public void cancelAction(User user, Book book) {
+    public void cancelAction(String json) {
+        ActionJson actionJson = jsonConverter.convertJsonToAction(json);
+        Book book = bookRepository.getOne(actionJson.getBookId());
+        User user = userRepository.getOne(actionJson.getBookId());
         Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.WYPOZYCZENIE, LocalDateTime.now().minusDays(3)).get(0);
         BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.WYPOZYCZENIE).get(0);
         if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {

@@ -8,22 +8,21 @@ import library.repositories.UserRepository;
 import library.services.modelservices.BookService;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
+
     private final BookService bookService;
-    private BookRepository bookRepository;
-    private UserRepository userRepository;
-    private JsonConverter jsonConverter;
+    private final BookRepository bookRepository;
+    private final UserRepository userRepository;
+    private final JsonConverter jsonConverter;
 
     @Autowired
     public BookController(BookService bookService, BookRepository bookRepository, UserRepository userRepository, JsonConverter jsonConverter) {
@@ -43,7 +42,7 @@ public class BookController {
 
     @RequestMapping("/delete")
     public String deleteBook(@RequestBody String json) {
-        ActionJson actionJson = jsonConverter.convertJsonToActionJson(json);
+        ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getUserId());
         bookService.deleteBook(book, user); //user-login bibliotekarza
@@ -53,7 +52,7 @@ public class BookController {
     //Book book - zaktualizowana książka, json-informacje o bookId -książce, którą będziemy aktualizować oraz ID bibliotekarza, który wprowadza aktualizacje
     @RequestMapping("/update")
     public String updateBook(@RequestBody Book book, @RequestBody String json) {
-        ActionJson actionJson = jsonConverter.convertJsonToActionJson(json);
+        ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book bookFromBase = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getUserId());
         bookService.updateBook(book, bookFromBase.getId(), user); //user-login bibliotekarza

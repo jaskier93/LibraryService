@@ -3,7 +3,7 @@ package library.validators
 import spock.lang.Shared
 import spock.lang.Specification
 
-class IsStringOneWordSpockTest extends Specification {/*
+class IsStringOneWordSpockTest extends Specification {
     @Shared
     String variable = new String("");
     @Shared
@@ -26,5 +26,5 @@ class IsStringOneWordSpockTest extends Specification {/*
         stringList2 || expectedResult
         variable    || true
         variable2   || false
-    }*/
+    }
 }

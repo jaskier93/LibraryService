@@ -5,7 +5,7 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-class IsDateCorrectSpockTest extends Specification {/*
+class IsDateCorrectSpockTest extends Specification {
 
     LocalDate today = LocalDate.now();
     @Shared
@@ -26,5 +26,5 @@ class IsDateCorrectSpockTest extends Specification {/*
         dateList || expectedResult
         date     || true
         date2    || false
-    }*/
+    }
 }

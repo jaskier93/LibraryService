@@ -1,8 +1,10 @@
 package library.converters;
 
 import com.google.gson.Gson;
+import library.models.Author;
 import library.models.Book;
 import library.models.User;
+import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +16,11 @@ public class JsonConverter {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final AuthorRepository authorRepository;
 
     private Gson gson = new Gson();
 
-    public ActionJson convertJsonToActionJson(String json) {
+    public ActionJson convertJsonToAction(String json) {
         Integer bookId = gson.fromJson(json, ActionJson.class).getBookId();
         Integer userId = gson.fromJson(json, ActionJson.class).getUserId();
         Book book = bookRepository.getOne(bookId);
@@ -49,5 +52,16 @@ public class JsonConverter {
             throw new NullPointerException("Odnaleziony obiekt (użytkownik) jest uszkodzony");
         }
         return user;
+    }
+
+    public Author converJsonToAuthor(String json) {
+        Integer userId = gson.fromJson(json, SingleIdJson.class).getId();
+        Author author = authorRepository.getOne(userId);
+        if (json.equals("") || userId == null) {
+            throw new NullPointerException("Nie odnaleziono autora");
+        } else if (author.equals(null)) {
+            throw new NullPointerException("Odnaleziony obiekt (autor) jest uszkodzony");
+        }
+        return author;
     }
 }
