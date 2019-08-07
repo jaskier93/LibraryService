@@ -21,12 +21,13 @@ public class ActionService {
 
     /**
      * Tworzenie akcji sparametryzowanej
+     *
      * @param book
      * @param user
      * @param actionDescription
      * @return
      */
-    public Action createAction(Book book, User user, ActionDescription actionDescription){
+    public Action createAction(Book book, User user, ActionDescription actionDescription) {
         Action action = new Action();
         action.setUser(user);
         action.setBook(book);
@@ -37,90 +38,49 @@ public class ActionService {
     }
 
     public Action addBook(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setCreated(LocalDateTime.now());
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setActionDescription(ActionDescription.NOWOSC);
+        Action action = createAction(book, user, ActionDescription.NOWOSC);
         return actionRepository.save(action);
     }
 
     public Action prolongation(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.PRZEDLUZENIE);
+        Action action = createAction(book, user, ActionDescription.PRZEDLUZENIE);
         return actionRepository.save(action);
     }
 
     public Action returnBook(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.ZWROT);
+        Action action = createAction(book, user, ActionDescription.ZWROT);
         return actionRepository.save(action);
     }
 
     public Action updateBook(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
+        Action action = createAction(book, user, ActionDescription.AKTUALIZACJA);
         action.setUpdated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.AKTUALIZACJA);
         return actionRepository.save(action);
     }
 
     public Action paymentInfo(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
+        Action action = createAction(book, user, ActionDescription.ZAPLACENIE);
         action.setUpdated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.ZAPLACENIE);
         return actionRepository.save(action);
     }
 
     public Action loanBook(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.WYPOZYCZENIE);
+        Action action = createAction(book, user, ActionDescription.WYPOZYCZENIE);
         return actionRepository.save(action);
     }
 
     public Action expiredLoan(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.PRZETERMINOWANIE);
+        Action action = createAction(book, user, ActionDescription.PRZETERMINOWANIE);
         return actionRepository.save(action);
     }
 
     public Action destroyBook(Book book, User user) {
-        Action action = new Action();
-        action.setUser(user);
-        action.setBook(book);
-        action.setStatusRekordu(StatusRekordu.ACTIVE);
-        action.setCreated(LocalDateTime.now());
-        action.setActionDescription(ActionDescription.ZNISZCZENIE);
+        Action action = createAction(book, user, ActionDescription.ZNISZCZENIE);
         return actionRepository.save(action);
     }
 
     private Action updateAction(Action action, Integer actionId) {
         Action actionFromBase = actionRepository.getOne(actionId);
-
         return actionRepository.save(action);
     }
 }
