@@ -113,15 +113,15 @@ public class EmailService {
    /* @Scheduled //(cron = "0 0 21 * * *") //cron-w tej konfiguracji ustawia wykonanie zadania codziennie o godzinie 21
     public void returnBookReminder(String title, Integer bookId, Integer userId) {
         String mailMessage = "Przypominamy, że termin oddania książki pt.\"" + bookRepository.getOne(bookId).getTitle()
-                + "\" to: " + bookStateRepository.findBookStateByBook(bookId).getDateOfReturn() + ". Prosimy o terminowy zwrot książki!";
+                + "\" to: " + bookStateRepository.findBookStateByBook(bookId).getDateTo() + ". Prosimy o terminowy zwrot książki!";
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
 
         LocalDate today = LocalDate.now();
 
         //ta zmienna sprawdza, czy dzisiejszy dzień jest przed datą zwrotu książki TODO:trzeba
-        boolean isBeforeReturn = today.isBefore(bookState.getDateOfReturn());
+        boolean isBeforeReturn = today.isBefore(bookState.getDateTo());
         //ta zmienna sprawdza, czy dzisiejszy dzień jest w ostatnim tygodniu wypożyczenia
-        boolean isAfterUpdate = today.isAfter(bookState.getDateOfReturn().minusDays(7));
+        boolean isAfterUpdate = today.isAfter(bookState.getDateTo().minusDays(7));
 
         //warunek sprawi, że maile będą wysłane tylko w ostatnim tygodniu wypożyczenia
         if (isBeforeReturn && isAfterUpdate) {

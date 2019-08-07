@@ -26,9 +26,9 @@ public class BookState extends StateEntity {
     @ManyToOne(targetEntity = User.class)
     private User libranian;
 
-    private LocalDate dateOfLoan = LocalDate.now();
+    private LocalDate dateFrom = LocalDate.now();
 
-    private LocalDate dateOfReturn = dateOfReturnBook();
+    private LocalDate dateTo = LocalDate.MAX;
 
     @ManyToOne(targetEntity = Book.class)
     private Book book;
@@ -42,8 +42,4 @@ public class BookState extends StateEntity {
 
     @NotNull
     private Integer status;
-
-    private LocalDate dateOfReturnBook() {
-        return LocalDate.now().plusDays(LOAN_PERIOD);
-    }
 }

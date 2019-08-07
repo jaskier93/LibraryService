@@ -30,13 +30,13 @@ class ReturnBookVaildatorSpockTest extends Specification {
         LocalDate date3 = LocalDate.now().minusDays(15);
 
         setup:
-        bookState.setDateOfReturn(date);
+        bookState.setDateTo(date);
         mockBookStateRepository.save(bookState);
 
-        bookState2.setDateOfReturn(date2);
+        bookState2.setDateTo(date2);
         mockBookStateRepository.save(bookState2);
 
-        bookState3.setDateOfReturn(date3);
+        bookState3.setDateTo(date3);
         mockBookStateRepository.save(bookState3);
 
         mockBookStateRepository.findCurrentBookStateByUser(user) >> bookStateList;

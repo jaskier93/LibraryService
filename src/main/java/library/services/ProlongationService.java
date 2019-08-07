@@ -66,6 +66,7 @@ public class ProlongationService extends AbstractService {
         User user = userRepository.getOne(actionJson.getBookId());
         Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE, LocalDateTime.now().minusDays(3)).get(0);
         BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.PRZEDLUZENIE).get(0);
+
         if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
             bookStateFromBase.setStatusRekordu(StatusRekordu.HISTORY);

@@ -89,7 +89,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "   from BookState bs " +
             "inner join Action a on bs.action.id = a.id " +
             "where a.user = ?1 and bs.bookStateEnum= 'WYPOZYCZONA' " +
-            "order by bs.dateOfLoan desc ")
+            "order by bs.dateFrom desc ")
     List<Book> findLoanedBooksByUser(User user);
 
     /**

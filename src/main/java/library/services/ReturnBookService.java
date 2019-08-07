@@ -1,5 +1,6 @@
 package library.services;
 
+import com.google.common.collect.ImmutableList;
 import library.converters.ActionJson;
 import library.converters.JsonConverter;
 import library.enums.ActionDescription;
@@ -16,6 +17,8 @@ import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;
 import library.validators.ZbiorczyWalidator;
 import library.validators.mainValidators.AbstractValidator;
+import library.validators.mainValidators.PaymentAmountValidator;
+import library.validators.mainValidators.PaymentSumValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-
 public class ReturnBookService extends AbstractService {
 
     private final ActionService actionService;
@@ -36,9 +38,11 @@ public class ReturnBookService extends AbstractService {
     private final ActionRepository actionRepository;
     private final BookStateRepository bookStateRepository;
     private final BookRepository bookRepository;
+    private final PaymentAmountValidator paymentAmountValidator;
+    private final PaymentSumValidator paymentSumValidator;
 
     @Autowired
-    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, ActionService actionService, BookStateService bookStateService, PaymentService paymentService, JsonConverter jsonConverter1, UserRepository userRepository1, ActionRepository actionRepository, BookStateRepository bookStateRepository, BookRepository bookRepository) {
+    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, ActionService actionService, BookStateService bookStateService, PaymentService paymentService, JsonConverter jsonConverter1, UserRepository userRepository1, ActionRepository actionRepository, BookStateRepository bookStateRepository, BookRepository bookRepository, PaymentAmountValidator paymentAmountValidator, PaymentSumValidator paymentSumValidator) {
         super(zbiorczyWalidator, jsonConverter, userRepository);
         this.actionService = actionService;
         this.bookStateService = bookStateService;
@@ -48,21 +52,36 @@ public class ReturnBookService extends AbstractService {
         this.actionRepository = actionRepository;
         this.bookStateRepository = bookStateRepository;
         this.bookRepository = bookRepository;
+        this.paymentAmountValidator = paymentAmountValidator;
+        this.paymentSumValidator = paymentSumValidator;
     }
-
+    //TWOJE KOMENTARZE ZOSTAWIAM TUTAJ:
+    //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
+    /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
+        jeśli nie, to naliczyć karę */
 
     @Override
     public void mainAction(String json) {
-        //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
+        //
         ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getBookId());
-        Action expiredAction = actionService.expiredLoan(book, user);
+
         Action returnBookAction = actionService.returnBook(book, user);
-        BookState returnBookState = bookStateService.returnBook(returnBookAction);
-        /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
-        jeśli nie, to naliczyć karę */
-        Payment expiredLoanPayment = paymentService.expiredLoan(returnBookState);
+
+        BookState bookStateReturned = bookStateService.closeLastBookStateAndCreateOneWith(book, returnBookAction, BookStateEnum.ZWROCONA);
+
+        //temp boolean
+        boolean isProlongatedBook = false; // przyjmujemy, że książka przedłużana jest tylko o 14 dni i tyle. Przez to nawet jeśli stan obowiązuje do 9999 roku to wiemy, że od daty od + 2 tyg
+        /** Dajmy na to, że tylko 2 razy może przedłużyć -> TODO Do napisania metody:
+         * 1. Sprawdyajca ile od ostatniego stanu 'wypozyczona' minelo dni
+         * 2. Sprawdzajaca ile od ostatniego stanu 'wypozyczona' bylo akcji z enumem 'przedluzona'
+         * 3. metoda ktora wykorzystuje ww metody i nalicza kare za przetrzymanie
+         * ---------------------------------------------------------------
+         */
+
+        Payment expiredLoanPayment = paymentService.expiredLoan(bookStateReturned); // sprawdzić daty
+
         //TODO:ewentualnie dodać walidację (jeśli potrzebna)-czy użytkownik od razu płaci karę
         Action paymentAction = actionService.paymentInfo(book, user);
         Payment updatedExpiredLoanPayment = paymentService.updatePayment(expiredLoanPayment.getId());
@@ -89,7 +108,7 @@ public class ReturnBookService extends AbstractService {
 
     @Override
     public List<AbstractValidator> getValidators() {
-        return null;
+        return ImmutableList.of(paymentAmountValidator, paymentSumValidator);
     }
 
     @Override

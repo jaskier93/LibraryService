@@ -30,12 +30,16 @@ public abstract class AbstractService {
     public abstract List<ActionDescription> allowedActions();
 
 
-    private void method(String json) {
+    /**
+     * Wywoływana ta metoda, później za pomocą strategii jest dobierany(sprawdzamy enum z akcji), który serwis się załączy. Tutaj też są wywoływane walidatory
+     * które w każdym serwisie umieszczam w abstrakcyjnej metodzie 'getValidators'.
+     * @param json
+     */
+    private void startAction(String json) {
         mainAction(json);
         ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         User user = userRepository.getOne(actionJson.getUserId());
         zbiorczyWalidator.checkIt(getValidators(), user);
-//        TODO: walidacja;
-
     }
+
 }

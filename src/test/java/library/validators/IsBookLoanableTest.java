@@ -94,8 +94,8 @@ public class IsBookLoanableTest {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
-        bookState.setDateOfReturn(LocalDate.now().plusDays(1));
-        bookState.setDateOfLoan(LocalDate.now().plusDays(1));
+        bookState.setDateTo(LocalDate.now().plusDays(1));
+        bookState.setDateFrom(LocalDate.now().plusDays(1));
         bookState.setBook(book);
         bookState.setAction(action);
         bookStateRepository.save(bookState);
@@ -108,15 +108,15 @@ public class IsBookLoanableTest {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         BookState bookState3 = TestUtils.createBookState(action1, BookStateEnum.WYPOZYCZONA);
-        bookState3.setDateOfReturn(LocalDate.now().plusDays(11));
-        bookState3.setDateOfLoan(LocalDate.now().plusDays(11));
+        bookState3.setDateTo(LocalDate.now().plusDays(11));
+        bookState3.setDateFrom(LocalDate.now().plusDays(11));
         bookState3.setBook(book2);
         bookState3.setAction(action1);
         bookStateRepository.save(bookState3);
 
         BookState bookState4 = TestUtils.createBookState(action2, BookStateEnum.ZWROCONA);
         /*** //ustawienie starszej daty sprawa, że bs2 jest "nowsze" od bs3 i metoda bookStateRepository.findBookStateByBook wybierze nowszego BookState'a, czyli bookState2*/
-        bookState4.setDateOfReturn(LocalDate.now().minusDays(1));
+        bookState4.setDateTo(LocalDate.now().minusDays(1));
         bookState4.setBook(book2);
         bookState4.setAction(action2);
         bookStateRepository.save(bookState4);
@@ -129,7 +129,7 @@ public class IsBookLoanableTest {
         bookStateRepository.save(bookState1);
 
         BookState bookState5 = TestUtils.createBookState(action1, BookStateEnum.ZNISZCZONA);
-        bookState5.setDateOfReturn(LocalDate.now().plusDays(1));
+        bookState5.setDateTo(LocalDate.now().plusDays(1));
         bookState5.setBook(book1);
         bookState5.setAction(action1);
         bookStateRepository.save(bookState5);

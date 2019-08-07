@@ -28,11 +28,11 @@ public class TestUtils {
     public static BookState createBookState(Action action, BookStateEnum bookStateEnum) {
         BookState bookState = new BookState();
         bookState.setBookStateEnum(bookStateEnum);
-        bookState.setDateOfReturn(LocalDate.now());
+        bookState.setDateTo(LocalDate.now());
         bookState.setCreated(LocalDateTime.now());
         bookState.setUpdated(LocalDateTime.now());
         bookState.setStatusRekordu(StatusRekordu.TEST);
-        bookState.setDateOfLoan(LocalDate.now());
+        bookState.setDateFrom(LocalDate.now());
         bookState.setAction(action);
         bookState.setBook(action.getBook());
         bookState.setLibranian(null);

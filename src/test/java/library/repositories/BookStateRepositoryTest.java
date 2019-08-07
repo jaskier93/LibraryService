@@ -100,16 +100,16 @@ public class BookStateRepositoryTest {
 
         BookState bookState1 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState1.setBook(book);
-        bookState1.setDateOfLoan(today.plusDays(10));
-        bookState1.setDateOfReturn(today.plusDays(30));
+        bookState1.setDateFrom(today.plusDays(10));
+        bookState1.setDateTo(today.plusDays(30));
         bookState1.setAction(action);
         bookState1.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState1);
 
         BookState bookState2 = TestUtils.createBookState(action, BookStateEnum.ZWROCONA);
         bookState2.setBook(book);
-        bookState2.setDateOfReturn(today.plusDays(40));
-        bookState2.setDateOfLoan(today.plusDays(50));
+        bookState2.setDateTo(today.plusDays(40));
+        bookState2.setDateFrom(today.plusDays(50));
         bookState2.setAction(action);
         bookState2.setBookStateEnum(BookStateEnum.ZWROCONA);
         bookStateRepository.save(bookState2);
@@ -124,14 +124,14 @@ public class BookStateRepositoryTest {
 
         BookState bookState4 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
         bookState4.setBook(book);
-        bookState4.setDateOfLoan(today.plusDays(130));
+        bookState4.setDateFrom(today.plusDays(130));
         bookState4.setAction(action4);
         bookState4.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState4);
 
         BookState bookState5 = TestUtils.createBookState(action4, BookStateEnum.WYPOZYCZONA);
         bookState5.setBook(book);
-        bookState5.setDateOfLoan(today.plusDays(50));
+        bookState5.setDateFrom(today.plusDays(50));
         bookState5.setAction(action4);
         bookState5.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
         bookStateRepository.save(bookState5);

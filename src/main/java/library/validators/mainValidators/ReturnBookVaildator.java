@@ -25,7 +25,7 @@ public class ReturnBookVaildator extends AbstractValidator {
         int counter = 0;
         for (int i = 0; i < bookStateList.size(); i++) {
             //warunek sprawdza, czy data zwrotu jest przed/taka sama jak data dzisiejsza (dla każdej aktualnie wypożyczonej książki użytkownika)
-            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateOfReturn())))
+            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateTo())))
                 counter++;
         }
         return bookStateList.size() == counter;

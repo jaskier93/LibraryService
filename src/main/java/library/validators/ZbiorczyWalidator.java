@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class ZbiorczyWalidator {
 
     public boolean checkIt(List<AbstractValidator> booleanList, User user) {
