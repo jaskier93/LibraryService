@@ -1,5 +1,6 @@
 package library.services.modelservices;
 
+import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.enums.StatusRekordu;
 import library.models.Action;
@@ -26,74 +27,57 @@ public class BookStateService {
 
     //własciwie może być używane w przypadku wypożyczania, ważne, żeby ustawiać pole Updated jako null
     public BookState prolongation(Action action) {
-        BookState bookState = new BookState();
-        bookState.setBook(action.getBook());
-        bookState.setBookStateEnum(BookStateEnum.WYPOZYCZONA);
-        bookState.setAction(action);
+        BookState bookState = createBookState(action, BookStateEnum.WYPOZYCZONA);
         bookState.setDateTo(LocalDate.now().plusDays(30)); //nowa data zwrotu
-        bookState.setUpdated(LocalDateTime.now());
-        bookState.setStatusRekordu(StatusRekordu.ACTIVE);
         return bookStateRepository.save(bookState);
     }
 
     public BookState returnBook(Action action) {
-        BookState bookState = new BookState();
-        bookState.setBook(action.getBook());
-        bookState.setBookStateEnum(BookStateEnum.ZWROCONA);
-        bookState.setAction(action);
-        bookState.setUpdated(LocalDateTime.now());
-        bookState.setStatusRekordu(StatusRekordu.ACTIVE);
+        BookState bookState = createBookState(action, BookStateEnum.ZWROCONA);
+        bookState.setDateTo(LocalDate.now());
         return bookStateRepository.save(bookState);
     }
 
     public BookState destroyBook(Action action) {
-        BookState bookState = new BookState();
-        bookState.setBook(action.getBook());
-        bookState.setBookStateEnum(BookStateEnum.ZNISZCZONA);
-        bookState.setAction(action);
-        bookState.setUpdated(LocalDateTime.now());
-        bookState.setStatusRekordu(StatusRekordu.ACTIVE);
+        BookState bookState = createBookState(action, BookStateEnum.ZNISZCZONA);
         return bookStateRepository.save(bookState);
     }
 
     public BookState newBook(Action action) {
-        BookState bookState = new BookState();
-        bookState.setBook(action.getBook());
-        bookState.setBookStateEnum(BookStateEnum.NOWA);
-        bookState.setAction(action);
-        bookState.setDateTo(null);
-        bookState.setUpdated(LocalDateTime.now());
-        bookState.setStatusRekordu(StatusRekordu.ACTIVE);
+        BookState bookState = createBookState(action, BookStateEnum.ZNISZCZONA);
         return bookStateRepository.save(bookState);
     }
 
-    private BookState createBookState(Action action, BookStateEnum bsEnum){
+    private BookState createBookState(Action action, BookStateEnum bsEnum) {
         BookState bookState = new BookState();
         bookState.setBook(action.getBook());
         bookState.setBookStateEnum(bsEnum);
         bookState.setAction(action);
+        bookState.setDateTo(null);
+        bookState.setCreated(LocalDateTime.now());
         bookState.setUpdated(LocalDateTime.now());
         bookState.setStatusRekordu(StatusRekordu.ACTIVE);
         return bookStateRepository.save(bookState);
     }
 
-    public BookState closeLastBookStateAndCreateOneWith(Book book, Action action, BookStateEnum bookStateEnum){
+    public BookState closeLastBookStateAndCreateOneWith(Book book, Action action, BookStateEnum bookStateEnum) {
         findBookStateAndCloseHim(book);
         BookState newObligatoryBookState = createBookState(action, bookStateEnum);
+        newObligatoryBookState.setUpdated(LocalDateTime.now());
         return newObligatoryBookState;
     }
 
-    private void findBookStateAndCloseHim(Book book){
+    private void findBookStateAndCloseHim(Book book) {
         BookState bookStateToClose = findObligatoryBookState(book);
         bookStateToClose.setDateTo(LocalDate.now());
         bookStateRepository.save(bookStateToClose);
     }
 
-    private BookState findObligatoryBookState(Book book){
+    private BookState findObligatoryBookState(Book book) {
         List<BookState> bookStateList = bookStateRepository.findApplicableBookState(book);
-        if(bookStateList.isEmpty() || bookStateList == null){ // to można też inaczej zapoisać
+        if (bookStateList.isEmpty() || bookStateList == null) { // to można też inaczej zapoisać
             throw new ExceptionEmptyList("There is not existing bookState for book: " + book.getId());
-        } else if (bookStateList.size() > 1){
+        } else if (bookStateList.size() > 1) {
             String msg = String.format("There is an error. For book id %d exists more than one obligatory bookstate", book.getId());
             throw new TooManyResultsException(msg);
         }
@@ -103,9 +87,10 @@ public class BookStateService {
 
     /**
      * Setting the last bookState as history
+     *
      * @param book
      */
-    private void findBookStateAndTakeHimDown(Book book){
+    private void findBookStateAndTakeHimDown(Book book) {
         BookState bookStateToClose = findObligatoryBookState(book);
         bookStateToClose.setStatusRekordu(StatusRekordu.HISTORY);
         bookStateRepository.save(bookStateToClose);
