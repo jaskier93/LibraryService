@@ -34,6 +34,7 @@ public abstract class AbstractService {
      * Wywoływana ta metoda, później za pomocą strategii jest dobierany(sprawdzamy enum z akcji), który serwis się załączy. Tutaj też są wywoływane walidatory
      * które w każdym serwisie umieszczam w abstrakcyjnej metodzie 'getValidators'.
      * @param json
+     * TODO: do poprawy
      */
     private void startAction(String json) {
         mainAction(json);

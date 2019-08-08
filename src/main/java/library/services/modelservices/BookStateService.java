@@ -25,30 +25,7 @@ public class BookStateService {
 
     private final BookStateRepository bookStateRepository;
 
-    //własciwie może być używane w przypadku wypożyczania, ważne, żeby ustawiać pole Updated jako null
-    public BookState prolongation(Action action) {
-        BookState bookState = createBookState(action, BookStateEnum.WYPOZYCZONA);
-        bookState.setDateTo(LocalDate.now().plusDays(30)); //nowa data zwrotu
-        return bookStateRepository.save(bookState);
-    }
-
-    public BookState returnBook(Action action) {
-        BookState bookState = createBookState(action, BookStateEnum.ZWROCONA);
-        bookState.setDateTo(LocalDate.now());
-        return bookStateRepository.save(bookState);
-    }
-
-    public BookState destroyBook(Action action) {
-        BookState bookState = createBookState(action, BookStateEnum.ZNISZCZONA);
-        return bookStateRepository.save(bookState);
-    }
-
-    public BookState newBook(Action action) {
-        BookState bookState = createBookState(action, BookStateEnum.ZNISZCZONA);
-        return bookStateRepository.save(bookState);
-    }
-
-    private BookState createBookState(Action action, BookStateEnum bsEnum) {
+    public BookState createBookState(Action action, BookStateEnum bsEnum) {
         BookState bookState = new BookState();
         bookState.setBook(action.getBook());
         bookState.setBookStateEnum(bsEnum);

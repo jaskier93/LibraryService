@@ -1,7 +1,6 @@
 package library.models;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Data
@@ -16,6 +15,5 @@ public class LibraryCard {
     private Integer expiredReturnsOfBooks;
     private Integer sumAllBooksPages;
     private Book latestLoanedBook;
-    //TODO: można tutaj umieścić jeszcze aktualne wypożyczenia czy inne potrzebne dla bibliotekarza/usera informacje
-    // łączna ilość wypożyczeń, suma zwrotów po terminie, ulubiona kategoria książek, ulubiony autor etc
+    //TODO: łączna ilość wypożyczeń, suma zwrotów po terminie, ulubiona kategoria książek, ulubiony autor etc
 }

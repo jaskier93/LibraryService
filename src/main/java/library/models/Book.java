@@ -24,7 +24,7 @@ public class Book extends StateEntity {
     @NotNull
     private String title;
 
-    private LocalDate releaseDate; //data wydania książki
+    private LocalDate releaseDate;
 
     @Convert(converter = CategoryConverter.class)
     private Category category;

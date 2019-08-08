@@ -33,8 +33,8 @@ public class BookService {
     private final PaymentService paymentService;
 
     public Book addBook(Book book, User user) {
-        Action newBookAction = actionService.addBook(book, user);
-        bookStateService.newBook(newBookAction);
+        Action newBookAction = actionService.createAction(book, user, ActionDescription.NOWOSC);
+        bookStateService.createBookState(newBookAction, BookStateEnum.NOWA);
         return bookRepository.save(book);
     }
 
@@ -69,7 +69,7 @@ public class BookService {
                 bookFromBase.setStatus(book.getStatus());
             }
         }
-        actionService.updateBook(book, user);
+        actionService.createAction(book, user, ActionDescription.AKTUALIZACJA);
         return bookRepository.save(bookFromBase);
     }
 
@@ -113,8 +113,8 @@ public class BookService {
      * ustala też umowną karę dla użytkownika za zniszczenie książki
      */
     public void deleteBook(Book book, User user) {
-        Action action = actionService.updateBook(book, user);
-        BookState bookState = bookStateService.destroyBook(action);
+        Action action = actionService.createAction(book, user, ActionDescription.ZNISZCZENIE);
+        BookState bookState = bookStateService.createBookState(action, BookStateEnum.ZNISZCZONA);
         paymentService.destroyedBookPayment(bookState);
     }
 

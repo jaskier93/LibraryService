@@ -1,7 +1,5 @@
 package library.services.rankingServices;
 
-import library.enums.AgeCategory;
-import library.enums.Category;
 import library.models.Book;
 import library.repositories.BookRepository;
 import library.services.exceptions.ExceptionEmptyList;
@@ -45,6 +43,4 @@ public class BookRankingService {
         }
         return topLoanedBooks;
     }
-
-
 }

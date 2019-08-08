@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,8 +56,10 @@ public class ProlongationService extends AbstractService {
         ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getBookId());
-        Action action = actionService.prolongation(book, user);
-        BookState bookState = bookStateService.prolongation(action);
+        Action action = actionService.createAction(book, user, ActionDescription.PRZEDLUZENIE);
+        BookState bookState = bookStateService.createBookState(action, BookStateEnum.WYPOZYCZONA);
+        bookState.setDateTo(LocalDate.now().plusDays(30));
+        bookStateRepository.save(bookState);
     }
 
     @Override

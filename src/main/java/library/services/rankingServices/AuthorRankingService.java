@@ -28,9 +28,6 @@ public class AuthorRankingService {
         this.authorRepository = authorRepository;
     }
 
-    //TODO: rankingi : najwięcej wypożyczeń (wszystkich książek danego autora), największa suma stron przeczytanych przez użytkowników książek danego autora etc
-
-
     public List<Author> topAgeCategoryAuthorsByLoansQuantity(AgeCategory ageCategory) {
         List<Author> topAgeCategoryAuthorsByLoansQuantity = authorRepository.topAgeCategoryAuthorsByLoansQuantity(ageCategory);
         Integer sizeOfList = topAgeCategoryAuthorsByLoansQuantity.size();

@@ -42,17 +42,5 @@ public class LibraryCardService {
         libraryCard.setSumAllBooksPages(bookService.sumPagesForUser(user));
         libraryCard.setLatestLoanedBook(bookService.latestLoanedBook(user));
         return libraryCard;
-
-        //TODO: dodać exceptiony (emptyList/za duży wynik-np przy ilości aktualnie wypożyczonych książek)
-        /**
-         * przykladowa walidacja:
-         * w danym serwisie metoda abstrakcyjna odziedziczona z klasy abstrakcyjnej, zwraca liste walidacji
-         * public List<AbstractValidator> abstractValidationList(){
-         *  add. któryśwalidator(parametr z encji) np:
-         * isWordOneString (author.lastName);}
-         *
-         */
     }
-
-
 }

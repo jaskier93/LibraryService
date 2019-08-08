@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -69,8 +70,10 @@ public class RentService extends AbstractService {
 
         if (fifthBook || fourthBook)  //po dodaniu listy walidacji może być if(fifthBook ||  zbiorczyWalidator.checkIt(getValidators(), user))
         {
-            Action action = actionService.loanBook(book, user);
-            BookState bookState = bookStateService.prolongation(action);
+            Action action = actionService.createAction(book, user, ActionDescription.WYPOZYCZENIE);
+            BookState bookState = bookStateService.createBookState(action, BookStateEnum.WYPOZYCZONA);
+            bookState.setDateTo(LocalDate.now().plusDays(30));
+            bookStateRepository.save(bookState);
         }
     }
 

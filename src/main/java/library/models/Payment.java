@@ -26,9 +26,8 @@ public class Payment extends StateEntity {
     @ManyToOne
     private BookState bookState;
 
-    //zmienna pokazująca czy zmienna jest już zapłacona (false) lub czy nadal trzeba ją opłacić=true
     @NotNull
-    private boolean isActive;
+    private boolean isActive;     //zapłacone (false) / do opłacenia(true)
 
     @ManyToOne
     private Action action;

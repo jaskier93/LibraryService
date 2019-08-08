@@ -14,11 +14,6 @@ import java.util.List;
 @Repository
 public interface BookStateRepository extends JpaRepository<BookState, Integer> {
 
-    //TODO: przy sortowaniu (order by) po dacie trzeba dodać słówko kluczowe DESC jeśli chcemy od najnowszej daty lub ASC (domyślnie) jeśli od najstarszej
-
-    /**
-     * dopisać test
-     */
     @Query("select bs " +
             "   from BookState bs " +
             "where bs.book.id = :bookId " +
@@ -90,5 +85,4 @@ public interface BookStateRepository extends JpaRepository<BookState, Integer> {
             "   where bs.book = :givenBook " +
             "   and dateTo > sysdate")
     List<BookState> findApplicableBookState(@Param("givenBook") Book book);
-
 }

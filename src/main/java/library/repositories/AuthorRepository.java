@@ -59,9 +59,4 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             "group by a  " +
             "order by  count (x.actionDescription) desc , a.lastName, a.id")
     List<Author> topCategoryAuthorsByLoansQuantity(@Param("category") Category category);
-
-
-
-
-    //TODO: querry do rankingu autora
 }

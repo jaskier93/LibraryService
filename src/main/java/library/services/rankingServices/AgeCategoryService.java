@@ -27,7 +27,6 @@ public class AgeCategoryService {
         this.bookRepository = bookRepository;
     }
 
-
     public List<Book> topLoanedBooksByAgeCategory(AgeCategory ageCategory) {
         List<Book> topLoanedBooksByAgeCategory = bookRepository.topLoanedBooksByAgeCategory(ageCategory);
         Integer sizeOfList = topLoanedBooksByAgeCategory.size();

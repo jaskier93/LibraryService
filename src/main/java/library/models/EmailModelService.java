@@ -27,13 +27,13 @@ public class EmailModelService {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
             helper.setTo(email);
             helper.setReplyTo("@przykladowy@mail.com");         //:TODO : ustawić maila
-            helper.setFrom("@przykladowy@mail.com");            //:TODO : ustawić maila
+            helper.setFrom("@przykladowy@mail.com");
             helper.setSubject(title);
             helper.setText(mailMessage);
         } catch (
                 MessagingException e) {
             e.printStackTrace();
-        } //TODO: ewentualnie można dodać blok finally w razie jakiegoś wyjątku/błędu etc
+        }
         javaMailSender.send(mail);
     }
 }

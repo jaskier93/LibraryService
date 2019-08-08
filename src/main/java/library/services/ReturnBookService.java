@@ -55,10 +55,6 @@ public class ReturnBookService extends AbstractService {
         this.paymentAmountValidator = paymentAmountValidator;
         this.paymentSumValidator = paymentSumValidator;
     }
-    //TWOJE KOMENTARZE ZOSTAWIAM TUTAJ:
-    //TODO:dodać walidację daty zwrotu książki, if true-tworzymy dwie akcje, else-tworzona jedna (prawidłowy termin zwrotu)
-    /*zrobić walidacje zwrotu książki, sprawdzić, czy użytkownik oddał w terminie 30 dni
-        jeśli nie, to naliczyć karę */
 
     @Override
     public void mainAction(String json) {
@@ -67,14 +63,15 @@ public class ReturnBookService extends AbstractService {
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getBookId());
 
-        Action returnBookAction = actionService.returnBook(book, user);
+        Action returnBookAction = actionService.createAction(book, user, ActionDescription.ZWROT);
 
         BookState bookStateReturned = bookStateService.closeLastBookStateAndCreateOneWith(book, returnBookAction, BookStateEnum.ZWROCONA);
 
         //temp boolean
         boolean isProlongatedBook = false; // przyjmujemy, że książka przedłużana jest tylko o 14 dni i tyle. Przez to nawet jeśli stan obowiązuje do 9999 roku to wiemy, że od daty od + 2 tyg
-        /** Dajmy na to, że tylko 2 razy może przedłużyć -> TODO Do napisania metody:
-         * 1. Sprawdyajca ile od ostatniego stanu 'wypozyczona' minelo dni
+        /** TODO Dajmy na to, że tylko 2 razy może przedłużyć ->
+         *    Do napisania metody:
+         * 1. Sprawdzajaca ile od ostatniego stanu 'wypozyczona' minelo dni
          * 2. Sprawdzajaca ile od ostatniego stanu 'wypozyczona' bylo akcji z enumem 'przedluzona'
          * 3. metoda ktora wykorzystuje ww metody i nalicza kare za przetrzymanie
          * ---------------------------------------------------------------
@@ -83,7 +80,7 @@ public class ReturnBookService extends AbstractService {
         Payment expiredLoanPayment = paymentService.expiredLoan(bookStateReturned); // sprawdzić daty
 
         //TODO:ewentualnie dodać walidację (jeśli potrzebna)-czy użytkownik od razu płaci karę
-        Action paymentAction = actionService.paymentInfo(book, user);
+        Action paymentAction = actionService.createAction(book, user, ActionDescription.ZAPLACENIE);
         Payment updatedExpiredLoanPayment = paymentService.updatePayment(expiredLoanPayment.getId());
     }
 

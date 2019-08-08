@@ -16,6 +16,12 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
+    //TODO:dopracować
+/*    @Query("select b from Author a " +
+            "inner join Book b on a.book.id=b.id where a.lastName=:author")
+        //sprawdzić czy działa
+    List<Book> findBookByAuthor(@Param("author") String author);*/
+
     @Query("select b " +
             "   from Book b " +
             "where b.title=?1")
@@ -82,6 +88,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     /**
      * metoda zwraca listę aktualnych wypożyczonych książek użytkownika
      * TODO:do dopracowania-dodać jakiś warunek, żeby sprawdzał, czy książka nie jest oddana (np brak daty zwrotu/data zwrotu=9999
+     *
      * @param user
      * @return
      */
@@ -106,7 +113,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     /**
      * wyświetlanie książek w kolejności dodania do biblioteki
-     * można dodać podobną metodę z zastrzeżeniem okresu, np wyświetlanie nowości z okresu miesiąca
      */
     @Query("select b " +
             "   from Book b " +
@@ -115,6 +121,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     /**
      * lista książek wydana w danym okresie, np w przeciągu roku
+     *
      * @param localDate
      * @return
      */
@@ -126,6 +133,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     /**
      * lista książek dodana w danym okresie, np w przeciągu miesiąca
+     *
      * @param localDateTime
      * @return
      */
@@ -143,13 +151,4 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             "from Book b " +
             "order by b.releaseDate desc")
     List<Book> sortedBooksByReleaseData();
-
-
-//TODO:dopracować
-/*    @Query("select b from Author a " +
-            "inner join Book b on a.book.id=b.id where a.lastName=:author")
-        //sprawdzić czy działa
-    List<Book> findBookByAuthor(@Param("author") String author);*/
-
-
 }

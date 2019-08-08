@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Table(name = "book_states")
 public class BookState extends StateEntity {
 
-    //TODO:    @Transient znaleźć adnotację, dzięki której te pole nie będziew bazie danej, transient wypełnia tylko nullami
     private final static Integer LOAN_PERIOD = 30;
 
     @Id

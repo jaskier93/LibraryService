@@ -22,7 +22,6 @@ public class IsStringOneWord {
             return false;
         } else if (Character.isUpperCase(variable.charAt(0))) {
             for (int i = 0; i < variable.length() - 1; i++) {
-                // sprawdzić czy isLetter uzwględni polskie znaki
                 if (Character.isLetter(variable.charAt(i))) {
                     counter++;
                 }

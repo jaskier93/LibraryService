@@ -2,7 +2,6 @@ package library.validators;
 
 import library.models.User;
 import library.validators.mainValidators.AbstractValidator;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class ZbiorczyWalidator {
         List<Integer> lista = new ArrayList();
         booleanList.forEach(klasaValidatora -> {
             if (!klasaValidatora.validator(user)) {
-             //   throw klasaValidatora.createException();
+                //   throw klasaValidatora.createException();
             } else {
                 lista.add(1);
             }
