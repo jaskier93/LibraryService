@@ -7,6 +7,7 @@ import library.repositories.PaymentRepository;
 import library.services.modelservices.BookService;
 import library.services.modelservices.PaymentService;
 import library.models.User;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class LibraryCardService {
     private final BookService bookService;
     private final PaymentService paymentService;
 
+    @Builder
     public LibraryCard showLibraryCard(User user) {
         LibraryCard libraryCard = new LibraryCard();
         libraryCard.setLoanedBooks(bookService.numberOfLoanedBooks(user));

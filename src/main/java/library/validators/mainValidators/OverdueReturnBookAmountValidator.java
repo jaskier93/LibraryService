@@ -1,5 +1,7 @@
 package library.validators.mainValidators;
 
+import library.exceptions.ExceptionEmptyList;
+import library.exceptions.NoObjectException;
 import library.models.Action;
 import library.repositories.ActionRepository;
 import library.models.User;
@@ -10,11 +12,8 @@ import java.util.List;
 
 /**
  * metoda do sprawdzania, czy użytkownik  przekroczył maksymalną ilość przeterminowanych zwrotów
- * TODO: jeśli w historii wypożyczeń użytkownik ma przynajmniej 5 zwrotów po terminie,
- * TODO: można mu nadać płatność lub zezwalać na wypożyczanie maksymalnie jednej książki naraz
  */
 @Component
-
 public class OverdueReturnBookAmountValidator extends AbstractValidator {
 
     //maksymalna ilość przeterminowanych zwrotów
@@ -29,8 +28,14 @@ public class OverdueReturnBookAmountValidator extends AbstractValidator {
 
     @Override
     public boolean validator(User user) {
-        //lista przeterminowanych zwrotów jednego użytkownika
         List<Action> actionList = actionRepository.findActionsWithOverdueReturnsByUser(user);
         return actionList.size() >= MAX_AMOUNT_OF_OVERDUE_RETURN;
+    }
+
+    @Override
+    public void validatorException(User user) {
+        List<Action> actionList = actionRepository.findActionsWithOverdueReturnsByUser(user);
+        if (actionList.size() < MAX_AMOUNT_OF_OVERDUE_RETURN || actionList.isEmpty())
+            throw new ExceptionEmptyList("Użytkownik nie przekroczył ilości przeterminowanych zwrotów.");
     }
 }

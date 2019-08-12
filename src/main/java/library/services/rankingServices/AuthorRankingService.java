@@ -4,7 +4,7 @@ import library.enums.AgeCategory;
 import library.enums.Category;
 import library.models.Author;
 import library.repositories.AuthorRepository;
-import library.services.exceptions.ExceptionEmptyList;
+import library.exceptions.ExceptionEmptyList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

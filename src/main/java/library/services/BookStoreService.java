@@ -19,15 +19,17 @@ public class BookStoreService {
 
     private final BookStateRepository bookStateRepository;
 
-    private Book isBookInLibary(Integer bookId) {
+    private boolean isBookInLibary(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
         Book book = bookState.getBook();
         if (bookState == null) {
             log.info("Nie znalezionego książki o podanym ID");
+            return false;
         }
         if (bookState.getBookStateEnum() == BookStateEnum.ZNISZCZONA) {
             log.info("Ta książka jest zniszczona");
+            return false;
         }
-        return book;
+        return true;
     }
 }

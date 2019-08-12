@@ -1,4 +1,4 @@
-package library.services.exceptions;
+package library.exceptions;
 
 public class ExceptionEmptyList extends RuntimeException {
 

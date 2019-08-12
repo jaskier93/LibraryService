@@ -89,7 +89,7 @@ public class ReturnBookValidatorTest {
         bookStateRepository.save(bookState2);
 
         BookState bookState3 = TestUtils.createBookState(action2, BookStateEnum.WYPOZYCZONA);
-        bookState3.setDateTo(LocalDate.now().plusDays(15));
+        bookState3.setDateFrom(LocalDate.now().plusDays(15));
         bookStateRepository.save(bookState3);
 
         assertEquals(true, returnBookVaildator.validator(user));

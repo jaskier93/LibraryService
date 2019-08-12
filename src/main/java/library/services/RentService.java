@@ -13,7 +13,7 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
-import library.services.exceptions.ExceptionEmptyList;
+import library.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.models.User;
@@ -72,7 +72,7 @@ public class RentService extends AbstractService {
         {
             Action action = actionService.createAction(book, user, ActionDescription.WYPOZYCZENIE);
             BookState bookState = bookStateService.createBookState(action, BookStateEnum.WYPOZYCZONA);
-            bookState.setDateTo(LocalDate.now().plusDays(30));
+            bookState.setDateTo(LocalDate.now().MAX);
             bookStateRepository.save(bookState);
         }
     }

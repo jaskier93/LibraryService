@@ -11,7 +11,7 @@ import library.repositories.ActionRepository;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
 import library.repositories.UserRepository;
-import library.services.exceptions.ExceptionEmptyList;
+import library.exceptions.ExceptionEmptyList;
 import library.services.modelservices.ActionService;
 import library.services.modelservices.BookStateService;
 import library.services.modelservices.PaymentService;

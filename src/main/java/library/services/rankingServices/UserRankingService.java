@@ -1,7 +1,7 @@
 package library.services.rankingServices;
 
 import library.repositories.UserRepository;
-import library.services.exceptions.ExceptionEmptyList;
+import library.exceptions.ExceptionEmptyList;
 import library.models.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

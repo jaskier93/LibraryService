@@ -1,6 +1,7 @@
 package library.validators.mainValidators;
 
 
+import library.exceptions.InCorrectStateException;
 import library.models.User;
 import org.springframework.stereotype.Component;
 
@@ -20,5 +21,13 @@ public class IsUserAdult extends AbstractValidator {
         LocalDate today = LocalDate.now();
         Period period = Period.between(user.getDateOfBirth(), today);
         return (period.getYears() >= 18);
+    }
+
+    @Override
+    public void validatorException(User user) {
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(user.getDateOfBirth(), today);
+        if (period.getYears() < 18)
+            throw new InCorrectStateException("Użytkownik nie jest dorosły");
     }
 }

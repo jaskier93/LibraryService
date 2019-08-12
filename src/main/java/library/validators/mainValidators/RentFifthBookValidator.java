@@ -1,5 +1,6 @@
 package library.validators.mainValidators;
 
+import library.exceptions.InCorrectStateException;
 import library.models.Book;
 import library.repositories.BookRepository;
 import library.models.User;
@@ -31,5 +32,19 @@ public class RentFifthBookValidator extends AbstractValidator {
         Period period = Period.between(user.getCreated().toLocalDate(), LocalDate.now());
         return (bookListLoanedByUser.size() == 4
                 && (period.getYears() >= 1));
+    }
+
+    @Override
+    public void validatorException(User user) {
+        Period period = Period.between(user.getCreated().toLocalDate(), LocalDate.now());
+        List<Book> bookListLoanedByUser = bookRepository.findLoanedBooksByUser(user);
+        if (period.getYears() > 1) {
+            throw new InCorrectStateException("Użytkownik nie jest zarejestrowany wystarczająo długo.");
+        }
+        if (bookListLoanedByUser.size() < 4) {
+            throw new InCorrectStateException("Użytkownik nie posiada 4 książek na koncie.");
+        }
+        if (bookListLoanedByUser.size() == 5)
+            throw new InCorrectStateException("Użytkownik posiada już piątą książkę na koncie.");
     }
 }

@@ -1,5 +1,8 @@
 package library.validators.mainValidators;
 
+import library.exceptions.ExceptionEmptyList;
+import library.exceptions.InCorrectStateException;
+import library.exceptions.ValidatorException;
 import library.repositories.BookRepository;
 import library.repositories.PaymentRepository;
 import library.models.User;
@@ -29,5 +32,16 @@ public class ProlongationValidator extends AbstractValidator {
     public boolean validator(User user) {
         return (CollectionUtils.isEmpty(paymentRepository.findPaymentsByUser(user))
                 && bookRepository.findLoanedBooksByUser(user).size() < MAX_AMOUNT_OF_BOOKS);
+    }
+
+    @Override
+    public void validatorException(User user) {
+        int loanedBooks = bookRepository.findLoanedBooksByUser(user).size();
+        if (loanedBooks > 4) {
+            throw new ValidatorException("Użytkownik posiada maksymalną ilość wypożyczonych książęk na koncie.");
+        }
+        if (!paymentRepository.findPaymentsByUser(user).isEmpty()) {
+            throw new ExceptionEmptyList("Użytkownik nie posiada płatności na koncie.");
+        }
     }
 }

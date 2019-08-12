@@ -1,5 +1,6 @@
 package library.validators.mainValidators;
 
+import library.exceptions.InCorrectStateException;
 import library.models.BookState;
 import library.repositories.BookStateRepository;
 import library.models.User;
@@ -25,9 +26,18 @@ public class ReturnBookVaildator extends AbstractValidator {
         int counter = 0;
         for (int i = 0; i < bookStateList.size(); i++) {
             //warunek sprawdza, czy data zwrotu jest przed/taka sama jak data dzisiejsza (dla każdej aktualnie wypożyczonej książki użytkownika)
-            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateTo())))
+            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateFrom().plusDays(30))))
                 counter++;
         }
         return bookStateList.size() == counter;
+    }
+
+    @Override
+    public void validatorException(User user) {
+        List<BookState> bookStateList = bookStateRepository.findCurrentBookStateByUser(user);
+        for (int i = 0; i < bookStateList.size(); i++) {
+            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateFrom().plusDays(30))))
+                throw new InCorrectStateException("Użytkownik przetrzymuje książkę pt. \"" + bookStateList.get(i).getBook().getTitle() + "\" za długo!");
+        }
     }
 }

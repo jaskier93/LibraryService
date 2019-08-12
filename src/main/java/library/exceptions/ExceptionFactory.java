@@ -1,4 +1,4 @@
-package library.services.exceptions;
+package library.exceptions;
 
 import library.enums.Category;
 

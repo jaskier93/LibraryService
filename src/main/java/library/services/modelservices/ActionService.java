@@ -31,7 +31,6 @@ public class ActionService {
         Action action = new Action();
         action.setUser(user);
         action.setBook(book);
-        action.setCreated(LocalDateTime.now());
         action.setUpdated(LocalDateTime.now());
         action.setStatusRekordu(StatusRekordu.ACTIVE);
         action.setActionDescription(actionDescription);

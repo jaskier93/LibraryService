@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 public abstract class AbstractValidator {
 
     public abstract boolean validator(User user);
+    public abstract void validatorException(User user);
 }

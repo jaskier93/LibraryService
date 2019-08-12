@@ -1,5 +1,8 @@
 package library.validators.mainValidators;
 
+import library.exceptions.ExceptionEmptyList;
+import library.exceptions.InCorrectStateException;
+import library.exceptions.ValidatorException;
 import library.models.Payment;
 import library.repositories.PaymentRepository;
 import library.models.User;
@@ -20,10 +23,22 @@ public class PaymentAmountValidator extends AbstractValidator {
         this.paymentRepository = paymentRepository;
     }
 
-    /*metoda zwraca booleana w zależności od tego czy użytkownik ma już maksymalną ilość płatności*/
+    /*
+    metoda zwraca booleana w zależności od tego czy użytkownik ma już maksymalną ilość płatności
+    */
     @Override
     public boolean validator(User user) {
         List<Payment> paymentList = paymentRepository.findPaymentsByUser(user);
         return (paymentList.size() >= MAX_PAYMENTS_AMOUNT);
+    }
+
+    public void validatorException(User user) {
+        List<Payment> paymentList = paymentRepository.findPaymentsByUser(user);
+        if (paymentList.isEmpty()) {
+            throw new ExceptionEmptyList("Użytkownik nie posiada płatności na koncie.");
+        }
+        if (paymentList.size() < MAX_PAYMENTS_AMOUNT) {
+            throw new ValidatorException("Użytkownik nie przekroczył dozwolonej ilości płatności na koncie.");
+        }
     }
 }

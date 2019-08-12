@@ -6,8 +6,8 @@ import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookRepository;
 import library.repositories.BookStateRepository;
-import library.services.exceptions.ExceptionEmptyList;
-import library.services.exceptions.TooManyResultsException;
+import library.exceptions.ExceptionEmptyList;
+import library.exceptions.TooManyResultsException;
 import library.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +32,8 @@ public class BookService {
     private final BookStateService bookStateService;
     private final PaymentService paymentService;
 
-    public Book addBook(Book book, User user) {
-        Action newBookAction = actionService.createAction(book, user, ActionDescription.NOWOSC);
+    public Book addBook(Book book, User admin) {
+        Action newBookAction = actionService.createAction(book, admin, ActionDescription.NOWOSC);
         bookStateService.createBookState(newBookAction, BookStateEnum.NOWA);
         return bookRepository.save(book);
     }

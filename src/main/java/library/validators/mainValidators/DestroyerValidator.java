@@ -1,5 +1,6 @@
 package library.validators.mainValidators;
 
+import library.exceptions.ExceptionEmptyList;
 import library.models.Action;
 import library.repositories.ActionRepository;
 import library.models.User;
@@ -27,5 +28,13 @@ public class DestroyerValidator extends AbstractValidator {
     public boolean validator(User user) {
         List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
         return (actionList.size() > 0 && (!actionList.isEmpty()));
+    }
+
+    @Override
+    public void validatorException(User user) {
+        List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
+        if (actionList.isEmpty()) {
+            throw new ExceptionEmptyList("Brak wyników, użytkownik nie posiada zniszczonych książek na koncie");
+        }
     }
 }

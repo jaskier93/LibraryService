@@ -32,7 +32,7 @@ public class TestUtils {
         bookState.setCreated(LocalDateTime.now());
         bookState.setUpdated(LocalDateTime.now());
         bookState.setStatusRekordu(StatusRekordu.TEST);
-        bookState.setDateFrom(LocalDate.now());
+        bookState.setDateFrom(LocalDate.now().minusDays(50));
         bookState.setAction(action);
         bookState.setBook(action.getBook());
         bookState.setLibranian(null);

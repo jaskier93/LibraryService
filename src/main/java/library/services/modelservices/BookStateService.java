@@ -1,21 +1,19 @@
 package library.services.modelservices;
 
-import library.enums.ActionDescription;
 import library.enums.BookStateEnum;
 import library.enums.StatusRekordu;
 import library.models.Action;
 import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookStateRepository;
-import library.services.exceptions.ExceptionEmptyList;
-import library.services.exceptions.TooManyResultsException;
+import library.exceptions.ExceptionEmptyList;
+import library.exceptions.TooManyResultsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
