@@ -2,10 +2,8 @@ package library.models;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 @Data
-@Component
 @Builder
 public class LibraryCard {
     private Integer loanedBooks;
