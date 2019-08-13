@@ -1,14 +1,10 @@
 package library.validators.mainValidators;
 
 import library.exceptions.ExceptionEmptyList;
-import library.exceptions.InCorrectStateException;
-import library.models.Payment;
 import library.repositories.PaymentRepository;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PaymentSumValidator extends AbstractValidator {
@@ -31,10 +27,7 @@ public class PaymentSumValidator extends AbstractValidator {
         return amount >= MAX_PAYMENTS_SUM;
     }
 
-    public void validatorException(User user) {
-        Integer amount = paymentRepository.sumPaymentsForOneUser(user);
-        if (amount < MAX_PAYMENTS_SUM || amount == null) {
-            throw new ExceptionEmptyList("Użytkownik nie przekroczył dozwolonej sumy płatności.");
-        }
+    public RuntimeException validatorException() {
+        return new ExceptionEmptyList("Użytkownik nie przekroczył dozwolonej sumy płatności.");
     }
 }

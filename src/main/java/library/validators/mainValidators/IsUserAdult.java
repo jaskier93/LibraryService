@@ -24,10 +24,7 @@ public class IsUserAdult extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        LocalDate today = LocalDate.now();
-        Period period = Period.between(user.getDateOfBirth(), today);
-        if (period.getYears() < 18)
-            throw new InCorrectStateException("Użytkownik nie jest dorosły");
+    public RuntimeException validatorException() {
+        return new InCorrectStateException("Użytkownik nie jest dorosły");
     }
 }

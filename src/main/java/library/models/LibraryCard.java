@@ -1,10 +1,12 @@
 package library.models;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Data
 @Component
+@Builder
 public class LibraryCard {
     private Integer loanedBooks;
     private Integer destroyedBooks;
@@ -15,5 +17,4 @@ public class LibraryCard {
     private Integer expiredReturnsOfBooks;
     private Integer sumAllBooksPages;
     private Book latestLoanedBook;
-    //TODO: łączna ilość wypożyczeń, suma zwrotów po terminie, ulubiona kategoria książek, ulubiony autor etc
 }

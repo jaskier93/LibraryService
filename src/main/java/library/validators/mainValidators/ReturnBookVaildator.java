@@ -33,11 +33,7 @@ public class ReturnBookVaildator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        List<BookState> bookStateList = bookStateRepository.findCurrentBookStateByUser(user);
-        for (int i = 0; i < bookStateList.size(); i++) {
-            if ((LocalDate.now().plusDays(1).isAfter(bookStateList.get(i).getDateFrom().plusDays(30))))
-                throw new InCorrectStateException("Użytkownik przetrzymuje książkę pt. \"" + bookStateList.get(i).getBook().getTitle() + "\" za długo!");
-        }
+    public RuntimeException validatorException() {
+        return new InCorrectStateException("Użytkownik przetrzymuje książkę zbyt długo!");
     }
 }

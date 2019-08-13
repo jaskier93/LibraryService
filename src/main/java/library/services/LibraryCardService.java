@@ -2,7 +2,6 @@ package library.services;
 
 import library.models.LibraryCard;
 import library.repositories.ActionRepository;
-import library.repositories.BookRepository;
 import library.repositories.PaymentRepository;
 import library.services.modelservices.BookService;
 import library.services.modelservices.PaymentService;
@@ -27,22 +26,20 @@ public class LibraryCardService {
 
     private final ActionRepository actionRepository;
     private final PaymentRepository paymentRepository;
-    private final BookRepository bookRepository;
     private final BookService bookService;
     private final PaymentService paymentService;
 
-    @Builder
     public LibraryCard showLibraryCard(User user) {
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setLoanedBooks(bookService.numberOfLoanedBooks(user));
-        libraryCard.setAllPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size());
-        libraryCard.setAllPaymentsSum(paymentService.sumPaymentsForOneUser(user));
-        libraryCard.setDestroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size());
-        libraryCard.setExpiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size());
-        libraryCard.setUnpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size());
-        libraryCard.setUnpaidPaymentsSum(paymentService.sumActivePaymentsForOneUser(user));
-        libraryCard.setSumAllBooksPages(bookService.sumPagesForUser(user));
-        libraryCard.setLatestLoanedBook(bookService.latestLoanedBook(user));
-        return libraryCard;
+        return LibraryCard.builder().
+                loanedBooks(bookService.numberOfLoanedBooks(user)).
+                allPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size()).
+                allPaymentsSum(paymentService.sumPaymentsForOneUser(user)).
+                destroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size()).
+                expiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size()).
+                unpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size()).
+                unpaidPaymentsSum(paymentService.sumActivePaymentsForOneUser(user)).
+                sumAllBooksPages(bookService.sumPagesForUser(user)).
+                latestLoanedBook(bookService.latestLoanedBook(user)).
+                build();
     }
 }

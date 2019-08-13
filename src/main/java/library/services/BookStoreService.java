@@ -21,7 +21,6 @@ public class BookStoreService {
 
     private boolean isBookInLibary(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);
-        Book book = bookState.getBook();
         if (bookState == null) {
             log.info("Nie znalezionego książki o podanym ID");
             return false;

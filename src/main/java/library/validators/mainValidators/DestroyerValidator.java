@@ -31,10 +31,7 @@ public class DestroyerValidator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        List<Action> actionList = actionRepository.findActionsWithDestroyedBooksByUser(user);
-        if (actionList.isEmpty()) {
-            throw new ExceptionEmptyList("Brak wyników, użytkownik nie posiada zniszczonych książek na koncie");
-        }
+    public RuntimeException validatorException() {
+        return new ExceptionEmptyList("Brak wyników, użytkownik nie posiada zniszczonych książek na koncie");
     }
 }

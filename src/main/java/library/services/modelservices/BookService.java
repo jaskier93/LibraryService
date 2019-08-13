@@ -120,7 +120,6 @@ public class BookService {
 
     public Book latestLoanedBook(User user) { // PRZYKLAD
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
-
         if (CollectionUtils.isEmpty(booksLoandedByUser)) {
             throw new ExceptionEmptyList("Aktualnie użytkownik nie ma wypożyczonych książek");
         }
@@ -129,7 +128,6 @@ public class BookService {
 
     public Integer numberOfLoanedBooks(User user) {
         List<Book> booksLoandedByUser = bookRepository.findLoanedBooksByUser(user);
-
         if (CollectionUtils.isEmpty(booksLoandedByUser)) {
             return 0;
         } else if (booksLoandedByUser.size() >= MAX_LOANED_BOOK) {

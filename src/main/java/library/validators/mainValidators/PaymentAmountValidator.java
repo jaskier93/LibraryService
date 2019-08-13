@@ -1,7 +1,5 @@
 package library.validators.mainValidators;
 
-import library.exceptions.ExceptionEmptyList;
-import library.exceptions.InCorrectStateException;
 import library.exceptions.ValidatorException;
 import library.models.Payment;
 import library.repositories.PaymentRepository;
@@ -32,13 +30,7 @@ public class PaymentAmountValidator extends AbstractValidator {
         return (paymentList.size() >= MAX_PAYMENTS_AMOUNT);
     }
 
-    public void validatorException(User user) {
-        List<Payment> paymentList = paymentRepository.findPaymentsByUser(user);
-        if (paymentList.isEmpty()) {
-            throw new ExceptionEmptyList("Użytkownik nie posiada płatności na koncie.");
-        }
-        if (paymentList.size() < MAX_PAYMENTS_AMOUNT) {
-            throw new ValidatorException("Użytkownik nie przekroczył dozwolonej ilości płatności na koncie.");
-        }
+    public RuntimeException validatorException() {
+        return new ValidatorException("Użytkownik nie posiada płatności na koncie lub nie przekroczył dozwolonej ilości płatności na koncie.");
     }
 }

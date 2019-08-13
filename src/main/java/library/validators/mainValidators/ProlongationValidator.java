@@ -35,13 +35,7 @@ public class ProlongationValidator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        int loanedBooks = bookRepository.findLoanedBooksByUser(user).size();
-        if (loanedBooks > 4) {
-            throw new ValidatorException("Użytkownik posiada maksymalną ilość wypożyczonych książęk na koncie.");
-        }
-        if (!paymentRepository.findPaymentsByUser(user).isEmpty()) {
-            throw new ExceptionEmptyList("Użytkownik nie posiada płatności na koncie.");
-        }
+    public RuntimeException validatorException() {
+        return new ExceptionEmptyList("Użytkownik posiada maksymalną ilość wypożyczonych książęk na koncie lub nie posiada płatności na koncie.");
     }
 }

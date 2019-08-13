@@ -35,16 +35,8 @@ public class RentFifthBookValidator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        Period period = Period.between(user.getCreated().toLocalDate(), LocalDate.now());
-        List<Book> bookListLoanedByUser = bookRepository.findLoanedBooksByUser(user);
-        if (period.getYears() > 1) {
-            throw new InCorrectStateException("Użytkownik nie jest zarejestrowany wystarczająo długo.");
-        }
-        if (bookListLoanedByUser.size() < 4) {
-            throw new InCorrectStateException("Użytkownik nie posiada 4 książek na koncie.");
-        }
-        if (bookListLoanedByUser.size() == 5)
-            throw new InCorrectStateException("Użytkownik posiada już piątą książkę na koncie.");
+    public RuntimeException validatorException() {
+        return new InCorrectStateException("Użytkownik nie jest zarejestrowany wystarczająo długo lub posiada zbyt dużo wypożyczonych książek na koncie.");
     }
+
 }

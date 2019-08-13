@@ -3,7 +3,6 @@ package library.validators.mainValidators;
 import library.exceptions.TooManyResultsException;
 import library.models.Book;
 import library.repositories.BookRepository;
-import library.exceptions.ValidatorException;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,9 +30,7 @@ public class BookAmountValidator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        List<Book> bookList = bookRepository.findLoanedBooksByUser(user);
-        if (bookList.size()>3)
-        throw new TooManyResultsException("Użytkownik posiada 3 książki wypożyczone - oddaj przynajmniej jedną aby wypożyczyć następną");
+    public RuntimeException validatorException() {
+        return new TooManyResultsException("Użytkownik posiada 3 książki wypożyczone - oddaj przynajmniej jedną aby wypożyczyć następną");
     }
 }

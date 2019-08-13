@@ -1,7 +1,6 @@
 package library.validators.mainValidators;
 
 import library.exceptions.ExceptionEmptyList;
-import library.exceptions.NoObjectException;
 import library.models.Action;
 import library.repositories.ActionRepository;
 import library.models.User;
@@ -33,9 +32,7 @@ public class OverdueReturnBookAmountValidator extends AbstractValidator {
     }
 
     @Override
-    public void validatorException(User user) {
-        List<Action> actionList = actionRepository.findActionsWithOverdueReturnsByUser(user);
-        if (actionList.size() < MAX_AMOUNT_OF_OVERDUE_RETURN || actionList.isEmpty())
-            throw new ExceptionEmptyList("Użytkownik nie przekroczył ilości przeterminowanych zwrotów.");
+    public RuntimeException validatorException() {
+        return new ExceptionEmptyList("Użytkownik nie przekroczył ilości przeterminowanych zwrotów.");
     }
 }
