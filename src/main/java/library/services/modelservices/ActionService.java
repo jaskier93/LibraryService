@@ -6,18 +6,22 @@ import library.models.Action;
 import library.models.Book;
 import library.repositories.ActionRepository;
 import library.models.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ActionService {
 
     private final ActionRepository actionRepository;
+
+    @Autowired
+    public ActionService(ActionRepository actionRepository) {
+        this.actionRepository = actionRepository;
+    }
 
     /**
      * Tworzenie akcji sparametryzowanej

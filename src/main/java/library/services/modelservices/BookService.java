@@ -9,8 +9,8 @@ import library.repositories.BookStateRepository;
 import library.exceptions.ExceptionEmptyList;
 import library.exceptions.TooManyResultsException;
 import library.models.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -21,7 +21,6 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class BookService {
 
     private static final Integer MAX_LOANED_BOOK = 5;
@@ -31,6 +30,15 @@ public class BookService {
     private final ActionService actionService;
     private final BookStateService bookStateService;
     private final PaymentService paymentService;
+
+    @Autowired
+    public BookService(BookRepository bookRepository, BookStateRepository bookStateRepository, ActionService actionService, BookStateService bookStateService, PaymentService paymentService) {
+        this.bookRepository = bookRepository;
+        this.bookStateRepository = bookStateRepository;
+        this.actionService = actionService;
+        this.bookStateService = bookStateService;
+        this.paymentService = paymentService;
+    }
 
     public Book addBook(Book book, User admin) {
         Action newBookAction = actionService.createAction(book, admin, ActionDescription.NOWOSC);

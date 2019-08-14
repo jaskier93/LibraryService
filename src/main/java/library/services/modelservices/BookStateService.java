@@ -8,8 +8,8 @@ import library.models.BookState;
 import library.repositories.BookStateRepository;
 import library.exceptions.ExceptionEmptyList;
 import library.exceptions.TooManyResultsException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,10 +18,14 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class BookStateService {
 
     private final BookStateRepository bookStateRepository;
+
+    @Autowired
+    public BookStateService(BookStateRepository bookStateRepository) {
+        this.bookStateRepository = bookStateRepository;
+    }
 
     public BookState createBookState(Action action, BookStateEnum bsEnum) {
         BookState bookState = new BookState();

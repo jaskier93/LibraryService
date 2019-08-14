@@ -42,7 +42,9 @@ public class ReturnBookService extends AbstractService {
     private final PaymentSumValidator paymentSumValidator;
 
     @Autowired
-    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, ActionService actionService, BookStateService bookStateService, PaymentService paymentService, JsonConverter jsonConverter1, UserRepository userRepository1, ActionRepository actionRepository, BookStateRepository bookStateRepository, BookRepository bookRepository, PaymentAmountValidator paymentAmountValidator, PaymentSumValidator paymentSumValidator) {
+    public ReturnBookService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, ActionService actionService, BookStateService bookStateService,
+                             PaymentService paymentService, JsonConverter jsonConverter1, UserRepository userRepository1, ActionRepository actionRepository, BookStateRepository bookStateRepository,
+                             BookRepository bookRepository, PaymentAmountValidator paymentAmountValidator, PaymentSumValidator paymentSumValidator) {
         super(zbiorczyWalidator, jsonConverter, userRepository);
         this.actionService = actionService;
         this.bookStateService = bookStateService;

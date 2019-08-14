@@ -2,21 +2,24 @@ package library.controllers.ModelControllers;
 
 import library.converters.JsonConverter;
 import library.models.Author;
-import library.repositories.AuthorRepository;
 import library.services.modelservices.AuthorService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/author")
 public class AuthorController {
 
     private final AuthorService authorService;
-    private final AuthorRepository authorRepository;
     private final JsonConverter jsonConverter;
+
+    @Autowired
+    public AuthorController(AuthorService authorService, JsonConverter jsonConverter) {
+        this.authorService = authorService;
+        this.jsonConverter = jsonConverter;
+    }
 
     @RequestMapping("/add")
     public String addAuthor(@RequestBody Author author) {

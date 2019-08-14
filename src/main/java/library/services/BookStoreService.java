@@ -1,11 +1,10 @@
 package library.services;
 
 import library.enums.BookStateEnum;
-import library.models.Book;
 import library.models.BookState;
 import library.repositories.BookStateRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,10 +13,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class BookStoreService {
 
     private final BookStateRepository bookStateRepository;
+
+    @Autowired
+    public BookStoreService(BookStateRepository bookStateRepository) {
+        this.bookStateRepository = bookStateRepository;
+    }
 
     private boolean isBookInLibary(Integer bookId) {
         BookState bookState = bookStateRepository.findBookStateByBook(bookId);

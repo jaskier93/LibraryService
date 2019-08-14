@@ -6,8 +6,7 @@ import library.repositories.PaymentRepository;
 import library.services.modelservices.BookService;
 import library.services.modelservices.PaymentService;
 import library.models.User;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,13 +20,20 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@RequiredArgsConstructor
 public class LibraryCardService {
 
     private final ActionRepository actionRepository;
     private final PaymentRepository paymentRepository;
     private final BookService bookService;
     private final PaymentService paymentService;
+
+    @Autowired
+    public LibraryCardService(ActionRepository actionRepository, PaymentRepository paymentRepository, BookService bookService, PaymentService paymentService) {
+        this.actionRepository = actionRepository;
+        this.paymentRepository = paymentRepository;
+        this.bookService = bookService;
+        this.paymentService = paymentService;
+    }
 
     public LibraryCard showLibraryCard(User user) {
         return LibraryCard.builder().

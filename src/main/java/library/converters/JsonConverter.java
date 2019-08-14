@@ -7,16 +7,22 @@ import library.models.User;
 import library.repositories.AuthorRepository;
 import library.repositories.BookRepository;
 import library.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class JsonConverter {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final AuthorRepository authorRepository;
+
+    @Autowired
+    public JsonConverter(BookRepository bookRepository, UserRepository userRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
+        this.authorRepository = authorRepository;
+    }
 
     private Gson gson = new Gson();
 

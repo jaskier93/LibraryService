@@ -1,17 +1,21 @@
 package library.controllers.MainServiceControllers;
 
 import library.services.RentService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/rentbook")
 public class RentController {
 
     private final RentService rentService;
+
+    @Autowired
+    public RentController(RentService rentService) {
+        this.rentService = rentService;
+    }
 
     @RequestMapping("/")
     public String rentBook(@RequestBody String json) {

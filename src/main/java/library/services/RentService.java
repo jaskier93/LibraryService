@@ -46,7 +46,9 @@ public class RentService extends AbstractService {
     private final UserRepository userRepository;
 
     @Autowired
-    public RentService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, BookRepository bookRepository, BookStateRepository bookStateRepository, ActionRepository actionRepository, ActionService actionService, BookStateService bookStateService, JsonConverter jsonConverter1, PaymentAmountValidator paymentAmountValidator, RentFifthBookValidator rentFifthBookValidator, BookAmountValidator bookAmountValidator, UserRepository userRepository1) {
+    public RentService(ZbiorczyWalidator zbiorczyWalidator, JsonConverter jsonConverter, UserRepository userRepository, BookRepository bookRepository, BookStateRepository bookStateRepository,
+                       ActionRepository actionRepository, ActionService actionService, BookStateService bookStateService, JsonConverter jsonConverter1, PaymentAmountValidator paymentAmountValidator,
+                       RentFifthBookValidator rentFifthBookValidator, BookAmountValidator bookAmountValidator, UserRepository userRepository1) {
         super(zbiorczyWalidator, jsonConverter, userRepository);
         this.bookRepository = bookRepository;
         this.bookStateRepository = bookStateRepository;

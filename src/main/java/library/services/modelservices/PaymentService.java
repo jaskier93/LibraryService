@@ -5,8 +5,8 @@ import library.models.BookState;
 import library.models.Payment;
 import library.repositories.PaymentRepository;
 import library.models.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,12 +15,17 @@ import java.time.Period;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+
 public class PaymentService {
 
     private static final Integer PENALTY_AMOUNT = 20;     //kara 20zł za zniszczenie książki
     private static final Integer DAILY_AMOUNT = 1; //dzienna stawka opłaty za przetrzymanie książki
     private final PaymentRepository paymentRepository;
+
+    @Autowired
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
     public Payment destroyedBookPayment(BookState bookState) {
         Payment payment = new Payment();
