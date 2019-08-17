@@ -17,6 +17,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "where u.lastName = ?1")
     List<User> findUserByLastName(String lastName);
 
+    @Query("select u" +
+            "   from User u " +
+            "where u.login = ?1")
+    User findUserByLogin(String login);
+
     @Query("select u " +
             "   from User u " +
             "where u.id = :userId")
@@ -31,7 +36,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u " +
             "   from User u " +
             "inner join Action a on a.user = u.id " +
-            "where a.actionDescription = 'WYPOZYCZENIE'"+
+            "where a.actionDescription = 'WYPOZYCZENIE'" +
             "   and a.statusRekordu='ACTIVE'" +
             "group by u  " +
             "order by count (a.actionDescription) desc, u.lastName, u.name, u.id ")
@@ -41,7 +46,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "   from User u " +
             "inner join Action a on a.user.id = u.id  " +
             "inner join Book b on b.id = a.book " +
-            "where a.actionDescription = 'WYPOZYCZENIE'"+
+            "where a.actionDescription = 'WYPOZYCZENIE'" +
             "   and a.statusRekordu='ACTIVE'" +
             "group by u  " +
             "order by sum (b.pages) desc , u.lastName, u.name, u.id")

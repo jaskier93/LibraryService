@@ -24,6 +24,14 @@ public class User extends StateEntity {
     private Integer id;
 
     @NotNull
+    @Column(unique = true)
+    private String login;
+
+    //dodać walidator/interfejs do sprawdzania złożoności hasła, które powinno np zaczynać się z wielkiej litery i zawierać cyfrę/znak specjalny
+    @NotNull
+    private String password;
+
+    @NotNull
     private String name;
 
     private String secondName;

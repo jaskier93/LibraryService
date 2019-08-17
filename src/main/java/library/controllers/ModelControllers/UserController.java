@@ -8,10 +8,12 @@ import library.services.modelservices.BookService;
 import library.services.modelservices.UserService;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -36,6 +38,14 @@ public class UserController {
     public String updateAccount(@RequestBody User user, String json) {
         Integer userId = jsonConverter.converJsonToUser(json).getId();
         userService.updateUser(userId, user);
+        return "account";
+    }
+
+    @RequestMapping("/changepassword")
+    public String changepassword(User user, @RequestParam String newPassword) {
+        user.setPassword(newPassword);
+        //TODO:walidacja nowego hasła
+        userService.updateUser(user.getId(), user);
         return "account";
     }
 

@@ -20,6 +20,8 @@ public class TestUtils {
         user.setAdminDegree(0);
         user.setEmail("example@gmail.com");
         user.setLastName("XXXYYYZZZ");
+        user.setLogin("exampleLogin");
+        user.setPassword("examplePassword123");
         user.setSecondName("x");
         user.setName("z");
         return user;
@@ -79,6 +81,7 @@ public class TestUtils {
         action.setUpdated(LocalDateTime.now());
         return action;
     }
+
     public static Action createAction(ActionDescription actionDescription, Book book, User user) {
         Action action = new Action();
         action.setActionDescription(actionDescription);
