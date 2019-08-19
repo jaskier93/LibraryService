@@ -9,6 +9,7 @@ import library.services.modelservices.UserService;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class UserController {
 
     private final UserService userService;

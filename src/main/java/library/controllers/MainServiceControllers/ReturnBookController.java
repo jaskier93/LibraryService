@@ -2,12 +2,14 @@ package library.controllers.MainServiceControllers;
 
 import library.services.ReturnBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/returnbook")
+@PreAuthorize("hasRole('ROLE_USER')")
 public class ReturnBookController {
 
     private final ReturnBookService returnBookService;

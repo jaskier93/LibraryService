@@ -4,12 +4,14 @@ import library.converters.JsonConverter;
 import library.models.Author;
 import library.services.modelservices.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/author")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AuthorController {
 
     private final AuthorService authorService;

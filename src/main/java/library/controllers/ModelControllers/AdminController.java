@@ -4,13 +4,15 @@ import library.converters.JsonConverter;
 import library.repositories.UserRepository;
 import library.services.modelservices.UserService;
 import library.models.User;
-import lombok.RequiredArgsConstructor;
+import library.validators.mainValidators.IsUserAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
 
     private final UserService userService;

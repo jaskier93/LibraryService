@@ -18,4 +18,10 @@ public class IsUserAdmin extends AbstractValidator {
     public RuntimeException validatorException() {
         return new InCorrectStateException("Użytkownik nie posiada uprawnień administratora");
     }
+
+    public String isUserAdmin(User user) {
+        if (validator(user)) {
+            return "admin";
+        } else return "user";
+    }
 }

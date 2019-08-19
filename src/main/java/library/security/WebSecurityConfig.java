@@ -24,8 +24,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder.authenticationProvider(authProvider());
+    public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
+        authenticationMgr.inMemoryAuthentication()
+                .withUser("jduser").password("jdu@123").authorities("ROLE_USER")
+                .and()
+                .withUser("jdadmin").password("jda@123").authorities("ROLE_USER","ROLE_ADMIN");
     }
 
     @Bean

@@ -8,6 +8,7 @@ import library.repositories.UserRepository;
 import library.services.modelservices.BookService;
 import library.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/books")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class BookController {
 
     private final BookService bookService;
@@ -56,34 +58,6 @@ public class BookController {
         Book bookFromBase = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getUserId());
         bookService.updateBook(book, bookFromBase.getId(), user); //user-login bibliotekarza
-        return "book";
-    }
-
-    @RequestMapping("/sortedByReleaseDate")
-    public String sortedBooksByReleaseDate(ModelMap modelMap) {
-        List<Book> sortedBooksByReleaseDate = bookService.sortedBooksByReleaseDate();
-        modelMap.put("sortedBooksByReleaseDate", sortedBooksByReleaseDate);
-        return "book";
-    }
-
-    @RequestMapping("/sortedByAddingDate")
-    public String sortedBooksByAddingDate(ModelMap modelMap) {
-        List<Book> sortedBooksByAddingDate = bookService.sortedBooksByAddingDate();
-        modelMap.put("sortedBooksByAddingDate", sortedBooksByAddingDate);
-        return "book";
-    }
-
-    @RequestMapping("/releasedInPeriod")
-    public String booksReleasedInPeriod(ModelMap modelMap) {
-        List<Book> booksReleasedInPeriod = bookService.booksReleasedInPeriod();
-        modelMap.put("booksReleasedInPeriod", booksReleasedInPeriod);
-        return "book";
-    }
-
-    @RequestMapping("/addedInPeriod")
-    public String booksAddedInPeriod(ModelMap modelMap) {
-        List<Book> booksAddedInPeriod = bookService.booksAddedInPeriod();
-        modelMap.put("booksAddedInPeriod", booksAddedInPeriod);
         return "book";
     }
 }
