@@ -28,33 +28,17 @@ public class PaymentService {
     }
 
     public Payment destroyedBookPayment(BookState bookState) {
-        Payment payment = new Payment();
-        payment.setCreated(LocalDateTime.now());
-        payment.setUpdated(LocalDateTime.now());
-        payment.setStatusRekordu(StatusRekordu.ACTIVE);
-        payment.setAction(bookState.getAction());
-        payment.setBookState(bookState);
-        payment.setAmount(PENALTY_AMOUNT);
-        payment.setStatus(0);
-        payment.setActive(true);
-        payment.setBook(bookState.getBook());
+        Payment payment = createPayment(bookState, PENALTY_AMOUNT);
         return paymentRepository.save(payment);
     }
 
     public Payment expiredLoan(BookState bookState) {
-        Payment payment = new Payment();
-        payment.setCreated(LocalDateTime.now());
-        payment.setUpdated(LocalDateTime.now());
-        payment.setStatusRekordu(StatusRekordu.ACTIVE);
-        payment.setAction(bookState.getAction());
-        payment.setBookState(bookState);
-        payment.setStatus(0);
-        payment.setActive(true);
-        payment.setBook(bookState.getBook());
+        Payment payment = createPayment(bookState, PENALTY_AMOUNT);
 
         //TODO: ewentualnie do poprawy
         Period period = Period.between(payment.getBookState().getUpdated().toLocalDate(), LocalDate.now());
         Integer daysAfterReturnDate = period.getDays();
+
         payment.setAmount(daysAfterReturnDate * DAILY_AMOUNT);
         return paymentRepository.save(payment);
     }
@@ -62,7 +46,7 @@ public class PaymentService {
     public Payment updatePayment(Integer paymentId) {
         Payment payment = paymentRepository.getOne(paymentId);
         payment.setUpdated(LocalDateTime.now());
-        payment.setActive(false); // =płatność opłacona
+        payment.setActive(false); // płatność opłacona
         return paymentRepository.save(payment);
     }
 
@@ -80,5 +64,20 @@ public class PaymentService {
             sumPaymentsForOneUser = 0;
         }
         return sumPaymentsForOneUser;
+    }
+
+    private Payment createPayment(BookState bookState, Integer amount){
+        Payment payment = new Payment();
+        payment.setCreated(LocalDateTime.now());
+        payment.setUpdated(LocalDateTime.now());
+        payment.setStatusRekordu(StatusRekordu.ACTIVE);
+        payment.setAction(bookState.getAction());
+        payment.setBookState(bookState);
+        payment.setStatus(0);
+        payment.setActive(true);
+        payment.setBook(bookState.getBook());
+        payment.setAmount(amount);
+
+        return payment;
     }
 }

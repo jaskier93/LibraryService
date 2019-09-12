@@ -1,21 +1,19 @@
 package library.models;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-import library.models.StateEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
-
 @Entity
-@Table
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class User extends StateEntity {
 
@@ -27,7 +25,7 @@ public class User extends StateEntity {
     @Column(unique = true)
     private String login;
 
-    //dodać walidator/interfejs do sprawdzania złożoności hasła, które powinno np zaczynać się z wielkiej litery i zawierać cyfrę/znak specjalny
+    //TODO: dodać walidator/interfejs do sprawdzania złożoności hasła, które powinno np zaczynać się z wielkiej litery i zawierać cyfrę/znak specjalny
     @NotNull
     private String password;
 

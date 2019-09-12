@@ -67,8 +67,8 @@ public class ProlongationService extends AbstractService {
         ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getBookId());
-        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE, LocalDateTime.now().minusDays(3)).get(0);
-        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.PRZEDLUZENIE).get(0);
+        Action actionFromBase = actionRepository.findNewestAction(user, ActionDescription.PRZEDLUZENIE, LocalDateTime.now().minusDays(3)).get(0); //TODO: opakować metodę w serwisie
+        BookState bookStateFromBase = bookStateRepository.findNewestBookState(user, ActionDescription.PRZEDLUZENIE).get(0);  //TODO: opakować metodę w serwisie
 
         if (user.getId().equals(actionFromBase.getId()) && book.getId().equals(bookStateFromBase.getId())) {
             actionFromBase.setStatusRekordu(StatusRekordu.HISTORY);
@@ -78,13 +78,12 @@ public class ProlongationService extends AbstractService {
             bookStateRepository.save(bookStateFromBase);
             bookRepository.save(book);
         } else {
-            throw new ExceptionEmptyList(" Nie odnaleziono akcji/książki/użytkownika. ");
+            throw new ExceptionEmptyList("Nie odnaleziono akcji/książki/użytkownika.");
         }
     }
 
     @Override
     public List<AbstractValidator> getValidators() {
-        //    getValidators().add(prolongationValidator);
         return null;
     }
 
