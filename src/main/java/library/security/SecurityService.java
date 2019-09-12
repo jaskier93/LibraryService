@@ -1,5 +1,6 @@
 package library.security;
 
+import library.exceptions.LoginExistsException;
 import library.models.User;
 import library.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class SecurityService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerNewUser(CreateUserCommand command) {
-        if (loginExists(command.getLogin())) {
-            throw new LoginExistsException(command.getLogin());
+    public User registerNewUser(User givenUser) {
+        if (loginExists(givenUser.getLogin())) {
+            throw new LoginExistsException(givenUser.getLogin());
         }
         User user = new User();
-        user.setLogin(command.getLogin());
-        user.setPassword(passwordEncoder.encode(command.getPassword()));
+        user.setLogin(givenUser.getLogin());
+        user.setPassword(passwordEncoder.encode(givenUser.getPassword()));
 
         return userRepository.save(user);
     }

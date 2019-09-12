@@ -38,11 +38,11 @@ public class LibraryCardService {
     public LibraryCard showLibraryCard(User user) {
         return LibraryCard.builder().
                 loanedBooks(bookService.numberOfLoanedBooks(user)).
-                allPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size()).
+                allPaymentsQuantity(paymentRepository.findPaymentsByUser(user).size()). //TODO: opakować metodę w serwisie
                 allPaymentsSum(paymentService.sumPaymentsForOneUser(user)).
-                destroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size()).
-                expiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size()).
-                unpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size()).
+                destroyedBooks(actionRepository.findActionsWithDestroyedBooksByUser(user).size()). //TODO: opakować metodę w serwisie
+                expiredReturnsOfBooks(actionRepository.findActionsWithOverdueReturnsByUser(user).size()). //TODO: opakować metodę w serwisie
+                unpaidPaymentsQuantity(paymentRepository.findActivePaymentsByUser(user).size()). //TODO: opakować metodę w serwisie
                 unpaidPaymentsSum(paymentService.sumActivePaymentsForOneUser(user)).
                 sumAllBooksPages(bookService.sumPagesForUser(user)).
                 latestLoanedBook(bookService.latestLoanedBook(user)).

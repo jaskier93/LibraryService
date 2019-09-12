@@ -1,6 +1,9 @@
 package library.enums;
 
+import library.exceptions.NoObjectException;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 public enum Category {
     ADVENTURE(1),
@@ -22,9 +25,4 @@ public enum Category {
     Category(Integer number) {
         this.number = number;
     }
-
-    public static Integer getNumber(Category category) {
-        return category.number;
-    }
-
 }

@@ -15,6 +15,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Slf4j
 @Service
 @EnableScheduling
@@ -33,6 +35,7 @@ public class EmailService {
      * wysyłanie maili, póki co dla konkretnego użytkownika
      * //:TODO do poprawienia/zrobić wariant dla różnych akcji
      */ //:TODO do przerobienia : metoda powinna przeszukać całą bazę w poszukiwaniu wszystkich aktualnych wypożyczeń i po nich sprawdzać daty oddania-w razie spełnienia warunków należy wysłać maila
+
     public void sendMailAboutRentBook(String title, Integer bookId, Integer userId) {
         Book book = bookRepository.getOne(bookId);
         User user = userRepository.getOne(userId);

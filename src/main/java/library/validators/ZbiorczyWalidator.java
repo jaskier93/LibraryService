@@ -14,7 +14,7 @@ public class ZbiorczyWalidator {
         List<Integer> lista = new ArrayList();
         booleanList.forEach(klasaValidatora -> {
             if (!klasaValidatora.validator(user)) {
-                //   throw klasaValidatora.createException();
+                   throw klasaValidatora.validatorException();
             } else {
                 lista.add(1);
             }

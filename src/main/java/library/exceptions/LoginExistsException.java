@@ -1,4 +1,4 @@
-package library.security;
+package library.exceptions;
 
 public class LoginExistsException extends RuntimeException {
     public LoginExistsException(String login) {

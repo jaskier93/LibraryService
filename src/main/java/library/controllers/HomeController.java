@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/home")
     public String homePage() {
-        return "index"; //front-endowiec ma za zadanie stworzyć odpowiedni
+        return "index";
     }
 }

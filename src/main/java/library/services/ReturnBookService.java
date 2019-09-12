@@ -60,7 +60,7 @@ public class ReturnBookService extends AbstractService {
 
     @Override
     public void mainAction(String json) {
-        //
+
         ActionJson actionJson = jsonConverter.convertJsonToAction(json);
         Book book = bookRepository.getOne(actionJson.getBookId());
         User user = userRepository.getOne(actionJson.getBookId());
