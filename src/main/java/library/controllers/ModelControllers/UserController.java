@@ -46,7 +46,7 @@ public class UserController {
     @RequestMapping("/changepassword")
     public String changepassword(User user, @RequestParam String newPassword) {
         user.setPassword(newPassword);
-        //TODO:walidacja nowego hasła
+        //TODO:walidacja nowego hasła ->NewPasswordValidator
         userService.updateUser(user.getId(), user);
         return "account";
     }

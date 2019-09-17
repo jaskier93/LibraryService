@@ -38,7 +38,7 @@ public class AuthorController {
 
     //ewentualnie w razie potrzeby można utworzyć nowy ActionDescription - usunięcie autora, a w parametrze dodawać login bibliotekarza
     @RequestMapping("/delete")
-    public String deleteteAuthor(@RequestBody Author author, String json) {
+    public String deleteteAuthor(@RequestBody String json) {
         Integer authorId = jsonConverter.converJsonToAuthor(json).getId();
         authorService.deleteAuthor(authorId);
         return "author";
