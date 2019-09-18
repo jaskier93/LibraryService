@@ -15,7 +15,6 @@ import java.time.Period;
 
 @Slf4j
 @Service
-
 public class PaymentService {
 
     private static final Integer PENALTY_AMOUNT = 20;     //kara 20zł za zniszczenie książki
